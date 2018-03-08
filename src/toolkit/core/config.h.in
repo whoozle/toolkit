@@ -1,0 +1,7 @@
+#ifndef TOOLKIT_CONFIG_H
+#define TOOLKIT_CONFIG_H
+
+#cmakedefine TOOLKIT_NS @TOOLKIT_NS@
+
+#endif
+

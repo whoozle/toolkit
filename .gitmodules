@@ -1,0 +1,3 @@
+[submodule "lest"]
+	path = lest
+	url = git@github.com:martinmoene/lest.git
