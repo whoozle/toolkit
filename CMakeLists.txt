@@ -26,6 +26,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 set(TOOLKIT_SRC
 	src/toolkit/log/Logger.cpp
 	src/toolkit/log/ConsoleLoggingSink.cpp
+
+	src/toolkit/io/SystemException.cpp
+	src/toolkit/io/File.cpp
+	src/toolkit/io/TemporaryFile.cpp
 )
 
 set(TOOLKIT_LIB toolkit)
