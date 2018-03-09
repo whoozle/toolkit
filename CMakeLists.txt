@@ -10,8 +10,6 @@ endif()
 
 include_directories(src)
 
-option(BUILD_TESTS "Build LEST-based unit tests" OFF)
-
 if (NOT DEFINED TOOLKIT_NS)
 	set(TOOLKIT_NS toolkit)
 endif()
@@ -34,11 +32,6 @@ set(TOOLKIT_SRC
 
 set(TOOLKIT_LIB toolkit)
 add_library(${TOOLKIT_LIB} STATIC ${TOOLKIT_SRC})
-
-if (BUILD_TESTS)
-	include_directories(lest/include)
-	add_executable(toolkit-unit-tests tests/tests.cpp)
-endif ()
 
 set(TOOLKIT_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src;${CMAKE_CURRENT_BINARY_DIR}" PARENT_SCOPE)
 set(TOOLKIT_LIBRARIES ${TOOLKIT_LIB} PARENT_SCOPE)
