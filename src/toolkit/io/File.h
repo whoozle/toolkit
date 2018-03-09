@@ -2,6 +2,7 @@
 #define TOOLKIT_IO_FILE_H
 
 #include <toolkit/io/IStream.h>
+#include <toolkit/io/IPollable.h>
 #include <string>
 #include <sys/stat.h>
 
@@ -13,15 +14,18 @@ TOOLKIT_SUBNS_BEGIN(io)
 		ReadWrite
 	};
 
-	class File : public IStream
+	class File : public IStream, public IPollable
 	{
 	private:
 		int _fd;
 
 	public:
 		explicit File(int fd): _fd(fd) { }
-		File(const std::string &path, FileOpenMode mode);
+		File(const std::string &path, FileOpenMode mode = FileOpenMode::Readonly);
 		~File();
+
+		int GetFileDescriptor() const override
+		{ return _fd; }
 
 		void Sync(SyncMode mode) override;
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override;
