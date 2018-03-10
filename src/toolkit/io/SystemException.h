@@ -14,7 +14,10 @@ TOOLKIT_SUBNS_BEGIN(io)
 	};
 
 #define SYSTEM_CALL(...) \
-	do { int _retVal = __VA_ARGS__ ; if (_retVal == -1) throw TOOLKIT_NS ::io::SystemException( #__VA_ARGS__ ); } while (false)
+	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) throw TOOLKIT_NS ::io::SystemException( #__VA_ARGS__ ); } while (false)
+
+#define SYSTEM_CALL_RETURN(...) \
+	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) throw TOOLKIT_NS ::io::SystemException( #__VA_ARGS__ ); return _retVal; } while (false)
 
 TOOLKIT_SUBNS_END
 
