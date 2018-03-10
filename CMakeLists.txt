@@ -30,6 +30,8 @@ set(TOOLKIT_SRC
 	src/toolkit/io/TemporaryFile.cpp
 
 	src/toolkit/net/bsd/Socket.cpp
+
+	src/toolkit/net/ipv4/Address.cpp
 )
 
 set(TOOLKIT_LIB toolkit)
