@@ -17,6 +17,9 @@ namespace net { namespace ipv4
 	Address Address::None()
 	{ return Address(htonl(INADDR_NONE)); }
 
+	Address Address::Localhost()
+	{ return Address(htonl(INADDR_LOOPBACK)); }
+
 	Address Address::FromString(const std::string &addr)
 	{
 		struct in_addr inp;

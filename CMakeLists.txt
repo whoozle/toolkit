@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 include(CheckCXXCompilerFlag)
 
 set (CMAKE_CXX_STANDARD 11)
+find_package( Threads )
 
 check_cxx_compiler_flag(-Wall HAS_WALL)
 if (HAS_WALL)
@@ -35,10 +36,11 @@ set(TOOLKIT_SRC
 	src/toolkit/net/ipv4/Address.cpp
 	src/toolkit/net/ipv4/Endpoint.cpp
 	src/toolkit/net/ipv4/TCPServerSocket.cpp
+	src/toolkit/net/ipv4/TCPSocket.cpp
 )
 
 set(TOOLKIT_LIB toolkit)
 add_library(${TOOLKIT_LIB} STATIC ${TOOLKIT_SRC})
 
 set(TOOLKIT_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src;${CMAKE_CURRENT_BINARY_DIR}" PARENT_SCOPE)
-set(TOOLKIT_LIBRARIES ${TOOLKIT_LIB} PARENT_SCOPE)
+set(TOOLKIT_LIBRARIES ${TOOLKIT_LIB} ${CMAKE_THREAD_LIBS_INIT} PARENT_SCOPE)

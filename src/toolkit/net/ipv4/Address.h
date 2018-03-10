@@ -25,6 +25,7 @@ namespace net { namespace ipv4
 		static Address Any();
 		static Address Broadcast();
 		static Address None();
+		static Address Localhost();
 		static Address FromString(const std::string &addr);
 	};
 

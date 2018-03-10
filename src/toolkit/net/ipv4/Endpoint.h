@@ -21,6 +21,7 @@ namespace net { namespace ipv4
 		Endpoint(ipv4::Address address, int port): Address(address), Port(port)
 		{ }
 
+		void Connect(bsd::Socket & socket) const;
 		void Bind(bsd::Socket & socket) const;
 	};
 

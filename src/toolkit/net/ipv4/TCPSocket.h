@@ -7,6 +7,7 @@
 TOOLKIT_NS_BEGIN
 namespace net { namespace ipv4
 {
+	struct Endpoint;
 
 	class TCPSocket :
 		protected bsd::Socket,
@@ -15,6 +16,8 @@ namespace net { namespace ipv4
 	public:
 		TCPSocket(int flags = ISocket::DefaultFlags): bsd::Socket(AF_INET, SOCK_STREAM, 0)
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
+
+		void Connect(const Endpoint & ep);
 	};
 
 }}
