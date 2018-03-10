@@ -1,20 +1,24 @@
 #ifndef TOOLKIT_TYPES_H
 #define TOOLKIT_TYPES_H
 
-#include <stdint.h>
 #include <toolkit/core/core.h>
+#include <stdint.h>
+#include <stddef.h>
 
 TOOLKIT_NS_BEGIN
 
-	typedef uint8_t		u8;
-	typedef uint16_t	u16;
-	typedef uint32_t	u32;
-	typedef uint64_t	u64;
+	using uint = unsigned int;
 
-	typedef int8_t		s8;
-	typedef int16_t		s16;
-	typedef int32_t		s32;
-	typedef int64_t		s64;
+	using u8	= uint8_t;
+	using u16	= uint16_t;
+	using u32	= uint32_t;
+	using u64	= uint64_t;
+
+	using s8	= int8_t;
+	using s16	= int16_t;
+	using s32	= int32_t;
+	using s64	= int64_t;
+
 
 TOOLKIT_NS_END
 
