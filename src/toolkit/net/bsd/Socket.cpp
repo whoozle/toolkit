@@ -53,6 +53,15 @@ namespace net { namespace bsd
 		SetFlags(flags);
 	}
 
+	void Socket::Connect(const struct sockaddr *addr, socklen_t addrlen)
+	{ SYSTEM_CALL(connect(_socket, addr, addrlen)); }
+
+	void Socket::Bind(const struct sockaddr *addr, socklen_t addrlen)
+	{ SYSTEM_CALL(bind(_socket, addr, addrlen)); }
+
+	void Socket::Listen(int backlog)
+	{ SYSTEM_CALL(listen(_socket, backlog)); }
+
 	ssize_t Socket::Send(const void *buf, size_t len, int flags)
 	{ SYSTEM_CALL_RETURN(send(_socket, buf, len, flags)); }
 

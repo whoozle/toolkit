@@ -8,6 +8,15 @@ TOOLKIT_NS_BEGIN
 namespace net { namespace ipv4
 {
 
+	Address Address::Any()
+	{ return Address(htonl(INADDR_ANY)); }
+
+	Address Address::Broadcast()
+	{ return Address(htonl(INADDR_BROADCAST)); }
+
+	Address Address::None()
+	{ return Address(htonl(INADDR_NONE)); }
+
 	Address Address::FromString(const std::string &addr)
 	{
 		struct in_addr inp;

@@ -18,7 +18,7 @@ namespace net { namespace ipv4
 		TCPServerSocket(int flags = ISocket::DefaultFlags): bsd::Socket(AF_INET, SOCK_STREAM, 0)
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 
-		void Bind(ipv4::Endpoint ep);
+		void Listen(const ipv4::Endpoint & ep, int backlogDepth = ISocket::DefaultBacklogDepth);
 	};
 
 }}

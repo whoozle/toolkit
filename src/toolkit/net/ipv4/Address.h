@@ -19,6 +19,9 @@ namespace net { namespace ipv4
 		Address(int a, int b, int c, int d)
 		{ _addr = (a << 24) | (b << 16) | (c << 8) | d; }
 
+		static Address Any();
+		static Address Broadcast();
+		static Address None();
 		static Address FromString(const std::string &addr);
 	};
 

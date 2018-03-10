@@ -33,6 +33,8 @@ set(TOOLKIT_SRC
 	src/toolkit/net/bsd/Socket.cpp
 
 	src/toolkit/net/ipv4/Address.cpp
+	src/toolkit/net/ipv4/Endpoint.cpp
+	src/toolkit/net/ipv4/TCPServerSocket.cpp
 )
 
 set(TOOLKIT_LIB toolkit)
