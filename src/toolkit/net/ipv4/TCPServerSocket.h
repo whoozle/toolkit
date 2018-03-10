@@ -13,6 +13,7 @@ namespace net { namespace ipv4
 
 	class TCPServerSocket :
 		protected bsd::Socket,
+		public virtual io::IPollable,
 		public virtual ISocket
 	{
 	public:

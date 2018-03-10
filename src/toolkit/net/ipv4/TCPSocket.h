@@ -11,6 +11,7 @@ namespace net { namespace ipv4
 
 	class TCPSocket :
 		protected bsd::Socket,
+		public virtual io::IPollable,
 		public virtual ISocket
 	{
 	public:
