@@ -4,7 +4,9 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-TOOLKIT_SUBNS2_BEGIN(net, ipv4)
+TOOLKIT_NS_BEGIN
+namespace net { namespace ipv4
+{
 
 	Address Address::FromString(const std::string &addr)
 	{
@@ -14,4 +16,5 @@ TOOLKIT_SUBNS2_BEGIN(net, ipv4)
 		return Address(inp.s_addr);
 	}
 
-TOOLKIT_SUBNS2_END
+}}
+TOOLKIT_NS_END

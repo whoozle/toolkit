@@ -4,7 +4,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	File::File(const std::string &path, FileOpenMode mode): _fd(::open(path.c_str(), MapMode(mode), 0600))
 	{
@@ -104,4 +106,5 @@ TOOLKIT_SUBNS_BEGIN(io)
 			throw SystemException("fallocate failed");
 	}
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END

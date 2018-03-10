@@ -4,7 +4,9 @@
 #include <toolkit/net/bsd/Socket.h>
 #include <toolkit/net/ISocket.h>
 
-TOOLKIT_SUBNS2_BEGIN(net, ipv4)
+TOOLKIT_NS_BEGIN
+namespace net { namespace ipv4
+{
 
 	struct Endpoint;
 
@@ -19,6 +21,7 @@ TOOLKIT_SUBNS2_BEGIN(net, ipv4)
 		void Bind(ipv4::Endpoint ep);
 	};
 
-TOOLKIT_SUBNS2_END
+}}
+TOOLKIT_NS_END
 
 #endif

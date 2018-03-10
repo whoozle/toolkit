@@ -5,7 +5,9 @@
 #include <toolkit/io/ByteArray.h>
 #include <toolkit/io/ByteData.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	inline void Copy(IStreamPtr dst, IStreamPtr src, size_t bufferSize = 128 * 1024)
 	{
@@ -19,7 +21,8 @@ TOOLKIT_SUBNS_BEGIN(io)
 		while(r == bufferSize);
 	}
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 
 #endif

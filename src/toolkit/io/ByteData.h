@@ -5,7 +5,9 @@
 #include <toolkit/core/types.h>
 #include <stddef.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	template<typename T>
 	class PointerSizeHolder
@@ -53,6 +55,7 @@ TOOLKIT_SUBNS_BEGIN(io)
 	using ByteData = PointerSizeHolder<u8>;
 	using ConstByteData = PointerSizeHolder<const u8>;
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 #endif

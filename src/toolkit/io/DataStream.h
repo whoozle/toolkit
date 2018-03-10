@@ -4,7 +4,9 @@
 #include <toolkit/io/IStream.h>
 #include <toolkit/core/Exception.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	class DataInputStream
 	{
@@ -102,6 +104,7 @@ TOOLKIT_SUBNS_BEGIN(io)
 		}
 	};
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 #endif

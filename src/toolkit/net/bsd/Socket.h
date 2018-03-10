@@ -5,7 +5,9 @@
 #include <toolkit/io/IPollable.h>
 #include <sys/socket.h>
 
-TOOLKIT_SUBNS2_BEGIN(net, bsd)
+TOOLKIT_NS_BEGIN
+namespace net { namespace bsd
+{
 
 	class Socket : public virtual io::IPollable
 	{
@@ -44,7 +46,8 @@ TOOLKIT_SUBNS2_BEGIN(net, bsd)
 		ssize_t SendFile(int in_fd, off_t *offset, size_t count);
 	};
 
-TOOLKIT_SUBNS2_END
+}}
+TOOLKIT_NS_END
 
 #endif
 

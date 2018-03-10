@@ -6,7 +6,9 @@
 #include <string>
 #include <sys/stat.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	enum struct FileOpenMode
 	{
@@ -42,6 +44,7 @@ TOOLKIT_SUBNS_BEGIN(io)
 		static int MapMode(SeekMode mode);
 	};
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 #endif

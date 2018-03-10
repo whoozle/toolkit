@@ -1,7 +1,9 @@
 #include <toolkit/log/ConsoleLoggingSink.h>
 #include <unistd.h>
 
-TOOLKIT_SUBNS_BEGIN(log)
+TOOLKIT_NS_BEGIN
+namespace log
+{
 
 	ConsoleLoggingSink::ConsoleLoggingSink(): _console(isatty(STDERR_FILENO))
 	{ }
@@ -30,4 +32,5 @@ TOOLKIT_SUBNS_BEGIN(log)
 			fprintf(stderr, "%ld.%03ld: %s[%s]: %s\n", static_cast<long>(ts.tv_sec), static_cast<long>(ts.tv_nsec / 1000000), logger.c_str(), to_string(level), value.c_str());
 	}
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END

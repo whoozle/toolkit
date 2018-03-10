@@ -1,5 +1,8 @@
 #include <toolkit/io/Poll.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
-
-TOOLKIT_SUBNS_END
+TOOLKIT_NS_BEGIN
+namespace io
+{
+	
+}
+TOOLKIT_NS_END

@@ -1,7 +1,9 @@
 #ifndef TOOLKIT_NET_ISOCKET_H
 #define TOOLKIT_NET_ISOCKET_H
 
-TOOLKIT_SUBNS_BEGIN(net)
+TOOLKIT_NS_BEGIN
+namespace net
+{
 
 	struct ISocket
 	{
@@ -11,7 +13,8 @@ TOOLKIT_SUBNS_BEGIN(net)
 		virtual ~ISocket() = default;
 	};
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 #endif
 

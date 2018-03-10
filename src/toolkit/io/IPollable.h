@@ -3,7 +3,9 @@
 
 #include <toolkit/core/core.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	struct IPollable
 	{
@@ -11,7 +13,8 @@ TOOLKIT_SUBNS_BEGIN(io)
 		virtual int GetFileDescriptor() const = 0;
 	};
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 #endif
 

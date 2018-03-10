@@ -3,7 +3,9 @@
 
 #include <toolkit/net/ipv4/Address.h>
 
-TOOLKIT_SUBNS2_BEGIN(net, ipv4)
+TOOLKIT_NS_BEGIN
+namespace net { namespace ipv4
+{
 
 struct Endpoint
 {
@@ -14,6 +16,7 @@ struct Endpoint
 	{ }
 };
 
-TOOLKIT_SUBNS2_END
+}}
+TOOLKIT_NS_END
 
 #endif

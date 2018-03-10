@@ -3,7 +3,9 @@
 #include <unistd.h>
 #include <string.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	int TemporaryFile::CreateTemporaryFileDescriptor(const std::string &filenameTemplate, char *storagePath)
 	{
@@ -26,5 +28,5 @@ TOOLKIT_SUBNS_BEGIN(io)
 		unlink(_storagePath);
 	}
 
-
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END

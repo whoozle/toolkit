@@ -9,7 +9,9 @@
 #include <sstream>
 #include <stdio.h>
 
-TOOLKIT_SUBNS_BEGIN(log)
+TOOLKIT_NS_BEGIN
+namespace log
+{
 
 	class LogDispatcher : public ILoggingSink
 	{
@@ -98,6 +100,7 @@ TOOLKIT_SUBNS_BEGIN(log)
 
 #define DECLARE_LOGGER(Class) namespace { TOOLKIT_NS::log::Logger _logger(#Class); }
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 #endif

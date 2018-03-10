@@ -3,8 +3,11 @@
 
 #include <toolkit/core/core.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
 
 #endif

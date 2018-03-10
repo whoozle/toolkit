@@ -6,7 +6,9 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-TOOLKIT_SUBNS2_BEGIN(net, bsd)
+TOOLKIT_NS_BEGIN
+namespace net { namespace bsd
+{
 
 	Socket::Socket(int family, int type, int proto): _socket(socket(family, type, proto))
 	{
@@ -75,5 +77,5 @@ TOOLKIT_SUBNS2_BEGIN(net, bsd)
 	{ SYSTEM_CALL_RETURN(sendfile(_socket, in_fd, offset, count)); }
 
 
-
-TOOLKIT_SUBNS2_END
+}}
+TOOLKIT_NS_END

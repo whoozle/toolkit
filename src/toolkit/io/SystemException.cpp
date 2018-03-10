@@ -4,7 +4,9 @@
 #include <string.h>
 #include <errno.h>
 
-TOOLKIT_SUBNS_BEGIN(io)
+TOOLKIT_NS_BEGIN
+namespace io
+{
 
 	SystemException::SystemException(const std::string &what) throw() : std::runtime_error(what + ": " + GetErrorMessage(errno))
 	{ }
@@ -23,4 +25,5 @@ TOOLKIT_SUBNS_BEGIN(io)
 #endif
 	}
 
-TOOLKIT_SUBNS_END
+}
+TOOLKIT_NS_END
