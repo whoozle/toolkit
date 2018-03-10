@@ -12,6 +12,8 @@ namespace net { namespace ipv4
 	{
 		struct sockaddr_in address = { };
 		address.sin_family = AF_INET;
+		address.sin_addr.s_addr = Address.GetNetworkAddress();
+		address.sin_port = htonl(Port);
 		socket.Bind((struct sockaddr *)&address, sizeof(address));
 	}
 
