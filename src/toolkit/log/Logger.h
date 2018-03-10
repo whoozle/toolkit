@@ -16,6 +16,10 @@ namespace log
 	class LogDispatcher : public ILoggingSink
 	{
 		std::list<std::pair<LogLevel, ILoggingSinkPtr>> _sinks;
+		ILoggingSinkPtr _defaultSink;
+
+	private:
+		ILoggingSinkPtr GetDefaultSink();
 
 	public:
 		void RegisterSink(ILoggingSinkPtr sink, LogLevel level)
@@ -23,11 +27,16 @@ namespace log
 
 		void Log(LogLevel level, const std::string & logger, const timespec &ts, const std::string &value) override
 		{
-			for(auto &sl : _sinks)
+			if (!_sinks.empty())
 			{
-				if (level >= sl.first)
-					sl.second->Log(level, logger, ts, value);
+				for(auto &sl : _sinks)
+				{
+					if (level >= sl.first)
+						sl.second->Log(level, logger, ts, value);
+				}
 			}
+			else
+				GetDefaultSink()->Log(level, logger, ts, value);
 		}
 	};
 
