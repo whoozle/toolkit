@@ -27,6 +27,7 @@ set(TOOLKIT_SRC
 
 	src/toolkit/io/SystemException.cpp
 	src/toolkit/io/File.cpp
+	src/toolkit/io/Poll.cpp
 	src/toolkit/io/TemporaryFile.cpp
 
 	src/toolkit/net/bsd/Socket.cpp
