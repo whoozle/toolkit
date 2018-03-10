@@ -13,6 +13,9 @@ TOOLKIT_SUBNS_BEGIN(io)
 		static std::string GetErrorMessage(int retCode);
 	};
 
+#define SYSTEM_CALL(...) \
+	do { int _retVal = __VA_ARGS__ ; if (_retVal == -1) throw TOOLKIT_NS ::io::SystemException( #__VA_ARGS__ ); } while (false)
+
 TOOLKIT_SUBNS_END
 
 #endif
