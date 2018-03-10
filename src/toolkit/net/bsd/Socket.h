@@ -11,7 +11,8 @@ namespace net { namespace bsd
 
 	class Socket : public virtual io::IPollable
 	{
-		int _socket;
+		int		_socket;
+		bool	_nonBlocking;
 
 	public:
 		Socket(int family, int type, int proto);
@@ -32,6 +33,7 @@ namespace net { namespace bsd
 		void Connect(const struct sockaddr *addr, socklen_t addrlen);
 		void Bind(const struct sockaddr *addr, socklen_t addrlen);
 		void Listen(int backlog);
+		int Accept(struct sockaddr *addr, socklen_t *addrlen);
 
 		ssize_t Send(const void *buf, size_t len, int flags);
 		ssize_t SendTo(const void *buf, size_t len, int flags,

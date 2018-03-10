@@ -10,7 +10,7 @@ TOOLKIT_NS_BEGIN
 namespace net { namespace bsd
 {
 
-	Socket::Socket(int family, int type, int proto): _socket(socket(family, type, proto))
+	Socket::Socket(int family, int type, int proto): _socket(socket(family, type, proto)), _nonBlocking(false)
 	{
 		if (_socket == -1)
 			throw io::SystemException("socket");
@@ -51,6 +51,7 @@ namespace net { namespace bsd
 			flags &= ~O_NONBLOCK;
 
 		SetFlags(flags);
+		_nonBlocking = enabled;
 	}
 
 	void Socket::Connect(const struct sockaddr *addr, socklen_t addrlen)
@@ -61,6 +62,9 @@ namespace net { namespace bsd
 
 	void Socket::Listen(int backlog)
 	{ SYSTEM_CALL(listen(_socket, backlog)); }
+
+	int Socket::Accept(struct sockaddr *addr, socklen_t *addrlen)
+	{ SYSTEM_CALL_RETURN(accept(_socket, addr, addrlen)); }
 
 	ssize_t Socket::Send(const void *buf, size_t len, int flags)
 	{ SYSTEM_CALL_RETURN(send(_socket, buf, len, flags)); }

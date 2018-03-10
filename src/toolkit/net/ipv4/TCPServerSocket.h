@@ -9,6 +9,7 @@ namespace net { namespace ipv4
 {
 
 	struct Endpoint;
+	class TCPSocket;
 
 	class TCPServerSocket :
 		protected bsd::Socket,
@@ -19,6 +20,8 @@ namespace net { namespace ipv4
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 
 		void Listen(const ipv4::Endpoint & ep, int backlogDepth = ISocket::DefaultBacklogDepth);
+
+		TCPSocket * Accept();
 	};
 
 }}
