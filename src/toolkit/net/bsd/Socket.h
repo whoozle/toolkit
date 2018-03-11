@@ -46,6 +46,8 @@ namespace net { namespace bsd
 		ssize_t RecvMsg(struct msghdr *msg, int flags);
 
 		ssize_t SendFile(int in_fd, off_t *offset, size_t count);
+
+		void Shutdown(int how);
 	};
 
 }}

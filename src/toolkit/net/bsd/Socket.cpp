@@ -89,6 +89,8 @@ namespace net { namespace bsd
 	ssize_t Socket::SendFile(int in_fd, off_t *offset, size_t count)
 	{ SYSTEM_CALL_RETURN(sendfile(_socket, in_fd, offset, count)); }
 
+	void Socket::Shutdown(int how)
+	{ SYSTEM_CALL(shutdown(_socket, how)); }
 
 }}
 TOOLKIT_NS_END
