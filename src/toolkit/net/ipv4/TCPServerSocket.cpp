@@ -15,7 +15,7 @@ namespace net { namespace ipv4
 	TCPSocket * TCPServerSocket::Accept()
 	{
 		struct sockaddr addr;
-		socklen_t addrlen;
+		socklen_t addrlen = sizeof(addr);
 
 		return new TCPSocket(bsd::Socket::Accept(&addr, &addrlen));
 	}
