@@ -12,14 +12,15 @@ namespace io
 	namespace
 	{
 
-#define M(EV, NEV) if ((EV & events) == EV) r |= NEV
+#define M(EV, NEV) if ((NEV & events) == NEV) r |= EV
+#define U(EV, NEV) if ((EV & events) == EV) r |= NEV
 
 		epoll_event Map(const ISocketEventHandler & handler, int events)
 		{
 			epoll_event ev = { };
-			int r = 0;
+			u32 r = 0;
 			M(POLLIN,	Poll::EventInput);
-			M(POLLOUT,	Poll::EventInput);
+			M(POLLOUT,	Poll::EventOutput);
 			M(POLLHUP,	Poll::EventHangup);
 			M(POLLERR,	Poll::EventError);
 			M(POLLPRI,	Poll::EventPriority);
@@ -27,6 +28,18 @@ namespace io
 			ev.events = r;
 			ev.data.ptr = const_cast<void *>(static_cast<const void *>(&handler));
 			return ev;
+		}
+
+		u32 Unmap(int events)
+		{
+			u32 r = 0;
+			U(POLLIN,	Poll::EventInput);
+			U(POLLOUT,	Poll::EventOutput);
+			U(POLLHUP,	Poll::EventHangup);
+			U(POLLERR,	Poll::EventError);
+			U(POLLPRI,	Poll::EventPriority);
+			U(EPOLLET,	Poll::EventEdgeTriggered);
+			return r;
 		}
 	}
 
@@ -54,10 +67,9 @@ namespace io
 		SYSTEM_CALL(epoll_ctl(_fd, EPOLL_CTL_MOD, pollable.GetFileDescriptor(), &ev));
 	}
 
-	void Poll::Remove(const IPollable & pollable, ISocketEventHandler & handler, int events)
+	void Poll::Remove(const IPollable & pollable)
 	{
-		auto ev = Map(handler, events);
-		SYSTEM_CALL(epoll_ctl(_fd, EPOLL_CTL_DEL, pollable.GetFileDescriptor(), &ev));
+		SYSTEM_CALL(epoll_ctl(_fd, EPOLL_CTL_DEL, pollable.GetFileDescriptor(), nullptr));
 	}
 
 	void Poll::Wait(int timeout)
@@ -71,7 +83,7 @@ namespace io
 		while(r--)
 		{
 			ISocketEventHandler *handler = static_cast<ISocketEventHandler *>(src->data.ptr);
-			handler->HandleSocketEvent(src->events);
+			handler->HandleSocketEvent(Unmap(src->events));
 		}
 	}
 }

@@ -45,13 +45,26 @@ namespace
 
 	class Client : public toolkit::io::ISocketEventHandler
 	{
-		std::unique_ptr<TCPSocket> _sock;
+		Logger						_log;
+		Poll &						_poll;
+		std::unique_ptr<TCPSocket>	_sock;
 
 	public:
-		Client(TCPSocket * sock): _sock(sock)
-		{ }
-		void HandleSocketEvent(int event)
-		{ }
+		Client(Poll & poll, TCPSocket * sock): _log("client:handler:" + std::to_string((long)this)), _poll(poll), _sock(sock)
+		{
+			_log.Info() << "creating";
+			_poll.Add(*_sock, *this, Poll::EventInput);
+		}
+
+		void HandleSocketEvent(int events)
+		{
+			if (events & Poll::EventHangup)
+			{
+				_log.Info() << "destroying";
+				_poll.Remove(*_sock);
+				delete this;
+			}
+		}
 	};
 }
 
@@ -71,8 +84,8 @@ int main(int argc, char **argv)
 		auto socket = sock.Accept();
 		if (socket)
 		{
-			auto client = new Client(socket);
-			poll.Add(*socket, *client, Poll::EventInput | Poll::EventOutput);
+			auto client = new Client(poll, socket);
+			poll.Add(*socket, *client, Poll::EventInput | Poll::EventHangup);
 		}
 		poll.Wait(1);
 	}

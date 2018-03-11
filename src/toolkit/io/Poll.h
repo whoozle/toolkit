@@ -2,6 +2,7 @@
 #define TOOLKIT_IO_POLL_H
 
 #include <toolkit/core/types.h>
+#include <toolkit/core/Noncopyable.h>
 
 TOOLKIT_NS_BEGIN
 namespace io
@@ -9,7 +10,7 @@ namespace io
 	struct IPollable;
 	struct ISocketEventHandler;
 
-	class Poll
+	class Poll : Noncopyable
 	{
 		int _fd;
 
@@ -28,7 +29,7 @@ namespace io
 
 		void Add(const IPollable & pollable, ISocketEventHandler & handler, int events);
 		void Modify(const IPollable & pollable, ISocketEventHandler & handler, int events);
-		void Remove(const IPollable & pollable, ISocketEventHandler & handler, int events);
+		void Remove(const IPollable & pollable);
 
 		void Wait(int timeout);
 
