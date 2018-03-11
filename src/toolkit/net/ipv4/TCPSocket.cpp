@@ -10,5 +10,10 @@ namespace net { namespace ipv4
 		ep.Connect(*this);
 	}
 
+	TCPSocket::~TCPSocket()
+	{
+		bsd::Socket::Shutdown(SHUT_RDWR);
+	}
+
 }}
 TOOLKIT_NS_END

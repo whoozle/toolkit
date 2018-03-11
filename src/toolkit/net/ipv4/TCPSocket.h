@@ -17,6 +17,7 @@ namespace net { namespace ipv4
 	public:
 		TCPSocket(int flags = ISocket::DefaultFlags): bsd::Socket(AF_INET, SOCK_STREAM, 0)
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
+		~TCPSocket();
 
 		void Connect(const Endpoint & ep);
 	};
