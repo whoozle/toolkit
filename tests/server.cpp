@@ -22,13 +22,19 @@ namespace
 	{
 		Logger log("server:client:" + std::to_string(id));
 		log.Info() << "ready";
-		while(true)
+		try
 		{
-			TCPSocket client;
-			log.Info() << "connecting...";
-			client.Connect(Endpoint(Address::Localhost(), Port));
-			log.Info() << "connected";
+			while(true)
+			{
+				TCPSocket client;
+				log.Info() << "connecting...";
+				client.Connect(Endpoint(Address::Localhost(), Port));
+				log.Info() << "connected";
+				log.Info() << "disconnecting";
+			}
 		}
+		catch(const std::exception & ex)
+		{ log.Error() << "failed: " << ex.what(); }
 	}
 
 	void RunSpawn()
@@ -66,28 +72,52 @@ namespace
 			}
 		}
 	};
+
+	class Server : public toolkit::io::ISocketEventHandler
+	{
+		Logger			_log;
+		Poll &			_poll;
+		TCPServerSocket _sock;
+	public:
+		Server(Poll & poll): _log("server:main"), _poll(poll)
+		{
+			_log.Info() << "starting test server";
+			_sock.Listen(Endpoint(Address::Any(), Port));
+			poll.Add(_sock, *this, Poll::EventInput);
+			_log.Info() << "listening...";
+		}
+
+		void Tick()
+		{ _log.Info() << "tick"; }
+
+		void HandleSocketEvent(int events)
+		{
+			while(true)
+			{
+				auto socket = _sock.Accept();
+				if (socket)
+				{
+					_log.Info() << "accepted client";
+					new Client(_poll, socket);
+				}
+				else
+					break;
+			}
+		}
+	};
+
 }
 
 int main(int argc, char **argv)
 {
-	Logger log("server:main");
-	log.Info() << "starting test server";
 	Poll poll;
 
-	TCPServerSocket sock;
-	sock.Listen(Endpoint(Address::Any(), Port));
-	log.Info() << "listening...";
-
+	Server server(poll);
 	std::thread spawner(&RunSpawn);
 	while(true)
 	{
-		auto socket = sock.Accept();
-		if (socket)
-		{
-			auto client = new Client(poll, socket);
-			poll.Add(*socket, *client, Poll::EventInput | Poll::EventHangup);
-		}
-		poll.Wait(1);
+		server.Tick();
+		poll.Wait();
 	}
 	return 0;
 }
