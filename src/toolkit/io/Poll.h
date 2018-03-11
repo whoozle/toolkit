@@ -2,22 +2,19 @@
 #define TOOLKIT_IO_POLL_H
 
 #include <toolkit/core/types.h>
-#include <toolkit/io/IPollable.h>
 
 TOOLKIT_NS_BEGIN
 namespace io
 {
+	struct IPollable;
+	struct ISocketEventHandler;
 
 	class Poll
 	{
 		int _fd;
 
 	public:
-		struct Event
-		{
-			IPollable *	Pollable;
-			uint		Events;
-		};
+		static constexpr size_t MaxEvents			= 1024;
 
 		static constexpr uint EventInput			= 1 << 0;
 		static constexpr uint EventOutput			= 1 << 1;
@@ -29,11 +26,14 @@ namespace io
 		Poll();
 		~Poll();
 
-		void Add(const IPollable & pollable, int events);
-		void Modify(const IPollable & pollable, int events);
-		void Remove(const IPollable & pollable, int events);
+		void Add(const IPollable & pollable, ISocketEventHandler & handler, int events);
+		void Modify(const IPollable & pollable, ISocketEventHandler & handler, int events);
+		void Remove(const IPollable & pollable, ISocketEventHandler & handler, int events);
 
-		size_t Wait(Event *events, size_t eventsMax, int timeout);
+		void Wait(int timeout);
+
+		void Wait()
+		{ Wait(-1); }
 	};
 
 }

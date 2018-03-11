@@ -2,6 +2,7 @@
 #include <toolkit/net/ipv4/TCPSocket.h>
 #include <toolkit/net/ipv4/Endpoint.h>
 #include <toolkit/io/Poll.h>
+#include <toolkit/io/ISocketEventHandler.h>
 #include <toolkit/log/Logger.h>
 #include <toolkit/log/ConsoleLoggingSink.h>
 #include <thread>
@@ -9,7 +10,7 @@
 #include <string>
 
 static constexpr int Port = 3000;
-static constexpr int Clients = 100;
+static constexpr int Clients = 30;
 
 using namespace toolkit::log;
 using namespace toolkit::io;
@@ -42,12 +43,14 @@ namespace
 		}
 	}
 
-	class Client
+	class Client : public toolkit::io::ISocketEventHandler
 	{
 		std::unique_ptr<TCPSocket> _sock;
 
 	public:
 		Client(TCPSocket * sock): _sock(sock)
+		{ }
+		void HandleSocketEvent(int event)
 		{ }
 	};
 }
@@ -68,9 +71,10 @@ int main(int argc, char **argv)
 		auto socket = sock.Accept();
 		if (socket)
 		{
-			poll.Add(*socket, Poll::EventInput | Poll::EventOutput);
-			new Client(socket);
+			auto client = new Client(socket);
+			poll.Add(*socket, *client, Poll::EventInput | Poll::EventOutput);
 		}
+		poll.Wait(1);
 	}
 	return 0;
 }
