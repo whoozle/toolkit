@@ -48,7 +48,14 @@ namespace io
 
 		T * GetPointer() const
 		{ return _ptr; }
+
+		T * data() const
+		{ return _ptr; }
+
 		size_t GetSize() const
+		{ return _size; }
+
+		size_t size() const
 		{ return _size; }
 	};
 
