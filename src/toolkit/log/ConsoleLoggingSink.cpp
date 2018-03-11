@@ -6,7 +6,9 @@ namespace log
 {
 
 	ConsoleLoggingSink::ConsoleLoggingSink(): _console(isatty(STDERR_FILENO))
-	{ }
+	{
+		setlinebuf(stderr);
+	}
 	
 	const char * ConsoleLoggingSink::GetColor(LogLevel level)
 	{
