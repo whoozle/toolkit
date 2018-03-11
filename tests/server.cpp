@@ -66,7 +66,7 @@ namespace
 			_sock(sock)
 		{
 			_log.Info() << "creating";
-			_poll.Add(*_sock, *this, Poll::EventInput);
+			_poll.Add(*_sock, *this, Poll::EventInput | Poll::EventHangup);
 		}
 
 		void HandleSocketEvent(int events)
