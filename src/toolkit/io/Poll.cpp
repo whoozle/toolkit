@@ -80,7 +80,7 @@ namespace io
 			throw io::SystemException("epoll_wait");
 
 		epoll_event *src = pollEvents;
-		while(r--)
+		for(; r--; ++src)
 		{
 			ISocketEventHandler *handler = static_cast<ISocketEventHandler *>(src->data.ptr);
 			handler->HandleSocketEvent(Unmap(src->events));
