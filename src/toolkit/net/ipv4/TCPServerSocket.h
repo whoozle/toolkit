@@ -22,6 +22,9 @@ namespace net { namespace ipv4
 
 		void Listen(const ipv4::Endpoint & ep, int backlogDepth = ISocket::DefaultBacklogDepth);
 
+		using bsd::Socket::SetNonBlocking;
+		using bsd::Socket::GetNonBlocking;
+
 		TCPSocket * Accept();
 	};
 

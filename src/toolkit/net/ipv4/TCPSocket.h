@@ -20,6 +20,9 @@ namespace net { namespace ipv4
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 		~TCPSocket();
 
+		using bsd::Socket::SetNonBlocking;
+		using bsd::Socket::GetNonBlocking;
+
 		void Connect(const Endpoint & ep);
 		ssize_t Write(io::ConstByteData data);
 	};
