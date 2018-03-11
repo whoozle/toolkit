@@ -2,6 +2,7 @@
 #define TOOLKIT_NET_BSD_SOCKET_H
 
 #include <toolkit/core/core.h>
+#include <toolkit/core/Noncopyable.h>
 #include <toolkit/io/IPollable.h>
 #include <sys/socket.h>
 
@@ -9,7 +10,9 @@ TOOLKIT_NS_BEGIN
 namespace net { namespace bsd
 {
 
-	class Socket : public virtual io::IPollable
+	class Socket :
+		public virtual io::IPollable,
+		Noncopyable
 	{
 		int		_socket;
 		bool	_nonBlocking;
