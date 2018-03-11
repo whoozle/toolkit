@@ -96,16 +96,11 @@ namespace
 
 		void HandleSocketEvent(int events)
 		{
-			while(true)
+			auto socket = _sock.Accept();
+			if (socket)
 			{
-				auto socket = _sock.Accept();
-				if (socket)
-				{
-					_log.Info() << "accepted client";
-					new Client(_poll, socket);
-				}
-				else
-					break;
+				_log.Info() << "accepted client";
+				new Client(_poll, socket);
 			}
 		}
 	};
