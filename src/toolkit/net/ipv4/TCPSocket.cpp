@@ -15,5 +15,11 @@ namespace net { namespace ipv4
 		bsd::Socket::Shutdown(SHUT_RDWR);
 	}
 
+	ssize_t TCPSocket::Write(io::ConstByteData data)
+	{
+		return bsd::Socket::Send(data.data(), data.size(), 0);
+	}
+
+
 }}
 TOOLKIT_NS_END

@@ -12,6 +12,7 @@
 static constexpr int Port = 3000;
 static constexpr int Clients = 30;
 
+using namespace toolkit;
 using namespace toolkit::log;
 using namespace toolkit::io;
 using namespace toolkit::net::ipv4;
@@ -24,12 +25,15 @@ namespace
 		log.Info() << "ready";
 		try
 		{
+			u8 req[] = "GET";
 			while(true)
 			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
 				TCPSocket client;
 				log.Info() << "connecting...";
 				client.Connect(Endpoint(Address::Localhost(), Port));
 				log.Info() << "connected";
+				client.Write(ConstByteData(req, 3));
 				log.Info() << "disconnecting";
 			}
 		}

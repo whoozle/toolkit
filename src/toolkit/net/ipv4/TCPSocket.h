@@ -3,6 +3,7 @@
 
 #include <toolkit/net/bsd/Socket.h>
 #include <toolkit/net/ISocket.h>
+#include <toolkit/io/ByteData.h>
 
 TOOLKIT_NS_BEGIN
 namespace net { namespace ipv4
@@ -20,6 +21,7 @@ namespace net { namespace ipv4
 		~TCPSocket();
 
 		void Connect(const Endpoint & ep);
+		ssize_t Write(io::ConstByteData data);
 	};
 
 }}
