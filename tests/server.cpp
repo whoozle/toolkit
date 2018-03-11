@@ -60,7 +60,10 @@ namespace
 		std::unique_ptr<TCPSocket>	_sock;
 
 	public:
-		Client(Poll & poll, TCPSocket * sock): _log("client:handler:" + std::to_string((long)this)), _poll(poll), _sock(sock)
+		Client(Poll & poll, TCPSocket * sock):
+			_log("client:handler:" + std::to_string((long)this)),
+			_poll(poll),
+			_sock(sock)
 		{
 			_log.Info() << "creating";
 			_poll.Add(*_sock, *this, Poll::EventInput);
