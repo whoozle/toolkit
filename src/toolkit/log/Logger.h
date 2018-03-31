@@ -4,6 +4,7 @@
 #include <toolkit/log/ILoggingSink.h>
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/core/types.h>
+#include <toolkit/text/String.h>
 #include <list>
 #include <string>
 #include <sstream>
@@ -78,6 +79,12 @@ namespace log
 			LogProxy & operator << (const ValueType &value)
 			{
 				_ss << value;
+				return *this;
+			}
+
+			LogProxy & operator << (const std::wstring &value)
+			{
+				_ss << text::ToUtf8(value);
 				return *this;
 			}
 
