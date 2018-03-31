@@ -37,6 +37,8 @@ set(TOOLKIT_SRC
 	src/toolkit/net/ipv4/Endpoint.cpp
 	src/toolkit/net/ipv4/TCPServerSocket.cpp
 	src/toolkit/net/ipv4/TCPSocket.cpp
+
+	src/toolkit/text/String.cpp
 )
 
 set(TOOLKIT_LIB toolkit)
