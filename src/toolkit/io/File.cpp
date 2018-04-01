@@ -1,5 +1,6 @@
 #include <toolkit/io/File.h>
 #include <toolkit/io/SystemException.h>
+#include <toolkit/log/Logger.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
@@ -16,7 +17,13 @@ namespace io
 
 	File::~File()
 	{
-		::close(_fd); //fixme: add error checking here
+		auto r = close(_fd); //fixme: add error checking here
+		if (r != 0)
+		{
+			auto error = SystemException::GetErrorMessage();
+			static log::Logger log("file");
+			log.Error() << "close failed: " << error;
+		}
 	}
 
 	int File::MapMode(FileOpenMode mode)
@@ -61,50 +68,33 @@ namespace io
 	}
 
 	off_t File::Seek(off_t offset, SeekMode mode)
-	{
-		off_t r = ::lseek(_fd, offset, MapMode(mode));
-		if (r < 0)
-			throw SystemException("lseek failed");
-		return r;
-	}
+	{ SYSTEM_CALL_RETURN(lseek(_fd, offset, MapMode(mode))); }
 
 	off_t File::Tell()
-	{
-		off_t offset = ::lseek(_fd, 0, SEEK_CUR);
-		if (offset < 0)
-			throw SystemException("lseek failed");
-		return offset;
-	}
+	{ SYSTEM_CALL_RETURN(lseek(_fd, 0, SEEK_CUR)); }
 
 	size_t File::Write(ConstByteData data)
-	{
-		ssize_t r = ::write(_fd, data.GetPointer(), data.GetSize());
-		if (r < 0)
-			throw SystemException("write failed");
-		return r;
-	}
+	{ SYSTEM_CALL_RETURN(write(_fd, data.GetPointer(), data.GetSize())); }
 
 	size_t File::Read(ByteData data)
-	{
-		ssize_t r = ::read(_fd, data.GetPointer(), data.GetSize());
-		if (r < 0)
-			throw SystemException("read failed");
-		return r;
-	}
+	{ SYSTEM_CALL_RETURN(read(_fd, data.GetPointer(), data.GetSize())); }
 
 	struct stat File::GetStatus()
 	{
 		struct stat buf;
-		if (::fstat(_fd, &buf) != 0)
-			throw SystemException("fstat failed");
+		SYSTEM_CALL(fstat(_fd, &buf));
 		return buf;
 	}
 
 	void File::Allocate(int mode, off_t offset, off_t len)
 	{
-		if (fallocate(_fd, mode, offset, len) != 0)
-			throw SystemException("fallocate failed");
+		SYSTEM_CALL(fallocate(_fd, mode, offset, len));
 	}
+	void File::Truncate(off_t size)
+	{
+		SYSTEM_CALL(ftruncate(_fd, size));
+	}
+
 
 }
 TOOLKIT_NS_END

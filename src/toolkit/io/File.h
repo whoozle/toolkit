@@ -38,6 +38,7 @@ namespace io
 		size_t Read(ByteData) override;
 
 		void Allocate(int mode, off_t offset, off_t len);
+		void Truncate(off_t size);
 		struct stat GetStatus();
 
 		MemoryMappingPtr Map(off_t offset, size_t size, int prot, int flags, void *addr = nullptr)
