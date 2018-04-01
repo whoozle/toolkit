@@ -8,7 +8,7 @@ TOOLKIT_NS_BEGIN
 namespace io
 {
 
-	SystemException::SystemException(const std::string &what) throw() : std::runtime_error(what + ": " + GetErrorMessage(errno))
+	SystemException::SystemException(const std::string &what) throw() : std::runtime_error(what + ": " + GetErrorMessage())
 	{ }
 
 	SystemException::SystemException(const std::string &what, int returnCode) throw() : std::runtime_error(what + ": " + GetErrorMessage(returnCode))
@@ -24,6 +24,8 @@ namespace io
 		return std::string(r == 0? buf: "strerror_r() failed");
 #endif
 	}
+	std::string SystemException::GetErrorMessage()
+	{ return GetErrorMessage(errno); }
 
 }
 TOOLKIT_NS_END

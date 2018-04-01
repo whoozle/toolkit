@@ -13,6 +13,7 @@ namespace io
 		SystemException(const std::string &what) throw();
 		SystemException(const std::string &what, int retCode) throw();
 		static std::string GetErrorMessage(int retCode);
+		static std::string GetErrorMessage();
 	};
 
 #define SYSTEM_CALL(...) \
