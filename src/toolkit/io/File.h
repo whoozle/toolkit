@@ -3,6 +3,7 @@
 
 #include <toolkit/io/IStream.h>
 #include <toolkit/io/IPollable.h>
+#include <toolkit/io/MemoryMapping.h>
 #include <string>
 #include <sys/stat.h>
 
@@ -38,6 +39,9 @@ namespace io
 
 		void Allocate(int mode, off_t offset, off_t len);
 		struct stat GetStatus();
+
+		MemoryMappingPtr Map(off_t offset, size_t size, int prot, int flags, void *addr = nullptr)
+		{ return std::make_shared<MemoryMapping>(addr, size, prot, flags, _fd, offset); }
 
 	private:
 		static int MapMode(FileOpenMode mode);
