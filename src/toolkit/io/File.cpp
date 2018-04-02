@@ -1,7 +1,6 @@
 #include <toolkit/io/File.h>
 #include <toolkit/io/SystemException.h>
 #include <toolkit/log/Logger.h>
-#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -85,6 +84,14 @@ namespace io
 		SYSTEM_CALL(fstat(_fd, &buf));
 		return buf;
 	}
+
+	struct statvfs File::GetVFSStatus()
+	{
+		struct statvfs buf;
+		SYSTEM_CALL(fstatvfs(_fd, &buf));
+		return buf;
+	}
+
 
 	void File::Allocate(int mode, off_t offset, off_t len)
 	{

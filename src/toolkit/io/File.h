@@ -6,6 +6,7 @@
 #include <toolkit/io/MemoryMapping.h>
 #include <string>
 #include <sys/stat.h>
+#include <sys/statvfs.h>
 
 TOOLKIT_NS_BEGIN
 namespace io
@@ -40,6 +41,7 @@ namespace io
 		void Allocate(int mode, off_t offset, off_t len);
 		void Truncate(off_t size);
 		struct stat GetStatus();
+		struct statvfs GetVFSStatus();
 
 		MemoryMappingPtr Map(off_t offset, size_t size, int prot, int flags, void *addr = nullptr)
 		{ return std::make_shared<MemoryMapping>(addr, size, prot, flags, _fd, offset); }
