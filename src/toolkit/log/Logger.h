@@ -10,6 +10,8 @@
 #include <sstream>
 #include <stdio.h>
 
+#define ANONYMOUS_LOGGER(name) namespace { TOOLKIT_NS :: log :: Logger log(name); }
+
 TOOLKIT_NS_BEGIN
 namespace log
 {
