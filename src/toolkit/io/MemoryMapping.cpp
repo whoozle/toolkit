@@ -25,6 +25,9 @@ namespace io
 		}
 	}
 
+	void MemoryMapping::Sync(void *addr, size_t size, int flags)
+	{ SYSTEM_CALL(msync(addr, size, flags)); }
+
 	size_t MemoryMapping::GetPageSize()
 	{ return sysconf(_SC_PAGESIZE); }
 }
