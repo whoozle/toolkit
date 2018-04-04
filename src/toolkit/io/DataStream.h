@@ -3,11 +3,66 @@
 
 #include <toolkit/io/IStream.h>
 #include <toolkit/core/Exception.h>
+#include <array>
 
 TOOLKIT_NS_BEGIN
 namespace io
 {
 
+	namespace impl
+	{
+		template<typename T, uint N, uint Shift, int ShiftDelta>
+		struct ByteConverter
+		{
+			static T Load(const u8 * data)
+			{ return ((static_cast<T>(*data) << Shift) | ByteConverter<T, N - 1, Shift + ShiftDelta, ShiftDelta>::Load(data + 1)); }
+
+			static void Store(u8 * data, T value)
+			{
+				*data = (value >> Shift) & u8(0xffu);
+				ByteConverter<T, N - 1, Shift + ShiftDelta, ShiftDelta>::Store(data + 1, value);
+			}
+		};
+
+		template<typename T, uint Shift, int ShiftDelta>
+		struct ByteConverter<T, 0, Shift, ShiftDelta>
+		{
+			static T Load(const u8 * data)
+			{ return 0; }
+
+			static void Store(u8 * data, T value)
+			{ }
+		};
+
+		template<bool BigEndian>
+		struct DataConverter;
+
+		template<>
+		struct DataConverter<false>
+		{
+			template<typename T>
+			static T Load(const u8 *data)
+			{ return ByteConverter<T, sizeof(T), 0, 8>::Load(data); }
+
+			template<typename T>
+			static void Store(u8 *data, T value)
+			{ ByteConverter<T, sizeof(T), 0, 8>::Store(data, value); }
+		};
+
+		template<>
+		struct DataConverter<true>
+		{
+			template<typename T>
+			static T Load(const u8 *data)
+			{ return ByteConverter<T, sizeof(T), (sizeof(T) - 1) << 3, -8>::Load(data); }
+
+			template<typename T>
+			static void Store(u8 *data, T value)
+			{ ByteConverter<T, sizeof(T), (sizeof(T) - 1) << 3, -8>::Store(data, value); }
+		};
+	}
+
+	template<bool BigEndian>
 	class DataInputStream
 	{
 		IInputStream &		_stream;
@@ -16,21 +71,30 @@ namespace io
 		DataInputStream(IInputStream & stream): _stream(stream)
 		{ }
 
-		u8 ReadU8()
+		template<typename T>
+		T Read()
 		{
-			u8 value;
-			_stream.Read(ByteData(&value, sizeof(value)));
-			return value;
+			std::array<u8, sizeof(T)> data;
+			if (_stream.Read(data) != data.size())
+				throw Exception("short read");
+			return impl::DataConverter<BigEndian>::template Load<T>(data.data());
 		}
 
+		u8 ReadU8()
+		{ return Read<u8>(); }
 		u16 ReadU16()
-		{
-			u8 value[2];
-			ByteData data(value, sizeof(value));
-			return value[0] | ((u16)value[1] << 8);
-		}
+		{ return Read<u16>(); }
+		u32 ReadU32()
+		{ return Read<u32>(); }
+		u64 ReadU64()
+		{ return Read<u64>(); }
+
 	};
 
+	using LittleEndianDataInputStream = DataInputStream<false>;
+	using BigEndianDataInputStream = DataInputStream<true>;
+
+	template<bool BigEndian>
 	class DataOutputStream
 	{
 		IOutputStream &		_stream;
@@ -39,38 +103,26 @@ namespace io
 		DataOutputStream(IOutputStream & stream): _stream(stream)
 		{ }
 
-		void WriteU8(u8 value)
+		template<typename T>
+		void Write(T value)
 		{
-			u8 data[] = { value };
-			if (_stream.Write(ConstByteData(data, sizeof(data))) != 1)
-				throw Exception("Could not write 1 byte to stream");
+			std::array<u8, sizeof(T)> data;
+			impl::DataConverter<BigEndian>::Store(data.data(), value);
+			if (_stream.Write(data) != data.size())
+				throw Exception("short write");
 		}
+
+		void WriteU8(u8 value)
+		{ Write<u8>(value); }
 
 		void WriteU16(u16 value)
-		{
-			u8 data[] = { static_cast<u8>(value), static_cast<u8>(value >> 8) };
-			if (_stream.Write(ConstByteData(data, sizeof(data))) != 2)
-				throw Exception("Could not write 2 bytes to stream");
-		}
+		{ Write<u16>(value); }
 
 		void WriteU32(u32 value)
-		{
-			u8 data[] = { static_cast<u8>(value), static_cast<u8>(value >> 8), static_cast<u8>(value >> 16), static_cast<u8>(value >> 24) };
-			if (_stream.Write(ConstByteData(data, sizeof(data))) != 4)
-				throw Exception("Could not write 4 bytes to stream");
-		}
+		{ Write<u32>(value); }
 
 		void WriteU64(u64 value)
-		{
-			u8 data[] = {
-				static_cast<u8>(value), static_cast<u8>(value >> 8),
-				static_cast<u8>(value >> 16), static_cast<u8>(value >> 24),
-				static_cast<u8>(value >> 32), static_cast<u8>(value >> 40),
-				static_cast<u8>(value >> 48), static_cast<u8>(value >> 56),
-			};
-			if (_stream.Write(ConstByteData(data, sizeof(data))) != 8)
-				throw Exception("Could not write 8 bytes to stream");
-		}
+		{ Write<u64>(value); }
 
 		template<typename T>
 		void WriteVariableLengthInt(T _value)
@@ -103,6 +155,9 @@ namespace io
 			}
 		}
 	};
+
+	using LittleEndianDataOutputStream = DataOutputStream<false>;
+	using BigEndianDataOutputStream = DataOutputStream<true>;
 
 }
 TOOLKIT_NS_END
