@@ -10,10 +10,10 @@ namespace io
 
 	class DataInputStream
 	{
-		IStream &		_stream;
+		IInputStream &		_stream;
 
 	public:
-		DataInputStream(IStream & stream): _stream(stream)
+		DataInputStream(IInputStream & stream): _stream(stream)
 		{ }
 
 		u8 ReadU8()
@@ -33,10 +33,10 @@ namespace io
 
 	class DataOutputStream
 	{
-		IStream &		_stream;
+		IOutputStream &		_stream;
 
 	public:
-		DataOutputStream(IStream & stream): _stream(stream)
+		DataOutputStream(IOutputStream & stream): _stream(stream)
 		{ }
 
 		void WriteU8(u8 value)
