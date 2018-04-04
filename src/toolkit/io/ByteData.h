@@ -34,6 +34,14 @@ namespace io
 			_size = size - offset;
 		}
 
+		template<typename U>
+		PointerSizeHolder(PointerSizeHolder<U> o, size_t offset, size_t size): PointerSizeHolder<U>(o, offset)
+		{
+			if (size > _size)
+				throw Exception("requested size is bigger than actual size");
+			_size = size;
+		}
+
 		template<typename Storage>
 		PointerSizeHolder(Storage & storage): _ptr(storage.data()), _size(storage.size())
 		{ }
