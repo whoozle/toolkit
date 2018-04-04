@@ -2,6 +2,7 @@
 #define TOOLKIT_IO_CRC_H
 
 #include <toolkit/core/types.h>
+#include <toolkit/io/ByteData.h>
 
 TOOLKIT_NS_BEGIN
 namespace io
@@ -29,6 +30,13 @@ namespace io
 						_value = (_value >> 1) ^ (Poly & (Type(0) - (_value & 1)));
 				}
 				_value = ~_value;
+			}
+
+			void Update(ConstByteData data)
+			{
+				auto begin = data.data();
+				auto end = begin + data.size();
+				Update(begin, end);
 			}
 
 			Type Get() const
