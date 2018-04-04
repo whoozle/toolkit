@@ -23,16 +23,37 @@ namespace io
 		End
 	};
 
-	struct IStream
+	struct ISeekable
 	{
-		virtual ~IStream() {}
+		virtual ~ISeekable() = default;
 
-		virtual void Sync(SyncMode mode) = 0;
 		virtual off_t Seek(s64 offset, SeekMode mode = SeekMode::Begin) = 0;
 		virtual off_t Tell() = 0;
+	};
+	DECLARE_PTR(ISeekable);
+
+	struct IOutputStream
+	{
+		virtual ~IOutputStream() = default;
 
 		virtual size_t Write(ConstByteData data) = 0;
+	};
+	DECLARE_PTR(IOutputStream);
+
+	struct IInputStream
+	{
+		virtual ~IInputStream() = default;
+
 		virtual size_t Read(ByteData) = 0;
+	};
+	DECLARE_PTR(IInputStream);
+
+	struct IStream :
+		public virtual IOutputStream,
+		public virtual IInputStream,
+		public virtual ISeekable
+	{
+		virtual void Sync(SyncMode mode) = 0;
 	};
 	DECLARE_PTR(IStream);
 
