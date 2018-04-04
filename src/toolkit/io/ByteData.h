@@ -21,14 +21,17 @@ namespace io
 		{ }
 
 		template<typename U>
-		PointerSizeHolder(PointerSizeHolder<U> & o): _ptr(o.GetPointer()), _size(o.GetSize())
+		PointerSizeHolder(PointerSizeHolder<U> o): _ptr(o.data()), _size(o.size())
 		{ }
 
 		template<typename U>
-		PointerSizeHolder(PointerSizeHolder<U> & o, size_t size): _ptr(o.GetPointer()), _size(size)
+		PointerSizeHolder(PointerSizeHolder<U> o, size_t offset)
 		{
-			if (size > o.GetSize())
-				throw Exception("invalid size");
+			size_t size = o.size();
+			if (offset > size)
+				throw Exception("offset is bigger than size");
+			_ptr = o.data() + offset;
+			_size = size - offset;
 		}
 
 		template<typename Storage>
