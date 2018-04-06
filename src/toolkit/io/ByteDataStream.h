@@ -21,8 +21,8 @@ namespace io
 		{
 			size_t size = _src.size();
 			size_t n = std::min(dst.size(), size - _offset);
+			memcpy(dst.data(), _src.data() + _offset, n);
 			_offset += n;
-			memcpy(dst.data(), _src.data(), n);
 			return n;
 		}
 	};
