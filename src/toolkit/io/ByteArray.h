@@ -17,7 +17,8 @@ namespace io
 
 	public:
 		ByteArray(size_t size): _data(size) { }
-		ByteArray(ByteArray && data): _data(data._data) { }
+		ByteArray(std::vector<u8> && data): _data(data) { }
+		ByteArray(ByteArray && data): ByteArray(std::move(data._data)) { }
 
 		u8 * GetData()
 		{ return _data.data(); }
