@@ -9,6 +9,24 @@ TOOLKIT_NS_BEGIN
 namespace io
 {
 
+	class ByteDataInputStream : public IInputStream
+	{
+		ByteData	_src;
+		size_t		_offset;
+
+	public:
+		ByteDataInputStream(ByteData src): _src(src), _offset(0) { }
+
+		size_t Read(ByteData dst) override
+		{
+			size_t size = _src.size();
+			size_t n = std::min(dst.size(), size - _offset);
+			_offset += n;
+			memcpy(dst.data(), _src.data(), n);
+			return n;
+		}
+	};
+
 	class ByteDataOutputStream : public IOutputStream
 	{
 		ByteData	_data;
