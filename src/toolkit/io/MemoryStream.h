@@ -1,6 +1,7 @@
-#ifndef TOOLKIT_BYTEDATASTREAM_H
-#define TOOLKIT_BYTEDATASTREAM_H
+#ifndef TOOLKIT_MEMORYSTREAM_H
+#define TOOLKIT_MEMORYSTREAM_H
 
+#include <toolkit/io/ByteArray.h>
 #include <toolkit/io/IStream.h>
 #include <string.h>
 #include <vector>
@@ -22,12 +23,12 @@ namespace io
 			size_t offset = _data.size();
 			size_t size = src.size();
 			_data.resize(offset + size);
-			memcpy(_data.data() + offset, src.data, size);
+			memcpy(_data.data() + offset, src.data(), size);
 			return size;
 		}
 
 		Storage && GetData()
-		{ return _data; }
+		{ return std::move(_data); }
 	};
 
 }
