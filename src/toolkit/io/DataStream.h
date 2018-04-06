@@ -72,12 +72,25 @@ namespace io
 		{ }
 
 		template<typename T>
+		static T Read(const u8 * data)
+		{ return impl::DataConverter<BigEndian>::template Load<T>(data); }
+
+		static u8 ReadU8(const u8 * data)
+		{ return Read<u8>(data); }
+		static u16 ReadU16(const u8 * data)
+		{ return Read<u16>(data); }
+		static u32 ReadU32(const u8 * data)
+		{ return Read<u32>(data); }
+		static u64 ReadU64(const u8 * data)
+		{ return Read<u64>(data); }
+
+		template<typename T>
 		T Read()
 		{
 			std::array<u8, sizeof(T)> data;
 			if (_stream.Read(data) != data.size())
 				throw Exception("short read");
-			return impl::DataConverter<BigEndian>::template Load<T>(data.data());
+			return Read<T>(data.data());
 		}
 
 		u8 ReadU8()
@@ -104,10 +117,26 @@ namespace io
 		{ }
 
 		template<typename T>
+		static void Write(u8 * data, T value)
+		{ impl::DataConverter<BigEndian>::Store(data, value); }
+
+		static void WriteU8(u8 * data, u8 value)
+		{ Write<u8>(data, value); }
+
+		static void WriteU16(u8 * data, u16 value)
+		{ Write<u16>(data, value); }
+
+		static void WriteU32(u8 * data, u32 value)
+		{ Write<u32>(data, value); }
+
+		static void WriteU64(u8 * data, u64 value)
+		{ Write<u64>(data, value); }
+
+		template<typename T>
 		void Write(T value)
 		{
 			std::array<u8, sizeof(T)> data;
-			impl::DataConverter<BigEndian>::Store(data.data(), value);
+			Write(data.data(), value);
 			if (_stream.Write(data) != data.size())
 				throw Exception("short write");
 		}
