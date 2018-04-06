@@ -54,6 +54,7 @@ namespace io
 		public virtual ISeekable
 	{
 		virtual void Sync(SyncMode mode) = 0;
+		virtual void Truncate(size_t size) = 0;
 	};
 	DECLARE_PTR(IStream);
 

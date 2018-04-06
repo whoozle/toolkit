@@ -39,7 +39,7 @@ namespace io
 		size_t Read(ByteData) override;
 
 		void Allocate(int mode, off_t offset, off_t len);
-		void Truncate(off_t size);
+		void Truncate(size_t size);
 		struct stat GetStatus();
 		struct statvfs GetVFSStatus();
 

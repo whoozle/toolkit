@@ -44,6 +44,12 @@ namespace io
 			return _stream->Seek(offset, mode);
 		}
 
+		void Truncate(size_t size) override
+		{
+			Flush();
+			_stream->Truncate(size);
+		}
+
 		void Sync(SyncMode mode) override
 		{
 			Flush();

@@ -97,7 +97,7 @@ namespace io
 	{
 		SYSTEM_CALL(fallocate(_fd, mode, offset, len));
 	}
-	void File::Truncate(off_t size)
+	void File::Truncate(size_t size)
 	{
 		SYSTEM_CALL(ftruncate(_fd, size));
 	}
