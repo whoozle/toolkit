@@ -1,7 +1,7 @@
 #ifndef TOOLKIT_RASTER_PIXELFORMAT_H
 #define TOOLKIT_RASTER_PIXELFORMAT_H
 
-#include <toolkit/core/Types.h>
+#include <toolkit/core/types.h>
 #include <toolkit/raster/Color.h>
 
 TOOLKIT_NS_BEGIN
