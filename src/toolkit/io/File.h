@@ -18,7 +18,7 @@ namespace io
 		ReadWrite
 	};
 
-	class File : public IStream, public IPollable
+	class File : public IStorage, public IPollable
 	{
 	private:
 		int _fd;

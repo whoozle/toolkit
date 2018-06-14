@@ -48,17 +48,26 @@ namespace io
 	};
 	DECLARE_PTR(IInputStream);
 
-	struct IStream :
-		public virtual IOutputStream,
-		public virtual IInputStream,
-		public virtual ISeekable
+	struct ISeekableInputStream :
+			public virtual IInputStream,
+			public virtual ISeekable
+	{ };
+
+	struct ISeekableOutputStream :
+			public virtual IOutputStream,
+			public virtual ISeekable
+	{ };
+
+	struct IStorage :
+		public virtual ISeekableInputStream,
+		public virtual ISeekableOutputStream
 	{
 		virtual void Sync(SyncMode mode) = 0;
 		virtual void Truncate(size_t size) = 0;
 	};
-	DECLARE_PTR(IStream);
+	DECLARE_PTR(IStorage);
 
-	struct IBufferedStream : public IStream
+	struct IBufferedStream : public IStorage
 	{
 		virtual void Flush() = 0;
 	};
