@@ -1,6 +1,7 @@
 #ifndef TOOLKIT_RASTER_RECT_H
 #define TOOLKIT_RASTER_RECT_H
 
+#include <toolkit/core/core.h>
 #include <toolkit/raster/Size.h>
 #include <toolkit/raster/Position.h>
 #include <sstream>

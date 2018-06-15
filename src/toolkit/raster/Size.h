@@ -1,6 +1,8 @@
 #ifndef TOOLKIT_RASTER_SIZE_H
 #define TOOLKIT_RASTER_SIZE_H
 
+#include <toolkit/core/core.h>
+
 TOOLKIT_NS_BEGIN
 namespace raster
 {

@@ -1,6 +1,8 @@
 #ifndef TOOLKIT_RASTER_POSITION_H
 #define TOOLKIT_RASTER_POSITION_H
 
+#include <toolkit/core/core.h>
+
 TOOLKIT_NS_BEGIN
 namespace raster
 {
