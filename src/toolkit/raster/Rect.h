@@ -39,6 +39,13 @@ namespace raster
 		Position BottomRight() const
 		{ return Position(Right, Bottom); }
 
+		void Move(Position offset)
+		{
+			Left += offset.X;
+			Right += offset.X;
+			Top += offset.Y;
+			Bottom += offset.Y;
+		}
 
 		void MoveToX(int x)
 		{
