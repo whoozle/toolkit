@@ -25,6 +25,10 @@ namespace raster
 		{ return Bottom - Top; }
 		Size GetSize() const
 		{ return Size(Width(), Height()); }
+		void SetWidth(int w)
+		{ Right = Left + w; }
+		void SetHeight(int h)
+		{ Bottom = Top + h; }
 
 		Position TopLeft() const
 		{ return Position(Left, Top); }
@@ -35,12 +39,23 @@ namespace raster
 		Position BottomRight() const
 		{ return Position(Right, Bottom); }
 
+
+		void MoveToX(int x)
+		{
+			Right += x - Left;
+			Left = x;
+		}
+
+		void MoveToY(int y)
+		{
+			Bottom += y - Top;
+			Top = y;
+		}
+
 		void MoveTo(Position topLeft)
 		{
-			Right += topLeft.X - Left;
-			Bottom += topLeft.Y - Top;
-			Left = topLeft.X;
-			Top = topLeft.Y;
+			MoveToX(topLeft.X);
+			MoveToY(topLeft.Y);
 		}
 
 		void Intersect(Rect other)
