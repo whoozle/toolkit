@@ -2,6 +2,8 @@
 #define TOOLKIT_RASTER_SIZE_H
 
 #include <toolkit/core/core.h>
+#include <sstream>
+#include <string>
 
 TOOLKIT_NS_BEGIN
 namespace raster
@@ -33,6 +35,9 @@ namespace raster
 
 		bool operator != (Size other) const
 		{ return !(*this == other); }
+
+		std::string ToString() const
+		{ std::stringstream ss; ss << Width << 'x' << Height; return ss.str(); }
 	};
 }
 TOOLKIT_NS_END
