@@ -60,7 +60,7 @@ namespace log
 			NullLogProxy(const std::string &) { }
 
 			template<typename ValueType>
-			NullLogProxy & operator % (const ValueType &value)
+			NullLogProxy & operator << (const ValueType &value)
 			{ return *this; }
 		};
 
