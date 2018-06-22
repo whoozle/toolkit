@@ -79,9 +79,8 @@ namespace raster
 
 		static Rect Intersect(Rect r1, Rect r2)
 		{
-			Rect r(r1);
-			r.Intersect(r2);
-			return r;
+			r1.Intersect(r2);
+			return r1;
 		}
 
 		bool Contains(Position point) const
@@ -92,6 +91,24 @@ namespace raster
 
 		static bool IntersectsWith(Rect r1, Rect r2)
 		{ return r1.IntersectsWith(r2); }
+
+		void Union(Rect other)
+		{
+			if (Left > other.Left)
+				Left = other.Left;
+			if (Right < other.Right)
+				Right = other.Right;
+			if (Top > other.Top)
+				Top = other.Top;
+			if (Bottom < other.Bottom)
+				Bottom = other.Bottom;
+		}
+
+		static Rect Union(Rect r1, Rect r2)
+		{
+			r1.Union(r2);
+			return r1;
+		}
 
 		bool Valid() const
 		{ return Right > Left && Bottom > Top; }
