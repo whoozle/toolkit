@@ -1,7 +1,7 @@
 #ifndef TOOLKIT_SOFTWARERENDERER_H
 #define TOOLKIT_SOFTWARERENDERER_H
 
-#include <toolkit/raster/Position.h>
+#include <toolkit/raster/Point.h>
 #include <toolkit/raster/Rect.h>
 #include <toolkit/raster/Blender.h>
 
@@ -24,7 +24,7 @@ namespace raster { namespace software
 
 		bool ClipRect(const raster::Rect &clipRect, raster::Rect &dstRect, raster::Rect &srcRect)
 		{
-			raster::Position srcOffset = dstRect.TopLeft() - srcRect.TopLeft();
+			raster::Point srcOffset = dstRect.TopLeft() - srcRect.TopLeft();
 			dstRect.Intersect(clipRect);
 			srcRect += srcOffset;
 			srcRect.Intersect(clipRect);
@@ -40,7 +40,7 @@ namespace raster { namespace software
 		}
 
 		template<typename DstSurface, typename SrcSurface>
-		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Position dstPos, SrcSurface &srcSurface, raster::Rect srcRect)
+		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect)
 		{
 			using Blender = raster::software::Blender<typename DstSurface::PixelFormat, typename SrcSurface::PixelFormat>;
 
@@ -116,7 +116,7 @@ namespace raster { namespace software
 		}
 
 		template<typename DstSurface, typename SrcSurface>
-		void Blit(DstSurface &dstSurface, raster::Rect clipRect, raster::Position dstPos, SrcSurface &srcSurface, raster::Rect srcRect)
+		void Blit(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect)
 		{
 			srcRect.Intersect(srcSurface.GetSize());
 			raster::Rect dstRect(dstPos, srcRect.GetSize());

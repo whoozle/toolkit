@@ -3,7 +3,7 @@
 
 #include <toolkit/core/core.h>
 #include <toolkit/raster/Size.h>
-#include <toolkit/raster/Position.h>
+#include <toolkit/raster/Point.h>
 #include <sstream>
 
 TOOLKIT_NS_BEGIN
@@ -16,8 +16,8 @@ namespace raster
 
 		Rect(): Left(0), Top(0), Right(0), Bottom(0) { }
 		Rect(Size size): Left(0), Top(0), Right(size.Width), Bottom(size.Height) { }
-		Rect(Position pos, Size size): Left(pos.X), Top(pos.Y), Right(pos.X + size.Width), Bottom(pos.Y + size.Height) { }
-		Rect(Position pos1, Position pos2): Left(pos1.X), Top(pos1.Y), Right(pos2.X), Bottom(pos2.Y) { }
+		Rect(Point pos, Size size): Left(pos.X), Top(pos.Y), Right(pos.X + size.Width), Bottom(pos.Y + size.Height) { }
+		Rect(Point pos1, Point pos2): Left(pos1.X), Top(pos1.Y), Right(pos2.X), Bottom(pos2.Y) { }
 
 		int Width() const
 		{ return Right - Left; }
@@ -30,16 +30,16 @@ namespace raster
 		void SetHeight(int h)
 		{ Bottom = Top + h; }
 
-		Position TopLeft() const
-		{ return Position(Left, Top); }
-		Position TopRight() const
-		{ return Position(Right, Top); }
-		Position BottomLeft() const
-		{ return Position(Left, Bottom); }
-		Position BottomRight() const
-		{ return Position(Right, Bottom); }
+		Point TopLeft() const
+		{ return Point(Left, Top); }
+		Point TopRight() const
+		{ return Point(Right, Top); }
+		Point BottomLeft() const
+		{ return Point(Left, Bottom); }
+		Point BottomRight() const
+		{ return Point(Right, Bottom); }
 
-		void Move(Position offset)
+		void Move(Point offset)
 		{
 			Left += offset.X;
 			Right += offset.X;
@@ -59,7 +59,7 @@ namespace raster
 			Top = y;
 		}
 
-		void MoveTo(Position topLeft)
+		void MoveTo(Point topLeft)
 		{
 			MoveToX(topLeft.X);
 			MoveToY(topLeft.Y);
@@ -83,7 +83,7 @@ namespace raster
 			return r1;
 		}
 
-		bool Contains(Position point) const
+		bool Contains(Point point) const
 		{ return point.X >= Left && point.X < Right && point.Y >= Top && point.Y < Bottom; }
 
 		bool IntersectsWith(Rect other) const
@@ -113,16 +113,19 @@ namespace raster
 		bool Valid() const
 		{ return Right > Left && Bottom > Top; }
 
+		int Area() const
+		{ return Width() * Height(); }
+
 		Rect operator - (Rect other) const
-		{ return Rect(Position(Left - other.Left, Top - other.Top), Position(Right - other.Right, Bottom - other.Bottom)); }
+		{ return Rect(Point(Left - other.Left, Top - other.Top), Point(Right - other.Right, Bottom - other.Bottom)); }
 
 		Rect operator + (Rect other) const
-		{ return Rect(Position(Left + other.Left, Top + other.Top), Position(Right + other.Right, Bottom + other.Bottom)); }
+		{ return Rect(Point(Left + other.Left, Top + other.Top), Point(Right + other.Right, Bottom + other.Bottom)); }
 
-		Rect & operator += (Position pos)
+		Rect & operator += (Point pos)
 		{ Left += pos.X; Right += pos.X; Top += pos.Y; Bottom += pos.Y; return *this; }
 
-		Rect & operator -= (Position pos)
+		Rect & operator -= (Point pos)
 		{ Left -= pos.X; Right -= pos.X; Top -= pos.Y; Bottom -= pos.Y; return *this; }
 
 		std::string ToString() const
