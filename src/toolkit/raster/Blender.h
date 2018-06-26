@@ -70,6 +70,19 @@ namespace raster { namespace software
 					ARGB::A::Map<u32>(a);
 			}
 		};
+
+		template<typename DstPixelFormat>
+		struct Blender<DstPixelFormat, A8>
+		{
+			using DstMappedType = typename DstPixelFormat::MappedType;
+			using SrcMappedType = typename A8::MappedType;
+
+			static DstMappedType Blend(DstMappedType dst, SrcMappedType src, Color color)
+			{
+				color.A = Mul255<u8, u16, u8, u8>(color.A, src);
+				return Blender<ARGB, ARGB>::Blend(dst, DstPixelFormat::Map(color), Color::OpaqueWhite());
+			}
+		};
 }}
 
 TOOLKIT_NS_END
