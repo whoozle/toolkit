@@ -2,16 +2,25 @@
 #define TOOLKIT_RASTER_BLENDER_H
 
 #include <toolkit/raster/PixelFormat.h>
+#include <toolkit/core/type_traits.h>
 
 TOOLKIT_NS_BEGIN
 
-namespace raster
+namespace raster { namespace software
 {
-
-	namespace software
-	{
 		//https://habrahabr.ru/post/128773/
 		//16 bit blending with 1 mul per pixel
+
+		template<typename R, typename I, typename T1, typename T2 = T1>
+		R Mul255(T1 a, T2 b)
+		{
+			I v = a * b;
+			//accurate approximation
+			//return (v + 1 + (v >> 8)) >> 8;
+
+			//a bit innacurate(-1 errors), but giving proper result in corner cases
+			return (v + 255) >> 8;
+		}
 
 		template<typename DstPixelFormat, typename SrcPixelFormat>
 		struct Blender
@@ -27,9 +36,9 @@ namespace raster
 
 				Color cd = DstPixelFormat::Unmap(dst);
 				return DstPixelFormat::Map(Color(
-					cd.R + ((cs.A * ((s16)cs.R - cd.R) + 255) >> 8),
-					cd.G + ((cs.A * ((s16)cs.G - cd.G) + 255) >> 8),
-					cd.B + ((cs.A * ((s16)cs.B - cd.B) + 255) >> 8),
+					cd.R + Mul255<u8, s16, u8, s16>(cs.A, (s16)cs.R - cd.R),
+					cd.G + Mul255<u8, s16, u8, s16>(cs.A, (s16)cs.G - cd.G),
+					cd.B + Mul255<u8, s16, u8, s16>(cs.A, (s16)cs.B - cd.B),
 					std::max(cs.A, cd.A) //replace with a + b - a * b?
 				));
 			}
@@ -50,9 +59,9 @@ namespace raster
 					return dst;
 
 				MappedType srcRB = src & RBMask, dstRB = dst & RBMask;
-				MappedType srcG = src & GMask, dstG = dst & GMask;
-				MappedType RB = ((srcRB - dstRB) * srcAlpha) >> 8; //fixme: scale ?
-				MappedType G = ((srcG - dstG) * srcAlpha) >> 8;
+				MappedType srcG  = src & GMask, dstG = dst & GMask;
+				MappedType RB = Mul255<MappedType, MappedType, MappedType>(srcRB - dstRB, srcAlpha);
+				MappedType G  = Mul255<MappedType, MappedType, MappedType>(srcG - dstG, srcAlpha);
 
 				u8 a = std::max<u8>(srcAlpha, 255 - srcAlpha);
 				return
@@ -61,9 +70,7 @@ namespace raster
 					ARGB::A::Map<u32>(a);
 			}
 		};
-	}
-
-}
+}}
 
 TOOLKIT_NS_END
 
