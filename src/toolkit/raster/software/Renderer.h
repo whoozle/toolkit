@@ -40,7 +40,7 @@ namespace raster { namespace software
 		}
 
 		template<typename DstSurface, typename SrcSurface>
-		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect)
+		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect, raster::Color color = raster::Color::OpaqueWhite())
 		{
 			using Blender = raster::software::Blender<typename DstSurface::PixelFormat, typename SrcSurface::PixelFormat>;
 
@@ -67,9 +67,14 @@ namespace raster { namespace software
 		}
 
 		template<typename DstSurface, typename SrcSurface>
-		void StretchBlend(DstSurface &dstSurface, raster::Rect clipRect, raster::Rect dstRect, SrcSurface &srcSurface, raster::Rect srcRect)
+		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Rect dstRect, SrcSurface &srcSurface, raster::Rect srcRect, raster::Color color = raster::Color::OpaqueWhite())
 		{
 			using Blender = raster::software::Blender<typename DstSurface::PixelFormat, typename SrcSurface::PixelFormat>;
+			if (dstRect.GetSize() == srcRect.GetSize())
+			{
+				Blend(dstSurface, clipRect, dstRect.TopLeft(), srcSurface, srcRect);
+				return;
+			}
 
 			srcRect.Intersect(srcSurface.GetSize());
 			if (!ClipRect(clipRect, dstRect, srcRect))

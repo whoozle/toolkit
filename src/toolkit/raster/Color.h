@@ -14,8 +14,14 @@ namespace raster
 		Color(): R(), G(), B(), A() { }
 		Color(u8 r, u8 g, u8 b, u8 a = 255): R(r), G(g), B(b), A(a) { }
 
-		static Color White()
+		static Color OpaqueWhite()
 		{ return Color(255, 255, 255, 255); }
+
+		bool IsWhite() const
+		{ return (R & G & B) == 255; }
+
+		bool IsOpaque() const
+		{ return A == 255; }
 	};
 
 	template<typename PixelFormat_>
