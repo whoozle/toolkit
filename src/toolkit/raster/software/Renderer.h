@@ -40,7 +40,7 @@ namespace raster { namespace software
 		}
 
 		template<typename DstSurface, typename SrcSurface>
-		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect, raster::Color color = raster::Color::OpaqueWhite())
+		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect, Color color)
 		{
 			using Blender = raster::software::Blender<typename DstSurface::PixelFormat, typename SrcSurface::PixelFormat>;
 
@@ -61,18 +61,18 @@ namespace raster { namespace software
 				auto src = srcRow.GetLine();
 				for(; dst--; ++dst, ++src)
 				{
-					*dst = Blender::Blend(**dst, **src);
+					*dst = Blender::Blend(**dst, **src, color);
 				}
 			}
 		}
 
 		template<typename DstSurface, typename SrcSurface>
-		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Rect dstRect, SrcSurface &srcSurface, raster::Rect srcRect, raster::Color color = raster::Color::OpaqueWhite())
+		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Rect dstRect, SrcSurface &srcSurface, raster::Rect srcRect, Color color)
 		{
 			using Blender = raster::software::Blender<typename DstSurface::PixelFormat, typename SrcSurface::PixelFormat>;
 			if (dstRect.GetSize() == srcRect.GetSize())
 			{
-				Blend(dstSurface, clipRect, dstRect.TopLeft(), srcSurface, srcRect);
+				Blend(dstSurface, clipRect, dstRect.TopLeft(), srcSurface, srcRect, color);
 				return;
 			}
 
@@ -98,7 +98,7 @@ namespace raster { namespace software
 					{
 						while(dstNext > (unsigned)dstSize.Width)
 						{
-							*dst = Blender::Blend(**dst, **src);
+							*dst = Blender::Blend(**dst, **src, color);
 							dstNext -= dstSize.Width;
 							++src;
 						}
@@ -114,7 +114,7 @@ namespace raster { namespace software
 					for(unsigned dstX = 0; dst--; ++dst, ++dstX)
 					{
 						auto src = srcLine + srcSize.Width * dstX / dstSize.Width; //fixme: remove division
-						*dst = Blender::Blend(**dst, **src);
+						*dst = Blender::Blend(**dst, **src, color);
 					}
 				}
 			}
@@ -178,7 +178,7 @@ namespace raster { namespace software
 			{
 				for(auto column = row.GetLine(); column--; ++column)
 				{
-					*column = Blender::Blend(**column, srcColor);
+					*column = Blender::Blend(**column, srcColor, color);
 				}
 			}
 		}

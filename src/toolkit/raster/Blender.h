@@ -28,7 +28,7 @@ namespace raster { namespace software
 			using DstMappedType = typename DstPixelFormat::MappedType;
 			using SrcMappedType = typename SrcPixelFormat::MappedType;
 
-			static DstMappedType Blend(DstMappedType dst, SrcMappedType src)
+			static DstMappedType Blend(DstMappedType dst, SrcMappedType src, Color color)
 			{
 				Color cs = SrcPixelFormat::Unmap(src);
 				if (cs.A == 0)
@@ -52,7 +52,7 @@ namespace raster { namespace software
 			static const MappedType RBMask	= 0x00ff00ff;
 			static const MappedType GMask	= 0x0000ff00;
 
-			static MappedType Blend(MappedType dst, MappedType src)
+			static MappedType Blend(MappedType dst, MappedType src, Color color)
 			{
 				u8 srcAlpha = ARGB::A::Unmap(src);
 				if (srcAlpha == 0)
