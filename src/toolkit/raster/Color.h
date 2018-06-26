@@ -13,6 +13,9 @@ namespace raster
 
 		Color(): R(), G(), B(), A() { }
 		Color(u8 r, u8 g, u8 b, u8 a = 255): R(r), G(g), B(b), A(a) { }
+
+		static Color White()
+		{ return Color(255, 255, 255, 255); }
 	};
 
 	template<typename PixelFormat_>
