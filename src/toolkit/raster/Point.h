@@ -29,6 +29,20 @@ namespace raster
 		Point operator + (Point p) const
 		{ return Point(X + p.X, Y + p.Y); }
 
+		Point & operator -= (const Point & o)
+		{
+			X -= o.X;
+			Y -= o.Y;
+			return *this;
+		}
+
+		Point & operator += (const Point & o)
+		{
+			X += o.X;
+			Y += o.Y;
+			return *this;
+		}
+
 		bool IsZero() const
 		{ return (X | Y) == 0; }
 	};
