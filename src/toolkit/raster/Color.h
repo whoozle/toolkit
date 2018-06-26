@@ -20,6 +20,9 @@ namespace raster
 		bool IsWhite() const
 		{ return (R & G & B) == 255; }
 
+		bool IsTransparent() const
+		{ return A == 0; }
+
 		bool IsOpaque() const
 		{ return A == 255; }
 	};
