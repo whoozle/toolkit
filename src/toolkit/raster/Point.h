@@ -28,6 +28,9 @@ namespace raster
 
 		Point operator + (Point p) const
 		{ return Point(X + p.X, Y + p.Y); }
+
+		bool IsZero() const
+		{ return (X | Y) == 0; }
 	};
 }
 TOOLKIT_NS_END
