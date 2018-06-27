@@ -7,9 +7,9 @@ TOOLKIT_NS_BEGIN
 namespace io
 {
 
-	struct ISocketEventHandler
+	struct IPollEventHandler
 	{
-		virtual ~ISocketEventHandler() = default;
+		virtual ~IPollEventHandler() = default;
 		virtual void HandleSocketEvent(int event) = 0;
 	};
 

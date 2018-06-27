@@ -8,7 +8,7 @@ TOOLKIT_NS_BEGIN
 namespace io
 {
 	struct IPollable;
-	struct ISocketEventHandler;
+	struct IPollEventHandler;
 
 	class Poll : Noncopyable
 	{
@@ -27,8 +27,8 @@ namespace io
 		Poll();
 		~Poll();
 
-		void Add(const IPollable & pollable, ISocketEventHandler & handler, int events);
-		void Modify(const IPollable & pollable, ISocketEventHandler & handler, int events);
+		void Add(const IPollable & pollable, IPollEventHandler & handler, int events);
+		void Modify(const IPollable & pollable, IPollEventHandler & handler, int events);
 		void Remove(const IPollable & pollable);
 
 		void Wait(int timeout);

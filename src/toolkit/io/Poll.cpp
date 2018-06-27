@@ -1,7 +1,7 @@
 #include <toolkit/io/Poll.h>
 #include <toolkit/io/SystemException.h>
 #include <toolkit/io/IPollable.h>
-#include <toolkit/io/ISocketEventHandler.h>
+#include <toolkit/io/IPollEventHandler.h>
 #include <sys/epoll.h>
 #include <sys/poll.h>
 #include <unistd.h>
@@ -15,7 +15,7 @@ namespace io
 #define M(EV, NEV) if ((NEV & events) == NEV) r |= EV
 #define U(EV, NEV) if ((EV & events) == EV) r |= NEV
 
-		epoll_event Map(const ISocketEventHandler & handler, int events)
+		epoll_event Map(const IPollEventHandler & handler, int events)
 		{
 			epoll_event ev = { };
 			u32 r = 0;
@@ -55,13 +55,13 @@ namespace io
 		close(_fd);
 	}
 
-	void Poll::Add(const IPollable & pollable, ISocketEventHandler & handler, int events)
+	void Poll::Add(const IPollable & pollable, IPollEventHandler & handler, int events)
 	{
 		auto ev = Map(handler, events);
 		SYSTEM_CALL(epoll_ctl(_fd, EPOLL_CTL_ADD, pollable.GetFileDescriptor(), &ev));
 	}
 
-	void Poll::Modify(const IPollable & pollable, ISocketEventHandler & handler, int events)
+	void Poll::Modify(const IPollable & pollable, IPollEventHandler & handler, int events)
 	{
 		auto ev = Map(handler, events);
 		SYSTEM_CALL(epoll_ctl(_fd, EPOLL_CTL_MOD, pollable.GetFileDescriptor(), &ev));
@@ -82,7 +82,7 @@ namespace io
 		epoll_event *src = pollEvents;
 		for(; r--; ++src)
 		{
-			ISocketEventHandler *handler = static_cast<ISocketEventHandler *>(src->data.ptr);
+			IPollEventHandler *handler = static_cast<IPollEventHandler *>(src->data.ptr);
 			handler->HandleSocketEvent(Unmap(src->events));
 		}
 	}
