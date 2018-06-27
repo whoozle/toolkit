@@ -123,6 +123,9 @@ namespace raster { namespace software
 		template<typename DstSurface, typename SrcSurface>
 		void Blit(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect)
 		{
+			using DstSurfacePixelFormat = typename DstSurface::PixelFormat;
+			using SrcSurfacePixelFormat = typename SrcSurface::PixelFormat;
+
 			srcRect.Intersect(srcSurface.GetSize());
 			raster::Rect dstRect(dstPos, srcRect.GetSize());
 			if (!ClipRect(clipRect, dstRect, srcRect))
@@ -140,7 +143,7 @@ namespace raster { namespace software
 				auto src = srcRow.GetLine();
 				for(; dst--; ++dst, ++src)
 				{
-					*dst = **src;
+					*dst = DstSurfacePixelFormat::Map(SrcSurfacePixelFormat::Unmap(**src));
 				}
 			}
 		}
