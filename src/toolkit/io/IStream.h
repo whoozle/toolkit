@@ -27,7 +27,7 @@ namespace io
 	{
 		virtual ~ISeekable() = default;
 
-		virtual off_t Seek(s64 offset, SeekMode mode = SeekMode::Begin) = 0;
+		virtual off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) = 0;
 		virtual off_t Tell() = 0;
 	};
 	DECLARE_PTR(ISeekable);

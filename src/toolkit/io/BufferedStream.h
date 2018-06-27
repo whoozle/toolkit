@@ -38,7 +38,7 @@ namespace io
 			return _stream->Read(data);
 		}
 
-		off_t Seek(s64 offset, SeekMode mode) override
+		off_t Seek(off_t offset, SeekMode mode) override
 		{
 			Flush();
 			return _stream->Seek(offset, mode);
