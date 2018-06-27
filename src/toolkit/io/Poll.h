@@ -31,10 +31,10 @@ namespace io
 		void Modify(const IPollable & pollable, IPollEventHandler & handler, int events);
 		void Remove(const IPollable & pollable);
 
-		void Wait(int timeout);
+		int Wait(int timeout);
 
-		void Wait()
-		{ Wait(-1); }
+		int Wait() //infinite wait
+		{ return Wait(-1); }
 	};
 
 }

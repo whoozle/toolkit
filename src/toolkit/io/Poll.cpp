@@ -72,7 +72,7 @@ namespace io
 		SYSTEM_CALL(epoll_ctl(_fd, EPOLL_CTL_DEL, pollable.GetFileDescriptor(), nullptr));
 	}
 
-	void Poll::Wait(int timeout)
+	int Poll::Wait(int timeout)
 	{
 		epoll_event pollEvents[MaxEvents]; //fixme
 		int r = epoll_wait(_fd, pollEvents, MaxEvents, timeout);
@@ -80,11 +80,13 @@ namespace io
 			throw io::SystemException("epoll_wait");
 
 		epoll_event *src = pollEvents;
-		for(; r--; ++src)
+
+		for(int n = r; n--; ++src)
 		{
 			IPollEventHandler *handler = static_cast<IPollEventHandler *>(src->data.ptr);
 			handler->HandleSocketEvent(Unmap(src->events));
 		}
+		return r;
 	}
 }
 TOOLKIT_NS_END
