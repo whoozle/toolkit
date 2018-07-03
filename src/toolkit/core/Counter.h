@@ -97,7 +97,7 @@ TOOLKIT_NS_BEGIN
 		{ return --_counter == 0; }
 	};
 
-#define DECLARE_COUNTER_PTR(CLASS) typedef pure::CounterPtr< CLASS > CLASS##Ptr
+#define DECLARE_COUNTER_PTR(CLASS) typedef TOOLKIT_NS :: CounterPtr< CLASS > CLASS##Ptr
 
 TOOLKIT_NS_END
 
