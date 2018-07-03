@@ -28,16 +28,19 @@ TOOLKIT_NS_BEGIN
 		CounterPtr() : _ptr()
 		{ }
 
-		explicit CounterPtr(Type * ptr) : _ptr(ptr)
-		{ }
+		explicit CounterPtr(Type * ptr, bool addRef = false) : _ptr(ptr)
+		{
+			if (ptr && addRef)
+				ptr->AddRef();
+		}
 
 		CounterPtr(const CounterPtr<Type> & other) : _ptr(other._ptr)
 		{ if (_ptr) _ptr->AddRef(); }
 
 		~CounterPtr()
 		{
-			if (_ptr)
-				_ptr->ReleaseRef();
+			if (_ptr && _ptr->ReleaseRef())
+				delete _ptr;
 		}
 
 		CounterPtr & operator = (const CounterPtr & other)
@@ -47,7 +50,7 @@ TOOLKIT_NS_BEGIN
 			return *this;
 		}
 
-		void reset(Type* ptr = 0) //mimic std pointers.
+		void reset(Type* ptr = nullptr) //mimic std pointers.
 		{
 			CounterPtr<Type> tmp(ptr);
 			swap(tmp);
@@ -87,23 +90,11 @@ TOOLKIT_NS_BEGIN
 		ValueType GetReferenceCounter() const
 		{ return _counter; }
 
-		Type *Get()
-		{ return static_cast<Type *>(this); }
-
-		const Type *Get() const
-		{ return static_cast<const Type *>(this); }
-
 		void AddRef() const
 		{ ++_counter; }
 
-		void ReleaseRef() const
-		{
-			if (--_counter == 0)
-				delete Get();
-		}
-
-		PointerType GetPointerFromThis()
-		{ AddRef(); return PointerType(Get()); }
+		bool ReleaseRef() const
+		{ return --_counter == 0; }
 	};
 
 #define DECLARE_COUNTER_PTR(CLASS) typedef pure::CounterPtr< CLASS > CLASS##Ptr
