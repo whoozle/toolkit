@@ -1,5 +1,5 @@
-#ifndef TOOLKIT_NET_IPV4_BASESERVERSOCKET_H
-#define TOOLKIT_NET_IPV4_BASESERVERSOCKET_H
+#ifndef TOOLKIT_NET_BASESERVERSOCKET_H
+#define TOOLKIT_NET_BASESERVERSOCKET_H
 
 #include <toolkit/net/bsd/Socket.h>
 #include <toolkit/net/ISocket.h>

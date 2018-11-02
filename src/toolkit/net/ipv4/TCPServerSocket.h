@@ -11,7 +11,8 @@ namespace net { namespace ipv4
 	class TCPServerSocket :
 		public BaseServerSocket<TCPSocket>
 	{
-
+	public:
+		using BaseServerSocket::BaseServerSocket;
 	};
 
 }}
