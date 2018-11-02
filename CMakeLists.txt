@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.6)
 include(CheckCXXCompilerFlag)
 
 set (CMAKE_CXX_STANDARD 11)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 find_package( Threads )
 
 check_cxx_compiler_flag(-Wall HAS_WALL)
