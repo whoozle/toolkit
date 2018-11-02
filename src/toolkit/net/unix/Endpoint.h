@@ -1,6 +1,7 @@
 #ifndef TOOLKIT_NET_UNIX_ENDPOINT_H
 #define TOOLKIT_NET_UNIX_ENDPOINT_H
 
+#include <toolkit/core/core.h>
 #include <string>
 
 TOOLKIT_NS_BEGIN

@@ -40,6 +40,8 @@ set(TOOLKIT_SRC
 	src/toolkit/net/ipv4/Address.cpp
 	src/toolkit/net/ipv4/Endpoint.cpp
 
+	src/toolkit/net/unix/Endpoint.cpp
+
 	src/toolkit/text/String.cpp
 )
 
