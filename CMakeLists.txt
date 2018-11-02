@@ -32,12 +32,12 @@ set(TOOLKIT_SRC
 	src/toolkit/io/Poll.cpp
 	src/toolkit/io/TemporaryFile.cpp
 
+	src/toolkit/net/BaseSocket.cpp
+
 	src/toolkit/net/bsd/Socket.cpp
 
 	src/toolkit/net/ipv4/Address.cpp
 	src/toolkit/net/ipv4/Endpoint.cpp
-	src/toolkit/net/ipv4/TCPServerSocket.cpp
-	src/toolkit/net/ipv4/TCPSocket.cpp
 
 	src/toolkit/text/String.cpp
 )

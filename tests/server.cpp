@@ -2,7 +2,7 @@
 #include <toolkit/net/ipv4/TCPSocket.h>
 #include <toolkit/net/ipv4/Endpoint.h>
 #include <toolkit/io/Poll.h>
-#include <toolkit/io/ISocketEventHandler.h>
+#include <toolkit/io/IPollEventHandler.h>
 #include <toolkit/log/Logger.h>
 #include <toolkit/log/ConsoleLoggingSink.h>
 #include <thread>
@@ -53,7 +53,7 @@ namespace
 		}
 	}
 
-	class Client : public toolkit::io::ISocketEventHandler
+	class Client : public toolkit::io::IPollEventHandler
 	{
 		Logger						_log;
 		Poll &						_poll;

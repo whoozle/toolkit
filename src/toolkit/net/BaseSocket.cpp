@@ -2,24 +2,19 @@
 #include <toolkit/net/ipv4/Endpoint.h>
 
 TOOLKIT_NS_BEGIN
-namespace net { namespace ipv4
+namespace net
 {
 
-	void TCPSocket::Connect(const Endpoint & ep)
-	{
-		ep.Connect(*this);
-	}
-
-	TCPSocket::~TCPSocket()
+	BaseSocket::~BaseSocket()
 	{
 		bsd::Socket::Shutdown(SHUT_RDWR);
 	}
 
-	ssize_t TCPSocket::Write(io::ConstByteData data)
+	ssize_t BaseSocket::Write(io::ConstByteData data)
 	{
 		return bsd::Socket::Send(data.data(), data.size(), 0);
 	}
 
 
-}}
+}
 TOOLKIT_NS_END

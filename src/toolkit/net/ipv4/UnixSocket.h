@@ -1,10 +1,10 @@
-#ifndef TOOLKIT_NET_IPV4_TCPSOCKET_H
-#define TOOLKIT_NET_IPV4_TCPSOCKET_H
+#ifndef TOOLKIT_NET_IPV4_UNIXSOCKET_H
+#define TOOLKIT_NET_IPV4_UNIXSOCKET_H
 
 #include <toolkit/net/BaseSocket.h>
 
 TOOLKIT_NS_BEGIN
-namespace net { namespace ipv4
+namespace net
 {
 	struct Endpoint;
 
@@ -15,7 +15,7 @@ namespace net { namespace ipv4
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 	};
 
-}}
+}
 TOOLKIT_NS_END
 
 #endif
