@@ -78,9 +78,16 @@ namespace log
 			{ }
 
 			template<typename ValueType>
-			LogProxy & operator << (const ValueType &value)
+			typename std::enable_if<!text::HasMethod_ToString<ValueType>::Value, LogProxy &>::type operator << (const ValueType &value)
 			{
 				_ss << value;
+				return *this;
+			}
+
+			template<typename ValueType>
+			typename std::enable_if<text::HasMethod_ToString<ValueType>::Value, LogProxy &>::type operator << (const ValueType &value)
+			{
+				value.ToString(_ss);
 				return *this;
 			}
 
