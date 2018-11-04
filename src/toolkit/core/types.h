@@ -7,7 +7,8 @@
 
 TOOLKIT_NS_BEGIN
 
-	using uint = unsigned int;
+	using uint	= unsigned int;
+	using ulong	= unsigned long;
 
 	using u8	= uint8_t;
 	using u16	= uint16_t;
