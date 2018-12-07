@@ -27,11 +27,12 @@ set(TOOLKIT_SRC
 	src/toolkit/log/Logger.cpp
 	src/toolkit/log/ConsoleLoggingSink.cpp
 
-	src/toolkit/io/SystemException.cpp
+	src/toolkit/io/Event.cpp
 	src/toolkit/io/File.cpp
 	src/toolkit/io/MemoryMapping.cpp
 	src/toolkit/io/Poll.cpp
 	src/toolkit/io/Process.cpp
+	src/toolkit/io/SystemException.cpp
 	src/toolkit/io/TemporaryFile.cpp
 
 	src/toolkit/net/BaseSocket.cpp
