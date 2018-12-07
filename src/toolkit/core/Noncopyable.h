@@ -8,7 +8,7 @@ TOOLKIT_NS_BEGIN
 	struct Noncopyable
 	{
 	protected:
-		Noncopyable() { }
+		Noncopyable() = default;
 
 	private:
 		Noncopyable(const Noncopyable &) = delete;
