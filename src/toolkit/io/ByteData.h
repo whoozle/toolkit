@@ -20,6 +20,10 @@ namespace io
 		PointerSizeHolder(): _ptr(), _size(0)
 		{ }
 
+		template <typename U, size_t size>
+		PointerSizeHolder(U (&array)[size]): _ptr(array), _size(size)
+		{ }
+
 		template<typename U>
 		PointerSizeHolder(PointerSizeHolder<U> o): _ptr(o.data()), _size(o.size())
 		{ }
