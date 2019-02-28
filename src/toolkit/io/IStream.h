@@ -48,6 +48,11 @@ namespace io
 	};
 	DECLARE_PTR(IInputStream);
 
+	struct IBidirectionalStream :
+		public virtual IInputStream,
+		public virtual IOutputStream
+	{ };
+
 	struct ISeekableInputStream :
 			public virtual IInputStream,
 			public virtual ISeekable
