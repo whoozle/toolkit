@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.3)
 include(CheckCXXCompilerFlag)
 
 set (CMAKE_CXX_STANDARD 11)
@@ -6,9 +6,6 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 find_package( Threads )
 
 check_cxx_compiler_flag(-Wall HAS_WALL)
-if (HAS_WALL)
-	add_definitions(-Wall)
-endif()
 
 include_directories(src)
 
@@ -49,6 +46,7 @@ set(TOOLKIT_SRC
 
 set(TOOLKIT_LIB toolkit)
 add_library(${TOOLKIT_LIB} STATIC ${TOOLKIT_SRC})
+target_compile_definitions(${TOOLKIT_LIB} PUBLIC -DTOOLKIT_NS=${TOOLKIT_NS})
 
-set(TOOLKIT_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/src;${CMAKE_CURRENT_BINARY_DIR}" PARENT_SCOPE)
-set(TOOLKIT_LIBRARIES ${TOOLKIT_LIB} ${CMAKE_THREAD_LIBS_INIT} PARENT_SCOPE)
+target_include_directories(${TOOLKIT_LIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(${TOOLKIT_LIB} ${CMAKE_THREAD_LIBS_INIT})
