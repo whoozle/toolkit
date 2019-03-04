@@ -55,6 +55,20 @@ TOOLKIT_NS_BEGIN
 				throw Exception("invalid size");
 		}
 
+		T & operator[] (size_t index)
+		{
+			if (index >= _size)
+				throw Exception("invalid index for operator[]");
+			return _ptr[index];
+		}
+
+		T operator[] (size_t index) const
+		{
+			if (index >= _size)
+				throw Exception("invalid index for operator[]");
+			return _ptr[index];
+		}
+
 		template<typename U>
 		BasicBuffer(U * ptr, size_t size): _ptr(ptr), _size(size)
 		{ }
