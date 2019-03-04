@@ -2,7 +2,7 @@
 #define TOOLKIT_IO_ISTREAM_H
 
 #include <toolkit/core/types.h>
-#include <toolkit/io/ByteData.h>
+#include <toolkit/core/Buffer.h>
 #include <sys/types.h>
 #include <memory>
 
@@ -36,7 +36,7 @@ namespace io
 	{
 		virtual ~IOutputStream() = default;
 
-		virtual size_t Write(ConstByteData data) = 0;
+		virtual size_t Write(ConstBuffer data) = 0;
 	};
 	DECLARE_PTR(IOutputStream);
 
@@ -44,7 +44,7 @@ namespace io
 	{
 		virtual ~IInputStream() = default;
 
-		virtual size_t Read(ByteData) = 0;
+		virtual size_t Read(Buffer) = 0;
 	};
 	DECLARE_PTR(IInputStream);
 

@@ -3,7 +3,7 @@
 
 #include <toolkit/io/IStream.h>
 #include <toolkit/io/ByteArray.h>
-#include <toolkit/io/ByteData.h>
+#include <toolkit/core/Buffer.h>
 
 TOOLKIT_NS_BEGIN
 namespace io
@@ -16,7 +16,7 @@ namespace io
 		do
 		{
 			r = src->Read(buffer);
-			dst->Write(ConstByteData(buffer, r));
+			dst->Write(ConstBuffer(buffer, r));
 		}
 		while(r == bufferSize);
 	}

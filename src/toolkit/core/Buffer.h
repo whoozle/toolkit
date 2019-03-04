@@ -6,8 +6,6 @@
 #include <stddef.h>
 
 TOOLKIT_NS_BEGIN
-namespace io
-{
 
 	template<typename T>
 	class PointerSizeHolder
@@ -74,10 +72,9 @@ namespace io
 		{ return _size; }
 	};
 
-	using ByteData = PointerSizeHolder<u8>;
-	using ConstByteData = PointerSizeHolder<const u8>;
+	using Buffer = PointerSizeHolder<u8>;
+	using ConstBuffer = PointerSizeHolder<const u8>;
 
-}
 TOOLKIT_NS_END
 
 #endif

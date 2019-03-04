@@ -3,7 +3,7 @@
 
 #include <toolkit/net/bsd/Socket.h>
 #include <toolkit/net/ISocket.h>
-#include <toolkit/io/ByteData.h>
+#include <toolkit/core/Buffer.h>
 
 TOOLKIT_NS_BEGIN
 namespace net
@@ -26,7 +26,7 @@ namespace net
 		void Connect(const EndpointType & ep)
 		{ ep.Connect(*this); }
 
-		ssize_t Write(io::ConstByteData data);
+		ssize_t Write(ConstBuffer data);
 	};
 
 }

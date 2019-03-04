@@ -11,7 +11,7 @@ namespace io
 		void *ptr = mmap(addr, length, prot, flags, fd, offset);
 		if (ptr == MAP_FAILED)
 			throw SystemException("mmap failed");
-		_data = ByteData(static_cast<u8*>(ptr), length);
+		_data = Buffer(static_cast<u8*>(ptr), length);
 	}
 
 	MemoryMapping::~MemoryMapping()

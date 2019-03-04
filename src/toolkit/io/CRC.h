@@ -2,7 +2,7 @@
 #define TOOLKIT_IO_CRC_H
 
 #include <toolkit/core/types.h>
-#include <toolkit/io/ByteData.h>
+#include <toolkit/core/Buffer.h>
 
 TOOLKIT_NS_BEGIN
 namespace io
@@ -32,7 +32,7 @@ namespace io
 				_value = ~_value;
 			}
 
-			void Update(ConstByteData data)
+			void Update(ConstBuffer data)
 			{
 				auto begin = data.data();
 				auto end = begin + data.size();

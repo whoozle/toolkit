@@ -10,7 +10,7 @@ namespace net
 		bsd::Socket::Shutdown(SHUT_RDWR);
 	}
 
-	ssize_t BaseSocket::Write(io::ConstByteData data)
+	ssize_t BaseSocket::Write(ConstBuffer data)
 	{
 		return bsd::Socket::Send(data.data(), data.size(), 0);
 	}

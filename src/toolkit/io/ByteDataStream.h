@@ -1,7 +1,7 @@
 #ifndef TOOLKIT_BYTEDATASTREAM_H
 #define TOOLKIT_BYTEDATASTREAM_H
 
-#include <toolkit/io/ByteData.h>
+#include <toolkit/core/Buffer.h>
 #include <toolkit/io/IStream.h>
 #include <string.h>
 
@@ -9,15 +9,15 @@ TOOLKIT_NS_BEGIN
 namespace io
 {
 
-	class ByteDataInputStream : public IInputStream
+	class BufferInputStream : public IInputStream
 	{
-		ByteData	_src;
+		Buffer	_src;
 		size_t		_offset;
 
 	public:
-		ByteDataInputStream(ByteData src): _src(src), _offset(0) { }
+		BufferInputStream(Buffer src): _src(src), _offset(0) { }
 
-		size_t Read(ByteData dst) override
+		size_t Read(Buffer dst) override
 		{
 			size_t size = _src.size();
 			size_t n = std::min(dst.size(), size - _offset);
@@ -27,17 +27,17 @@ namespace io
 		}
 	};
 
-	class ByteDataOutputStream : public IOutputStream
+	class BufferOutputStream : public IOutputStream
 	{
-		ByteData	_data;
+		Buffer	_data;
 		size_t		_offset;
 
 	public:
-		ByteDataOutputStream(ByteData data): _data(data), _offset(0) { }
+		BufferOutputStream(Buffer data): _data(data), _offset(0) { }
 
-		size_t Write(ConstByteData src) override
+		size_t Write(ConstBuffer src) override
 		{
-			ByteData dst(_data, _offset);
+			Buffer dst(_data, _offset);
 			size_t n = std::min(dst.size(), src.size());
 			_offset += n;
 			memcpy(dst.data(), src.data(), n);

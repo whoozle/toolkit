@@ -18,7 +18,7 @@ namespace io
 	public:
 		MemoryOutputStream(size_t initialCapacity = 4096): _data() { _data.reserve(initialCapacity); }
 
-		size_t Write(ConstByteData src) override
+		size_t Write(ConstBuffer src) override
 		{
 			size_t offset = _data.size();
 			size_t size = src.size();

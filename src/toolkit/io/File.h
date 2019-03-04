@@ -35,8 +35,8 @@ namespace io
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override;
 		off_t Tell() override;
 
-		size_t Write(ConstByteData data) override;
-		size_t Read(ByteData) override;
+		size_t Write(ConstBuffer data) override;
+		size_t Read(Buffer) override;
 
 		void Allocate(int mode, off_t offset, off_t len);
 		void Truncate(size_t size);

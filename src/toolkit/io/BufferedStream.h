@@ -26,13 +26,13 @@ namespace io
 		{
 			if (_writeBufferOffset)
 			{
-				if (_stream->Write(ConstByteData(_buffer.data(), _writeBufferOffset)) != _writeBufferOffset)
+				if (_stream->Write(ConstBuffer(_buffer.data(), _writeBufferOffset)) != _writeBufferOffset)
 					throw Exception("short write");
 				_writeBufferOffset = 0;
 			}
 		}
 
-		size_t Read(ByteData data) override
+		size_t Read(Buffer data) override
 		{
 			Flush();
 			return _stream->Read(data);
@@ -63,7 +63,7 @@ namespace io
 			return streamOffset - remainingData + _writeBufferOffset;
 		}
 
-		size_t Write(ConstByteData data) override
+		size_t Write(ConstBuffer data) override
 		{
 			auto srcData = data.GetPointer();
 			auto remainingSrcData = data.GetSize();

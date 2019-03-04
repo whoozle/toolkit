@@ -72,10 +72,10 @@ namespace io
 	off_t File::Tell()
 	{ SYSTEM_CALL_RETURN(lseek(_fd, 0, SEEK_CUR)); }
 
-	size_t File::Write(ConstByteData data)
+	size_t File::Write(ConstBuffer data)
 	{ SYSTEM_CALL_RETURN(write(_fd, data.GetPointer(), data.GetSize())); }
 
-	size_t File::Read(ByteData data)
+	size_t File::Read(Buffer data)
 	{ SYSTEM_CALL_RETURN(read(_fd, data.GetPointer(), data.GetSize())); }
 
 	struct stat File::GetStatus()

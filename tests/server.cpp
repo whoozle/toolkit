@@ -33,7 +33,7 @@ namespace
 				log.Info() << "connecting...";
 				client.Connect(Endpoint(Address::Localhost(), Port));
 				log.Info() << "connected";
-				client.Write(ConstByteData(req, 3));
+				client.Write(ConstBuffer(req, 3));
 				log.Info() << "disconnecting";
 			}
 		}
@@ -80,7 +80,7 @@ namespace
 		}
 	};
 
-	class Server : public toolkit::io::ISocketEventHandler
+	class Server : public toolkit::io::IPollEventHandler
 	{
 		Logger			_log;
 		Poll &			_poll;

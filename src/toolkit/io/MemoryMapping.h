@@ -3,7 +3,7 @@
 
 #include <toolkit/core/core.h>
 #include <toolkit/core/Enum.h>
-#include <toolkit/io/ByteData.h>
+#include <toolkit/core/Buffer.h>
 #include <memory>
 #include <sys/mman.h>
 
@@ -24,23 +24,23 @@ namespace io
 
 	class MemoryMapping
 	{
-		ByteData _data;
+		Buffer _data;
 
 	public:
 		MemoryMapping(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
 		~MemoryMapping();
 
 		static void Sync(void *addr, size_t size, int flags);
-		static void Sync(ByteData data, int flags)
+		static void Sync(Buffer data, int flags)
 		{ Sync(data.data(), data.size(), flags); }
 
 		void Sync(int flags)
 		{ Sync(_data, flags); }
 
-		ByteData GetData()
+		Buffer GetData()
 		{ return _data; }
 
-		ConstByteData GetData() const
+		ConstBuffer GetData() const
 		{ return _data; }
 
 		static size_t GetPageSize();

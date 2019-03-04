@@ -1,15 +1,13 @@
 #ifndef TOOLKIT_IO_BYTEARRAY_H
 #define TOOLKIT_IO_BYTEARRAY_H
 
-#include <toolkit/io/ByteData.h>
+#include <toolkit/core/Buffer.h>
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/core/types.h>
 #include <vector>
 #include <memory>
 
 TOOLKIT_NS_BEGIN
-namespace io
-{
 
 	class ByteArray : public Noncopyable
 	{
@@ -41,7 +39,6 @@ namespace io
 	};
 	DECLARE_PTR(ByteArray);
 
-}
 TOOLKIT_NS_END
 
 #endif
