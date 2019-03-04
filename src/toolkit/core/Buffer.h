@@ -8,26 +8,26 @@
 TOOLKIT_NS_BEGIN
 
 	template<typename T>
-	class PointerSizeHolder
+	class BasicBuffer
 	{
 	private:
 		T *		_ptr;
 		size_t	_size;
 
 	public:
-		PointerSizeHolder(): _ptr(), _size(0)
+		BasicBuffer(): _ptr(), _size(0)
 		{ }
 
 		template <typename U, size_t size>
-		PointerSizeHolder(U (&array)[size]): _ptr(array), _size(size)
+		BasicBuffer(U (&array)[size]): _ptr(array), _size(size)
 		{ }
 
 		template<typename U>
-		PointerSizeHolder(PointerSizeHolder<U> o): _ptr(o.data()), _size(o.size())
+		BasicBuffer(BasicBuffer<U> o): _ptr(o.data()), _size(o.size())
 		{ }
 
 		template<typename U>
-		PointerSizeHolder(PointerSizeHolder<U> o, size_t offset)
+		BasicBuffer(BasicBuffer<U> o, size_t offset)
 		{
 			size_t size = o.size();
 			if (offset > size)
@@ -37,7 +37,7 @@ TOOLKIT_NS_BEGIN
 		}
 
 		template<typename U>
-		PointerSizeHolder(PointerSizeHolder<U> o, size_t offset, size_t size): PointerSizeHolder<U>(o, offset)
+		BasicBuffer(BasicBuffer<U> o, size_t offset, size_t size): BasicBuffer<U>(o, offset)
 		{
 			if (size > _size)
 				throw Exception("requested size is bigger than actual size");
@@ -45,18 +45,18 @@ TOOLKIT_NS_BEGIN
 		}
 
 		template<typename Storage>
-		PointerSizeHolder(Storage & storage): _ptr(storage.data()), _size(storage.size())
+		BasicBuffer(Storage & storage): _ptr(storage.data()), _size(storage.size())
 		{ }
 
 		template<typename Storage>
-		PointerSizeHolder(Storage & storage, size_t size): _ptr(storage.data()), _size(size)
+		BasicBuffer(Storage & storage, size_t size): _ptr(storage.data()), _size(size)
 		{
 			if (size > storage.size())
 				throw Exception("invalid size");
 		}
 
 		template<typename U>
-		PointerSizeHolder(U * ptr, size_t size): _ptr(ptr), _size(size)
+		BasicBuffer(U * ptr, size_t size): _ptr(ptr), _size(size)
 		{ }
 
 		T * GetPointer() const
@@ -72,8 +72,8 @@ TOOLKIT_NS_BEGIN
 		{ return _size; }
 	};
 
-	using Buffer = PointerSizeHolder<u8>;
-	using ConstBuffer = PointerSizeHolder<const u8>;
+	using Buffer		= BasicBuffer<u8>;
+	using ConstBuffer	= BasicBuffer<const u8>;
 
 TOOLKIT_NS_END
 
