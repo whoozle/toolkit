@@ -11,6 +11,8 @@ namespace io
 		public virtual IBidirectionalStream,
 		public virtual IPollable
 	{ };
+
+	DECLARE_PTR(ISerialPort);
 }
 TOOLKIT_NS_END
 
