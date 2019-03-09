@@ -76,8 +76,23 @@ TOOLKIT_NS_BEGIN
 		T * GetPointer() const
 		{ return _ptr; }
 
+		T * data()
+		{ return _ptr; }
+
 		T * data() const
 		{ return _ptr; }
+
+		T * begin()
+		{ return _ptr; }
+
+		const T * begin() const
+		{ return _ptr; }
+
+		T * end()
+		{ return _ptr + _size; }
+
+		const T * end() const
+		{ return _ptr + _size; }
 
 		size_t GetSize() const
 		{ return _size; }
