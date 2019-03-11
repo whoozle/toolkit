@@ -10,7 +10,9 @@ namespace io
 	struct ISerialPort :
 		public virtual IBidirectionalStream,
 		public virtual IPollable
-	{ };
+	{
+		virtual bool GetParityBit() = 0;
+	};
 
 	DECLARE_PTR(ISerialPort);
 }
