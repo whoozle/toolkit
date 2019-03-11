@@ -11,12 +11,12 @@ namespace io
 
 	class BufferedStream : public IBufferedStream, Noncopyable
 	{
-		IStreamPtr		_stream;
+		IStoragePtr		_stream;
 		std::vector<u8> _buffer;
 		size_t			_writeBufferOffset;
 
 	public:
-		BufferedStream(IStreamPtr stream, size_t bufferSize): _stream(stream), _buffer(bufferSize), _writeBufferOffset(0)
+		BufferedStream(IStoragePtr stream, size_t bufferSize): _stream(stream), _buffer(bufferSize), _writeBufferOffset(0)
 		{ }
 
 		~BufferedStream()

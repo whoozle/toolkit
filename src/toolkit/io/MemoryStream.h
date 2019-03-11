@@ -1,7 +1,7 @@
 #ifndef TOOLKIT_MEMORYSTREAM_H
 #define TOOLKIT_MEMORYSTREAM_H
 
-#include <toolkit/io/ByteArray.h>
+#include <toolkit/core/ByteArray.h>
 #include <toolkit/io/IStream.h>
 #include <string.h>
 #include <vector>

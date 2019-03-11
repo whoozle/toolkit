@@ -8,7 +8,7 @@
 TOOLKIT_NS_BEGIN
 namespace text
 {
-	DECLARE_METHOD_CHECK(ToString);
+	DECLARE_METHOD_CHECK(ToString)
 
 	std::wstring FromUtf8(const std::string &text);
 	std::string ToUtf8(const std::wstring &text);
