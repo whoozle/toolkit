@@ -12,6 +12,7 @@ namespace io
 		public virtual IPollable
 	{
 		virtual bool GetParityBit() = 0;
+		virtual void SetParityBit(bool bit) = 0;
 	};
 
 	DECLARE_PTR(ISerialPort);
