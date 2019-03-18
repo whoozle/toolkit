@@ -35,6 +35,12 @@ namespace io
 		_active = true;
 	}
 
+	bool Event::Active() const
+	{
+		std::lock_guard<decltype(_mutex)> l(_mutex);
+		return _active;
+	}
+
 	void Event::Cancel()
 	{
 		std::lock_guard<decltype(_mutex)> l(_mutex);

@@ -13,9 +13,9 @@ namespace io
 
 	class Event : public IPollable, public Noncopyable
 	{
-		std::mutex	_mutex;
-		bool		_active;
-		int			_rd, _wd;
+		mutable std::mutex	_mutex;
+		bool				_active;
+		int					_rd, _wd;
 
 	public:
 		Event();
@@ -26,6 +26,7 @@ namespace io
 
 		void Signal();
 		void Cancel();
+		bool Active() const;
 	};
 	DECLARE_PTR(Event);
 
