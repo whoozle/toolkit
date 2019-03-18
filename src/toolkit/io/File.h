@@ -18,9 +18,11 @@ namespace io
 		ReadWrite
 	};
 
-	class File : public IStorage, public IPollable
+	class File :
+		public virtual IStorage,
+		public virtual IPollable
 	{
-	private:
+	protected:
 		int _fd;
 
 	public:
