@@ -2,6 +2,7 @@
 #include <toolkit/io/SystemException.h>
 #include <toolkit/io/IPollable.h>
 #include <toolkit/io/IPollEventHandler.h>
+#include <toolkit/log/Logger.h>
 #include <sys/epoll.h>
 #include <sys/poll.h>
 #include <unistd.h>
@@ -11,6 +12,7 @@ namespace io
 {
 	namespace
 	{
+		log::Logger Log("poll");
 
 #define M(EV, NEV) if ((NEV & events) == NEV) r |= EV
 #define U(EV, NEV) if ((EV & events) == EV) r |= NEV
@@ -84,7 +86,9 @@ namespace io
 		for(int n = r; n--; ++src)
 		{
 			IPollEventHandler *handler = static_cast<IPollEventHandler *>(src->data.ptr);
-			handler->HandleSocketEvent(Unmap(src->events));
+			try { handler->HandleSocketEvent(Unmap(src->events)); }
+			catch(const std::exception & ex)
+			{ Log.Error() << "HandleSocketEvent failed: " << ex.what(); }
 		}
 		return r;
 	}
