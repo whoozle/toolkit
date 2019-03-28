@@ -4,6 +4,21 @@
 
 namespace
 {
+	class Test
+	{
+		int _p;
+
+	public:
+		Test(int p): _p(p) { }
+
+		template<typename RegistryType>
+		static void RegisterMembers(RegistryType & reg)
+		{
+			using namespace toolkit::serialization;
+			reg % Member(&Test::_p, "p");
+		}
+	};
+
     const lest::test serialization[] =
     {
         CASE( "Empty string has length zero (succeed)" )
