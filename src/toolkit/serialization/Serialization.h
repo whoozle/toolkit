@@ -21,16 +21,27 @@ namespace serialization
 		MemberDescriptor(Type pointer, std::string name): Pointer(pointer), Name(name)
 		{ }
 
-		void Write(ClassType *self, io::IOutputStream & stream)
-		{ Serializator<MemberType>::Write(stream, self->*Pointer); }
+		const MemberType & Get(ClassType * self) const
+		{ return self->*Pointer; }
 
-		void Read(ClassType *self, io::IInputStream & stream)
-		{ self->*Pointer = Serializator<MemberType>::Read(stream); }
+		MemberType & Get(ClassType * self)
+		{ return self->*Pointer; }
 	};
+
+	struct VersionDescriptor
+	{
+		uint Version;
+		VersionDescriptor(uint version): Version(version) { }
+	};
+
 
 	template<typename ClassType, typename MemberType>
 	MemberDescriptor<ClassType, MemberType> Member(MemberType ClassType::* pointer, const std::string & name = std::string())
 	{ return MemberDescriptor<ClassType, MemberType>(pointer); }
+
+	inline VersionDescriptor Version(uint version)
+	{ return VersionDescriptor(version); }
+
 
 }
 TOOLKIT_NS_END

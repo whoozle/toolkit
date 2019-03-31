@@ -15,7 +15,7 @@ namespace
 		static void RegisterMembers(RegistryType & reg)
 		{
 			using namespace toolkit::serialization;
-			reg % Member(&Test::_p, "p");
+			reg % Version(1) % Member(&Test::_p, "p");
 		}
 	};
 
