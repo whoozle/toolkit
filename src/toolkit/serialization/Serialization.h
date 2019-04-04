@@ -8,8 +8,6 @@
 TOOLKIT_NS_BEGIN
 namespace serialization
 {
-	template<typename Type>
-	struct Serializator;
 
 	template<typename ClassType, typename MemberType>
 	struct MemberDescriptor
@@ -28,19 +26,33 @@ namespace serialization
 		{ return self->*Pointer; }
 	};
 
-	struct VersionDescriptor
+	namespace impl
 	{
-		uint Version;
-		VersionDescriptor(uint version): Version(version) { }
-	};
+		template<typename ... MemberDescriptors>
+		struct ClassDescriptor
+		{
+			std::string 	Name;
+			uint			Version;
 
+			ClassDescriptor(const std::string & name, uint version = 0):
+				Name(name), Version(version)
+			{ }
+
+			template<typename ClassType, typename MemberType>
+			ClassDescriptor<MemberDescriptors..., MemberDescriptor<ClassType, MemberType>> operator &(const MemberDescriptor<ClassType, MemberType> & md)
+			{
+				using Next = ClassDescriptor<MemberDescriptors..., MemberDescriptor<ClassType, MemberType>>;
+				return Next(Name, Version);
+			}
+		};
+	}
 
 	template<typename ClassType, typename MemberType>
 	MemberDescriptor<ClassType, MemberType> Member(MemberType ClassType::* pointer, const std::string & name = std::string())
-	{ return MemberDescriptor<ClassType, MemberType>(pointer); }
+	{ return MemberDescriptor<ClassType, MemberType>(pointer, name); }
 
-	inline VersionDescriptor Version(uint version)
-	{ return VersionDescriptor(version); }
+	impl::ClassDescriptor<> ClassDescriptor(const std::string &name, uint version)
+	{ return impl::ClassDescriptor<>(name, version); }
 
 
 }
