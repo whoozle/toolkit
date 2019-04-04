@@ -31,18 +31,21 @@ namespace serialization
 		template<typename ... MemberDescriptors>
 		struct ClassDescriptor
 		{
-			std::string 	Name;
-			uint			Version;
+			using DataType = std::tuple<MemberDescriptors ...>;
 
-			ClassDescriptor(const std::string & name, uint version = 0):
-				Name(name), Version(version)
+			std::string 						Name;
+			uint								Version;
+			DataType							Data;
+
+			ClassDescriptor(const std::string & name, uint version, DataType && data):
+				Name(name), Version(version), Data(data)
 			{ }
 
 			template<typename ClassType, typename MemberType>
 			ClassDescriptor<MemberDescriptors..., MemberDescriptor<ClassType, MemberType>> operator &(const MemberDescriptor<ClassType, MemberType> & md)
 			{
 				using Next = ClassDescriptor<MemberDescriptors..., MemberDescriptor<ClassType, MemberType>>;
-				return Next(Name, Version);
+				return Next(Name, Version, std::tuple_cat(Data, std::make_tuple(md)));
 			}
 		};
 	}
@@ -52,7 +55,7 @@ namespace serialization
 	{ return MemberDescriptor<ClassType, MemberType>(pointer, name); }
 
 	impl::ClassDescriptor<> ClassDescriptor(const std::string &name, uint version)
-	{ return impl::ClassDescriptor<>(name, version); }
+	{ return impl::ClassDescriptor<>(name, version, std::make_tuple()); }
 
 
 }
