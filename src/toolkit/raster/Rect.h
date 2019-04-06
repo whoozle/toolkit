@@ -2,7 +2,7 @@
 #define TOOLKIT_RASTER_RECT_H
 
 #include <toolkit/core/core.h>
-#include <toolkit/io/StringOutputStream.h>
+#include <toolkit/text/StringOutputStream.h>
 #include <toolkit/raster/Size.h>
 #include <toolkit/raster/Point.h>
 

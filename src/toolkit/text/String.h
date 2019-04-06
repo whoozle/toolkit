@@ -3,6 +3,7 @@
 
 #include <toolkit/core/MemberCheck.h>
 #include <toolkit/core/core.h>
+#include <toolkit/text/StringOutputStream.h>
 #include <string>
 
 namespace TOOLKIT_NS { namespace text

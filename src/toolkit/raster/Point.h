@@ -2,7 +2,7 @@
 #define TOOLKIT_RASTER_POINT_H
 
 #include <toolkit/core/core.h>
-#include <toolkit/io/StringOutputStream.h>
+#include <toolkit/text/StringOutputStream.h>
 
 namespace TOOLKIT_NS { namespace raster
 {

@@ -1,5 +1,6 @@
 #include <toolkit/serialization/Serialization.h>
 #include <toolkit/serialization/JSON.h>
+#include <toolkit/text/StringOutputStream.h>
 #include <lest/lest.hpp>
 #include <string>
 
@@ -27,11 +28,15 @@ namespace
 
 	const lest::test serialization[] =
 	{
-		CASE( "Empty string has length zero (succeed)" )
+		CASE( "JSON serialization test" )
 		{
 			auto jsonWriter = ts::MakeSerializator<Test, ts::JSONWriter>();
-			EXPECT( 0 == std::string(  ).length() );
-			EXPECT( 0 == std::string("").length() );
+			Test test(2, 3);
+
+			auto state = jsonWriter.NewState();
+			toolkit::text::StringOutputStream ss;
+			jsonWriter.Write(ss, state, test);
+			EXPECT( ss.Get() == "{}" );
 		},
 	};
 }

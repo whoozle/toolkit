@@ -1,8 +1,8 @@
-#include <toolkit/io/StringOutputStream.h>
+#include <toolkit/text/StringOutputStream.h>
 #include <toolkit/io/SystemException.h>
 #include <stdio.h>
 
-namespace TOOLKIT_NS { namespace io
+namespace TOOLKIT_NS { namespace text
 {
 #define TOOLKIT_IO_SS_DECLARE_WRITE(FMT, TYPE) \
 	template<> \

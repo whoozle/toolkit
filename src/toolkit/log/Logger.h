@@ -4,8 +4,8 @@
 #include <toolkit/log/ILoggingSink.h>
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/core/types.h>
-#include <toolkit/io/StringOutputStream.h>
 #include <toolkit/text/String.h>
+#include <toolkit/text/StringOutputStream.h>
 #include <list>
 #include <string>
 
@@ -65,9 +65,9 @@ namespace TOOLKIT_NS { namespace log
 		template<LogLevel Level>
 		class LogProxy
 		{
-			const std::string &		_loggerName;
-			io::StringOutputStream	_ss;
-			timespec				_ts;
+			const std::string &			_loggerName;
+			text::StringOutputStream	_ss;
+			timespec					_ts;
 
 		public:
 			LogProxy(const std::string & loggerName): _loggerName(loggerName)

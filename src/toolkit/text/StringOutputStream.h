@@ -4,11 +4,11 @@
 #include <toolkit/core/Buffer.h>
 #include <toolkit/io/MemoryOutputStream.h>
 
-namespace TOOLKIT_NS { namespace io
+namespace TOOLKIT_NS { namespace text
 {
 	class StringOutputStream
 	{
-		MemoryOutputStream	_stream;
+		io::MemoryOutputStream	_stream;
 
 		template<typename ValueType>
 		size_t WriteImpl(ValueType value);
@@ -46,7 +46,7 @@ namespace TOOLKIT_NS { namespace io
 	};
 
 #define TOOLKIT_DECLARE_SIMPLE_TOSTRING() \
-	std::string ToString() const { TOOLKIT_NS :: io::StringOutputStream ss; ToString(ss); return ss.Get(); }
+	std::string ToString() const { TOOLKIT_NS :: text :: StringOutputStream ss; ToString(ss); return ss.Get(); }
 
 }}
 
