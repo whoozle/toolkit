@@ -5,6 +5,8 @@
 
 namespace
 {
+	namespace ts = toolkit::serialization;
+
 	class Test
 	{
 		int _p;
@@ -13,21 +15,21 @@ namespace
 	public:
 		Test(int p, int q): _p(p), _q(q) { }
 
-		static auto RegisterMembers()
+		static auto GetClassDescriptor()
 		{
-			using namespace toolkit::serialization;
 			return
-				ClassDescriptor("Test", 1) &
-				Member(&Test::_p, "p") &
-				Member(&Test::_q, "q");
+				ts::ClassDescriptor("Test", 1) &
+				ts::Member(&Test::_p, "p") &
+				ts::Member(&Test::_q, "q");
 		}
 	};
+
 
 	const lest::test serialization[] =
 	{
 		CASE( "Empty string has length zero (succeed)" )
 		{
-			toolkit::serialization::JSONWriter<Test> writer;
+			auto jsonWriter = ts::MakeSerializator<Test, ts::JSONWriter>();
 			EXPECT( 0 == std::string(  ).length() );
 			EXPECT( 0 == std::string("").length() );
 		},

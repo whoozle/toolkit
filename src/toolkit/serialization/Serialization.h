@@ -57,6 +57,14 @@ namespace serialization
 	impl::ClassDescriptor<> ClassDescriptor(const std::string &name, uint version)
 	{ return impl::ClassDescriptor<>(name, version, std::make_tuple()); }
 
+	template<typename ClassType, template<typename, typename> typename SerializatorType>
+	auto MakeSerializator()
+	{
+		auto descriptor = ClassType::GetClassDescriptor();
+		using DescriptorType = decltype(descriptor);
+		SerializatorType<ClassType, DescriptorType> serializator(descriptor);
+		return serializator;
+	}
 
 }
 TOOLKIT_NS_END

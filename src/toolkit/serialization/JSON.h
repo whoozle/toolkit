@@ -9,14 +9,19 @@
 TOOLKIT_NS_BEGIN
 namespace serialization
 {
-	template<typename ClassType>
+
+	template<typename ClassType, typename ClassDescriptor>
+
 	class JSONWriter
 	{
+		ClassDescriptor		_descriptor;
 	public:
-		JSONWriter()
-		{
-		}
+		JSONWriter(const ClassDescriptor & descriptor) : _descriptor(descriptor)
+		{ }
+		JSONWriter(ClassDescriptor && descriptor) : _descriptor(descriptor)
+		{ }
 	};
+
 }
 TOOLKIT_NS_END
 
