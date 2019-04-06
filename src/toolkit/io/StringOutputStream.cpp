@@ -35,6 +35,10 @@ namespace TOOLKIT_NS { namespace io
 	{ return Write(value, strlen(value)); }
 
 	template<>
+	size_t StringOutputStream::WriteImpl<char *>(char * value)
+	{ return Write(value, strlen(value)); }
+
+	template<>
 	size_t StringOutputStream::WriteImpl<std::string>(std::string value)
 	{ return Write(value.data(), value.size()); }
 
