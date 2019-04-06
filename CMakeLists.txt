@@ -30,6 +30,7 @@ set(TOOLKIT_SRC
 	src/toolkit/io/Poll.cpp
 	src/toolkit/io/Process.cpp
 	src/toolkit/io/SerialPort.cpp
+	src/toolkit/io/StringOutputStream.cpp
 	src/toolkit/io/SystemException.cpp
 	src/toolkit/io/TemporaryFile.cpp
 

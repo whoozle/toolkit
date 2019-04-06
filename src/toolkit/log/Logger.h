@@ -4,11 +4,10 @@
 #include <toolkit/log/ILoggingSink.h>
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/core/types.h>
+#include <toolkit/io/StringOutputStream.h>
 #include <toolkit/text/String.h>
 #include <list>
 #include <string>
-#include <sstream>
-#include <stdio.h>
 
 #define ANONYMOUS_LOGGER(name) namespace { TOOLKIT_NS :: log :: Logger log(name); }
 
@@ -66,9 +65,9 @@ namespace TOOLKIT_NS { namespace log
 		template<LogLevel Level>
 		class LogProxy
 		{
-			const std::string &	_loggerName;
-			std::stringstream	_ss;
-			timespec			_ts;
+			const std::string &		_loggerName;
+			io::StringOutputStream	_ss;
+			timespec				_ts;
 
 		public:
 			LogProxy(const std::string & loggerName): _loggerName(loggerName)
@@ -97,7 +96,7 @@ namespace TOOLKIT_NS { namespace log
 			}
 
 			~LogProxy()
-			{ LogManager::Get().Log(Level, _loggerName, _ts, _ss.str()); }
+			{ LogManager::Get().Log(Level, _loggerName, _ts, _ss.Get()); }
 		};
 
 		//compile-time no-op proxies

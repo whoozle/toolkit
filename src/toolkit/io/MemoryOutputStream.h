@@ -29,8 +29,11 @@ namespace TOOLKIT_NS { namespace io
 		size_t GetSize() const
 		{ return _data.size(); }
 
-		Storage && GetData()
-		{ return std::move(_data); }
+		const Storage & GetStorage() const
+		{ return _data; }
+
+		Storage & GetStorage()
+		{ return _data; }
 	};
 
 }}
