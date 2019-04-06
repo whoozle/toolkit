@@ -61,7 +61,7 @@ namespace TOOLKIT_NS { namespace serialization
 	{
 		auto descriptor = ClassType::GetClassDescriptor();
 		using DescriptorType = decltype(descriptor);
-		SerializatorType<ClassType, DescriptorType> serializator(descriptor);
+		SerializatorType<ClassType, DescriptorType> serializator(std::move(descriptor));
 		return serializator;
 	}
 

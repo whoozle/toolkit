@@ -15,8 +15,6 @@ namespace TOOLKIT_NS { namespace serialization
 	{
 		ClassDescriptor		_descriptor;
 	public:
-		JSONWriter(const ClassDescriptor & descriptor) : _descriptor(descriptor)
-		{ }
 		JSONWriter(ClassDescriptor && descriptor) : _descriptor(descriptor)
 		{ }
 	};
