@@ -2,9 +2,9 @@
 #define TOOLKIT_RASTER_RECT_H
 
 #include <toolkit/core/core.h>
+#include <toolkit/io/StringOutputStream.h>
 #include <toolkit/raster/Size.h>
 #include <toolkit/raster/Point.h>
-#include <sstream>
 
 namespace TOOLKIT_NS { namespace raster
 {
@@ -127,8 +127,10 @@ namespace TOOLKIT_NS { namespace raster
 		Rect & operator -= (Point pos)
 		{ Left -= pos.X; Right -= pos.X; Top -= pos.Y; Bottom -= pos.Y; return *this; }
 
-		std::string ToString() const
-		{ std::stringstream ss; ss << '[' << Left << ", " << Top << ", " << Right << ", " << Bottom << ']'; return ss.str(); }
+		void ToString(io::StringOutputStream & ss) const
+		{ ss << '[' << Left << ", " << Top << ", " << Right << ", " << Bottom << ']'; }
+
+		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
 
 }}

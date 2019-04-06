@@ -2,6 +2,7 @@
 #define TOOLKIT_RASTER_POINT_H
 
 #include <toolkit/core/core.h>
+#include <toolkit/io/StringOutputStream.h>
 
 namespace TOOLKIT_NS { namespace raster
 {
@@ -44,6 +45,11 @@ namespace TOOLKIT_NS { namespace raster
 
 		bool IsZero() const
 		{ return (X | Y) == 0; }
+
+		void ToString(io::StringOutputStream & ss) const
+		{ ss << X << ", " << Y; }
+
+		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
 }}
 

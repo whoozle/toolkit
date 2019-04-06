@@ -40,6 +40,9 @@ namespace TOOLKIT_NS { namespace io
 		{ return _stream.GetSize(); }
 	};
 
+#define TOOLKIT_DECLARE_SIMPLE_TOSTRING() \
+	std::string ToString() const { TOOLKIT_NS :: io::StringOutputStream ss; ToString(ss); return ss.Get(); }
+
 }}
 
 #endif
