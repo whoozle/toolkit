@@ -15,7 +15,9 @@ namespace TOOLKIT_NS { namespace io
 		Storage _data;
 
 	public:
-		MemoryOutputStream(size_t initialCapacity = 4096): _data() { _data.reserve(initialCapacity); }
+		static constexpr size_t InitialCapacity = 4096;
+
+		MemoryOutputStream(size_t initialCapacity = InitialCapacity): _data() { _data.reserve(initialCapacity); }
 
 		size_t Write(ConstBuffer src) override
 		{

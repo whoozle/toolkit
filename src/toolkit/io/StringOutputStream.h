@@ -14,6 +14,11 @@ namespace TOOLKIT_NS { namespace io
 		size_t WriteImpl(ValueType value);
 
 	public:
+		static constexpr size_t InitialCapacity = 128;
+
+		StringOutputStream(size_t initialCapacity = InitialCapacity): _stream(initialCapacity)
+		{ }
+
 		size_t Write(ConstBuffer buffer)
 		{ return _stream.Write(buffer); }
 
