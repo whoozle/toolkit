@@ -1,5 +1,5 @@
-#ifndef TOOLKIT_MEMORYSTREAM_H
-#define TOOLKIT_MEMORYSTREAM_H
+#ifndef TOOLKIT_MEMORYOUTPUTSTREAM_H
+#define TOOLKIT_MEMORYOUTPUTSTREAM_H
 
 #include <toolkit/core/ByteArray.h>
 #include <toolkit/io/IStream.h>
