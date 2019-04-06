@@ -5,8 +5,7 @@
 namespace TOOLKIT_NS { namespace text
 {
 #define TOOLKIT_IO_SS_DECLARE_WRITE(FMT, TYPE) \
-	template<> \
-	size_t StringOutputStream::WriteImpl< TYPE >( TYPE value ) \
+	size_t StringOutputStream::WriteImpl( TYPE value ) \
 	{ \
 		char buf[3 * sizeof(TYPE) + 1]; \
 		auto r = snprintf(buf, sizeof(buf), FMT , value); \
@@ -30,16 +29,13 @@ namespace TOOLKIT_NS { namespace text
 	size_t StringOutputStream::Write(const char *value, size_t size)
 	{ return _stream.Write(ConstBuffer(static_cast<const u8 *>(static_cast<const void *>(value)), size)); }
 
-	template<>
-	size_t StringOutputStream::WriteImpl<const char *>(const char * value)
+	size_t StringOutputStream::WriteImpl(const char * value)
 	{ return Write(value, strlen(value)); }
 
-	template<>
-	size_t StringOutputStream::WriteImpl<char *>(char * value)
+	size_t StringOutputStream::WriteImpl(char * value)
 	{ return Write(value, strlen(value)); }
 
-	template<>
-	size_t StringOutputStream::WriteImpl<std::string>(std::string value)
+	size_t StringOutputStream::WriteImpl(const std::string & value)
 	{ return Write(value.data(), value.size()); }
 
 }}
