@@ -14,9 +14,15 @@ namespace TOOLKIT_NS { namespace serialization
 	class JSONWriter
 	{
 		ClassDescriptor		_descriptor;
+
 	public:
 		JSONWriter(ClassDescriptor && descriptor) : _descriptor(descriptor)
 		{ }
+
+		template<typename StreamType>
+		void Write(StreamType & stream, const ClassType & object) const
+		{
+		}
 	};
 
 }}
