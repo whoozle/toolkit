@@ -5,8 +5,7 @@
 #include <toolkit/net/ISocket.h>
 #include <toolkit/core/Buffer.h>
 
-TOOLKIT_NS_BEGIN
-namespace net
+namespace TOOLKIT_NS { namespace net
 {
 
 	class BaseSocket :
@@ -29,7 +28,7 @@ namespace net
 		ssize_t Write(ConstBuffer data);
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

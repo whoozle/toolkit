@@ -5,8 +5,7 @@
 #include <toolkit/core/Noncopyable.h>
 #include <vector>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	class BufferedStream : public IBufferedStream, Noncopyable
@@ -81,7 +80,7 @@ namespace io
 		}
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

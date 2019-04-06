@@ -6,8 +6,7 @@
 #include <string.h>
 #include <vector>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	class MemoryOutputStream : public IOutputStream
@@ -31,7 +30,7 @@ namespace io
 		{ return std::move(_data); }
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

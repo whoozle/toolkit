@@ -4,8 +4,7 @@
 #include <toolkit/core/types.h>
 #include <toolkit/core/Buffer.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	namespace impl
@@ -47,8 +46,8 @@ namespace io
 	using CRC32		= impl::CRC<u32, 0xEDB88320>;
 	using CRC32C	= impl::CRC<u32, 0x82F63B78>;
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif
 

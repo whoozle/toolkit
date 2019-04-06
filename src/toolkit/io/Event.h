@@ -7,8 +7,7 @@
 #include <memory>
 #include <mutex>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	class Event : public IPollable, public Noncopyable
@@ -30,7 +29,7 @@ namespace io
 	};
 	DECLARE_PTR(Event);
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

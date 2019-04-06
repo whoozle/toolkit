@@ -4,7 +4,8 @@
 #include <toolkit/core/core.h>
 #include <functional>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	namespace serialization
 	{
@@ -32,6 +33,6 @@ TOOLKIT_NS_BEGIN
 		invoker.dispatch();
 	}
 
-TOOLKIT_NS_END
+}
 
 #endif

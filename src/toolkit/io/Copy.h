@@ -5,8 +5,7 @@
 #include <toolkit/core/ByteArray.h>
 #include <toolkit/core/Buffer.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	inline void Copy(IStorage & dst, IStorage & src, size_t bufferSize = 128 * 1024)
@@ -21,8 +20,8 @@ namespace io
 		while(r == bufferSize);
 	}
 
-}
-TOOLKIT_NS_END
+}}
+
 
 
 #endif

@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <toolkit/core/core.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	using Exception = std::runtime_error;
 
@@ -22,6 +23,6 @@ TOOLKIT_NS_BEGIN
 		return value;
 	}
 
-TOOLKIT_NS_END
+}
 
 #endif

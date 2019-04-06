@@ -7,8 +7,7 @@
 #include <sys/poll.h>
 #include <unistd.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 	namespace
 	{
@@ -92,5 +91,5 @@ namespace io
 		}
 		return r;
 	}
-}
-TOOLKIT_NS_END
+}}
+

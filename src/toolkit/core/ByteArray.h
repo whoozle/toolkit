@@ -7,7 +7,8 @@
 #include <vector>
 #include <memory>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	class ByteArray : public Noncopyable
 	{
@@ -39,6 +40,6 @@ TOOLKIT_NS_BEGIN
 	};
 	DECLARE_PTR(ByteArray);
 
-TOOLKIT_NS_END
+}
 
 #endif

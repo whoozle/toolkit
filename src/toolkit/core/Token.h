@@ -3,7 +3,8 @@
 
 #include <toolkit/core/Counter.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	struct IToken : Counter<IToken>
 	{
@@ -23,6 +24,6 @@ TOOLKIT_NS_BEGIN
 		{ return (bool)_token; }
 	};
 
-TOOLKIT_NS_END
+}
 
 #endif

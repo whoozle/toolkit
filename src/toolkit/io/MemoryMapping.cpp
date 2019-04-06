@@ -3,8 +3,7 @@
 #include <toolkit/log/Logger.h>
 #include <unistd.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 	MemoryMapping::MemoryMapping(void *addr, size_t length, int prot, int flags, int fd, off_t offset)
 	{
@@ -30,5 +29,5 @@ namespace io
 
 	size_t MemoryMapping::GetPageSize()
 	{ return sysconf(_SC_PAGESIZE); }
-}
-TOOLKIT_NS_END
+}}
+

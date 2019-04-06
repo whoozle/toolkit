@@ -1,8 +1,7 @@
 #include <toolkit/io/Process.h>
 #include <toolkit/io/SystemException.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 	namespace
 	{
@@ -41,5 +40,5 @@ namespace io
 		SYSTEM_CALL(getrusage(RUSAGE_SELF, &usage));
 		return { usage };
 	}
-}
-TOOLKIT_NS_END
+}}
+

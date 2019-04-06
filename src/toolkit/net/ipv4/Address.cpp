@@ -4,8 +4,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace ipv4
+namespace TOOLKIT_NS { namespace net { namespace ipv4
 {
 
 	Address Address::Any()
@@ -28,5 +27,5 @@ namespace net { namespace ipv4
 		return Address(inp.s_addr);
 	}
 
-}}
-TOOLKIT_NS_END
+}}}
+

@@ -12,8 +12,7 @@
 
 #define ANONYMOUS_LOGGER(name) namespace { TOOLKIT_NS :: log :: Logger log(name); }
 
-TOOLKIT_NS_BEGIN
-namespace log
+namespace TOOLKIT_NS { namespace log
 {
 
 	class LogDispatcher : public ILoggingSink
@@ -125,7 +124,7 @@ namespace log
 
 #define DECLARE_LOGGER(Class) namespace { TOOLKIT_NS::log::Logger _logger(#Class); }
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

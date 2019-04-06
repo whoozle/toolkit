@@ -5,8 +5,7 @@
 #include <sstream>
 #include <string>
 
-TOOLKIT_NS_BEGIN
-namespace raster
+namespace TOOLKIT_NS { namespace raster
 {
 	struct Size
 	{
@@ -39,7 +38,7 @@ namespace raster
 		std::string ToString() const
 		{ std::stringstream ss; ss << Width << 'x' << Height; return ss.str(); }
 	};
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

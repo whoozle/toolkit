@@ -4,7 +4,8 @@
 #include <toolkit/core/core.h>
 #include <type_traits>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	namespace impl
 	{
@@ -17,7 +18,7 @@ TOOLKIT_NS_BEGIN
 		{ };
 	}
 
-TOOLKIT_NS_END
+}
 
 #define DECLARE_METHOD_CHECK(NAME) \
 	template<typename T> \

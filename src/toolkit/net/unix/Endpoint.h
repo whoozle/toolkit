@@ -4,7 +4,8 @@
 #include <toolkit/core/core.h>
 #include <string>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 namespace net { namespace bsd
 {
@@ -25,7 +26,7 @@ namespace net { namespace unix
 		void Bind(bsd::Socket & socket) const;
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

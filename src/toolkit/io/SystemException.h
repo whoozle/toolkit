@@ -3,8 +3,7 @@
 
 #include <toolkit/core/Exception.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	class SystemException : public Exception
@@ -22,7 +21,7 @@ namespace io
 #define SYSTEM_CALL_RETURN(...) \
 	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) throw TOOLKIT_NS ::io::SystemException( #__VA_ARGS__ ); return _retVal; } while (false)
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

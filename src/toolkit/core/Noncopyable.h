@@ -3,7 +3,8 @@
 
 #include <toolkit/core/core.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	struct Noncopyable
 	{
@@ -15,6 +16,6 @@ TOOLKIT_NS_BEGIN
 		Noncopyable & operator = (const Noncopyable &) = delete;
 	};
 
-TOOLKIT_NS_END
+}
 
 #endif

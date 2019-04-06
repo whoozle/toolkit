@@ -4,8 +4,7 @@
 #include <toolkit/core/core.h>
 #include <string>
 
-TOOLKIT_NS_BEGIN
-namespace text
+namespace TOOLKIT_NS { namespace text
 {
 
 #if __SIZEOF_WCHAR_T__ != 4
@@ -44,8 +43,8 @@ namespace text
 		return impl::HashAvalanche(hash);
 	}
 
-}
-TOOLKIT_NS_END
+}}
+
 
 
 #endif

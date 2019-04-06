@@ -8,7 +8,8 @@
 #include <atomic>
 #include <utility>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	template < typename Type >
 	class CounterPtr
@@ -99,6 +100,6 @@ TOOLKIT_NS_BEGIN
 
 #define DECLARE_COUNTER_PTR(CLASS) typedef TOOLKIT_NS :: CounterPtr< CLASS > CLASS##Ptr
 
-TOOLKIT_NS_END
+}
 
 #endif

@@ -3,8 +3,7 @@
 
 #include <termios.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	bool SerialPort::GetParityBit()
@@ -27,5 +26,5 @@ namespace io
 		SYSTEM_CALL(tcsetattr(_fd, TCSADRAIN, &state));
 	}
 
-}
-TOOLKIT_NS_END
+}}
+

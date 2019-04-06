@@ -9,7 +9,8 @@
 #include <mutex>
 #include <stdio.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	class ThreadPool : Noncopyable
 	{
@@ -82,6 +83,6 @@ TOOLKIT_NS_BEGIN
 		}
 	};
 
-TOOLKIT_NS_END
+}
 
 #endif

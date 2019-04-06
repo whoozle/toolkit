@@ -6,8 +6,7 @@
 #include <toolkit/io/IPollable.h>
 #include <sys/socket.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace bsd
+namespace TOOLKIT_NS { namespace net { namespace bsd
 {
 
 	class Socket :
@@ -53,8 +52,8 @@ namespace net { namespace bsd
 		void Shutdown(int how);
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif
 

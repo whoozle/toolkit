@@ -3,8 +3,7 @@
 
 #include <toolkit/net/BaseSocket.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace ipv4
+namespace TOOLKIT_NS { namespace net { namespace ipv4
 {
 	struct Endpoint;
 
@@ -15,7 +14,7 @@ namespace net { namespace ipv4
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

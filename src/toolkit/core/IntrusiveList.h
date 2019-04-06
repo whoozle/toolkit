@@ -3,7 +3,8 @@
 
 #include <iterator>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	template<typename ValueType>
 	class IntrusiveListNode
@@ -168,6 +169,6 @@ TOOLKIT_NS_BEGIN
 	private:
 		Node _root;
 	};
-TOOLKIT_NS_END
+}
 
 #endif

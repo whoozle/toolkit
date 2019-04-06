@@ -5,8 +5,7 @@
 #include <toolkit/core/Exception.h>
 #include <array>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	namespace impl
@@ -188,7 +187,7 @@ namespace io
 	using LittleEndianDataOutputStream = DataOutputStream<false>;
 	using BigEndianDataOutputStream = DataOutputStream<true>;
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

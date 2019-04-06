@@ -3,7 +3,8 @@
 
 #include <toolkit/core/types.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 
 	template<typename T>
@@ -17,7 +18,7 @@ TOOLKIT_NS_BEGIN
 	template<> struct DoubleSize<s16> { using Type = s32; };
 	template<> struct DoubleSize<s32> { using Type = s64; };
 
-TOOLKIT_NS_END
+}
 
 #endif
 

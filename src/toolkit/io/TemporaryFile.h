@@ -5,8 +5,7 @@
 #include <limits.h>
 
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	class TemporaryFile : public File
@@ -23,8 +22,8 @@ namespace io
 	};
 	DECLARE_PTR(TemporaryFile);
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif /* NAMEDFILE_H */
 

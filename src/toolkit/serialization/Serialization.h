@@ -5,8 +5,7 @@
 #include <toolkit/io/IStream.h>
 #include <string>
 
-TOOLKIT_NS_BEGIN
-namespace serialization
+namespace TOOLKIT_NS { namespace serialization
 {
 
 	template<typename ClassType, typename MemberType>
@@ -66,8 +65,8 @@ namespace serialization
 		return serializator;
 	}
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif
 

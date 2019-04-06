@@ -3,7 +3,8 @@
 
 #include <toolkit/net/ipv4/Address.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 namespace net { namespace bsd
 {
@@ -25,7 +26,7 @@ namespace net { namespace ipv4
 		void Bind(bsd::Socket & socket) const;
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

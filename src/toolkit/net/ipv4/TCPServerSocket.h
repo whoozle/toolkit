@@ -4,8 +4,7 @@
 #include <toolkit/net/ipv4/TCPSocket.h>
 #include <toolkit/net/BaseServerSocket.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace ipv4
+namespace TOOLKIT_NS { namespace net { namespace ipv4
 {
 
 	class TCPServerSocket :
@@ -15,7 +14,7 @@ namespace net { namespace ipv4
 		using BaseServerSocket::BaseServerSocket;
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

@@ -3,8 +3,7 @@
 
 #include <toolkit/core/types.h>
 
-TOOLKIT_NS_BEGIN
-namespace raster
+namespace TOOLKIT_NS { namespace raster
 {
 
 	struct Color
@@ -62,7 +61,7 @@ namespace raster
 			return *this;
 		}
 	};
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

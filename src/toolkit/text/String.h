@@ -5,15 +5,14 @@
 #include <toolkit/core/core.h>
 #include <string>
 
-TOOLKIT_NS_BEGIN
-namespace text
+namespace TOOLKIT_NS { namespace text
 {
 	DECLARE_METHOD_CHECK(ToString)
 
 	std::wstring FromUtf8(const std::string &text);
 	std::string ToUtf8(const std::wstring &text);
-}
-TOOLKIT_NS_END
+}}
+
 
 
 #endif

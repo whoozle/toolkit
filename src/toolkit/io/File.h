@@ -8,8 +8,7 @@
 #include <sys/stat.h>
 #include <sys/statvfs.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	enum struct FileOpenMode
@@ -53,7 +52,7 @@ namespace io
 		static int MapMode(SeekMode mode);
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

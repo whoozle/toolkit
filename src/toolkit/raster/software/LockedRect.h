@@ -6,8 +6,7 @@
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/core/types.h>
 
-TOOLKIT_NS_BEGIN
-namespace raster { namespace software
+namespace TOOLKIT_NS { namespace raster { namespace software
 {
 
 	template<typename PixelFormat>
@@ -107,7 +106,7 @@ namespace raster { namespace software
 	};
 
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

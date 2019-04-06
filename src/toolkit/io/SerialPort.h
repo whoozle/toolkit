@@ -4,8 +4,7 @@
 #include <toolkit/io/File.h>
 #include <toolkit/io/ISerialPort.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	class SerialPort :
@@ -19,7 +18,7 @@ namespace io
 		void SetParityBit(bool bit) override;
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

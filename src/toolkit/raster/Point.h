@@ -3,8 +3,7 @@
 
 #include <toolkit/core/core.h>
 
-TOOLKIT_NS_BEGIN
-namespace raster
+namespace TOOLKIT_NS { namespace raster
 {
 	struct Point
 	{
@@ -46,7 +45,7 @@ namespace raster
 		bool IsZero() const
 		{ return (X | Y) == 0; }
 	};
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

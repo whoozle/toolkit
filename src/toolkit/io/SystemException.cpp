@@ -4,8 +4,7 @@
 #include <string.h>
 #include <errno.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	SystemException::SystemException(const std::string &what) throw() : std::runtime_error(what + ": " + GetErrorMessage())
@@ -27,5 +26,5 @@ namespace io
 	std::string SystemException::GetErrorMessage()
 	{ return GetErrorMessage(errno); }
 
-}
-TOOLKIT_NS_END
+}}
+

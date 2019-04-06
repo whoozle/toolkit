@@ -4,8 +4,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	File::File(const std::string &path, FileOpenMode mode): _fd(::open(path.c_str(), MapMode(mode), 0600))
@@ -103,5 +102,5 @@ namespace io
 	}
 
 
-}
-TOOLKIT_NS_END
+}}
+

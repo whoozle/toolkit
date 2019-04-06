@@ -7,8 +7,7 @@
 #include <memory>
 #include <sys/mman.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 #if 0 //fixme: later
 	enum struct MemoryProtection : int
@@ -48,8 +47,8 @@ namespace io
 		//int Map(MemoryProtection prot);
 	};
 	DECLARE_PTR(MemoryMapping);
-}
-TOOLKIT_NS_END
+}}
+
 
 
 #endif

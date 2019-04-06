@@ -4,8 +4,7 @@
 #include <toolkit/core/types.h>
 #include <toolkit/core/Noncopyable.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 	struct IPollable;
 	struct IPollEventHandler;
@@ -37,7 +36,7 @@ namespace io
 		{ return Wait(-1); }
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

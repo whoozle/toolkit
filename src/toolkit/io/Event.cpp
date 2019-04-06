@@ -5,8 +5,7 @@
 #include <unistd.h>
 #include <limits.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 	Event::Event(): _active(false)
 	{
@@ -54,5 +53,5 @@ namespace io
 			throw std::logic_error("more than one byte in pipe");
 		_active = false;
 	}
-}
-TOOLKIT_NS_END
+}}
+

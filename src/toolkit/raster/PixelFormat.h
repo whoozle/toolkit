@@ -4,8 +4,7 @@
 #include <toolkit/core/types.h>
 #include <toolkit/raster/Color.h>
 
-TOOLKIT_NS_BEGIN
-namespace raster
+namespace TOOLKIT_NS { namespace raster
 {
 	namespace impl
 	{
@@ -106,7 +105,7 @@ namespace raster
 	using RGB24		= impl::PixelFormat<u32,  16, 8,  8, 8,  0,  8,  0,  0>;
 	using ARGB		= impl::PixelFormat<u32,  16, 8,  8, 8,  0,  8,  24, 8>;
 	using A8		= impl::PixelFormat<u8,   0,  0,  0, 0,  0,  0,  0,  8>;
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

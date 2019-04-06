@@ -2,8 +2,7 @@
 #include <codecvt>
 #include <locale>
 
-TOOLKIT_NS_BEGIN
-namespace text
+namespace TOOLKIT_NS { namespace text
 {
 	namespace
 	{
@@ -20,5 +19,5 @@ namespace text
 		return Convert.to_bytes(text);
 	}
 
-}
-TOOLKIT_NS_END
+}}
+

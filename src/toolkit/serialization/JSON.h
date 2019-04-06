@@ -6,8 +6,7 @@
 #include <string>
 #include <tuple>
 
-TOOLKIT_NS_BEGIN
-namespace serialization
+namespace TOOLKIT_NS { namespace serialization
 {
 
 	template<typename ClassType, typename ClassDescriptor>
@@ -22,8 +21,8 @@ namespace serialization
 		{ }
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif
 

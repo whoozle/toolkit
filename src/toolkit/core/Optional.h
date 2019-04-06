@@ -3,7 +3,8 @@
 
 #include <type_traits>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	struct EmptyOptionalException : Exception
 	{
@@ -100,6 +101,6 @@ TOOLKIT_NS_BEGIN
 		{ return _initialized; }
 	};
 
-TOOLKIT_NS_END
+}
 
 #endif

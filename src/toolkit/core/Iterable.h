@@ -4,7 +4,8 @@
 #include <type_traits>
 #include <toolkit/core/core.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	template <typename ContainerType>
 	class StdContainerIterable
@@ -28,6 +29,6 @@ TOOLKIT_NS_BEGIN
 		return StdContainerIterable<DecayedContainerType>(container.begin(), container.end());
 	}
 
-TOOLKIT_NS_END
+}
 
 #endif

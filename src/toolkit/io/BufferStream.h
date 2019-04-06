@@ -5,8 +5,7 @@
 #include <toolkit/io/IStream.h>
 #include <string.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	class BufferInputStream : public IInputStream
@@ -45,7 +44,7 @@ namespace io
 		}
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

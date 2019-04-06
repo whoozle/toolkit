@@ -4,8 +4,7 @@
 #include <toolkit/net/unix/LocalSocket.h>
 #include <toolkit/net/BaseServerSocket.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace unix
+namespace TOOLKIT_NS { namespace net { namespace unix
 {
 
 	class LocalServerSocket :
@@ -15,7 +14,7 @@ namespace net { namespace unix
 		using BaseServerSocket::BaseServerSocket;
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

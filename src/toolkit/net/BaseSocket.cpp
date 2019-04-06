@@ -1,8 +1,7 @@
 #include <toolkit/net/ipv4/TCPSocket.h>
 #include <toolkit/net/ipv4/Endpoint.h>
 
-TOOLKIT_NS_BEGIN
-namespace net
+namespace TOOLKIT_NS { namespace net
 {
 
 	BaseSocket::~BaseSocket()
@@ -16,5 +15,5 @@ namespace net
 	}
 
 
-}
-TOOLKIT_NS_END
+}}
+

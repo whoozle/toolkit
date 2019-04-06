@@ -5,7 +5,8 @@
 #include <toolkit/core/Counter.h>
 #include <unordered_map>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	template<typename ValueType>
 	struct LRUCacheNode : public ValueType, Counter<ValueType>, IntrusiveListNode<LRUCacheNode<ValueType>>
@@ -52,7 +53,7 @@ TOOLKIT_NS_BEGIN
 		}
 	};
 
-TOOLKIT_NS_END
+}
 
 #endif
 

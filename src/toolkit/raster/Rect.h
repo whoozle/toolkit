@@ -6,8 +6,7 @@
 #include <toolkit/raster/Point.h>
 #include <sstream>
 
-TOOLKIT_NS_BEGIN
-namespace raster
+namespace TOOLKIT_NS { namespace raster
 {
 
 	struct Rect
@@ -132,7 +131,7 @@ namespace raster
 		{ std::stringstream ss; ss << '[' << Left << ", " << Top << ", " << Right << ", " << Bottom << ']'; return ss.str(); }
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

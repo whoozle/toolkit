@@ -3,8 +3,7 @@
 
 #include <toolkit/net/BaseSocket.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace unix
+namespace TOOLKIT_NS { namespace net { namespace unix
 {
 	class LocalSocket : public BaseSocket
 	{
@@ -13,7 +12,7 @@ namespace net { namespace unix
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 
 	};
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

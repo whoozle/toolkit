@@ -5,7 +5,8 @@
 #include <stdint.h>
 #include <stddef.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	using uint	= unsigned int;
 	using ulong	= unsigned long;
@@ -20,8 +21,7 @@ TOOLKIT_NS_BEGIN
 	using s32	= int32_t;
 	using s64	= int64_t;
 
-
-TOOLKIT_NS_END
+}
 
 #define DECLARE_PTR(C) using C##Ptr = std::shared_ptr<C>
 #define DECLARE_WEAK_PTR(C) using C##WeakPtr = std::weak_ptr<C>

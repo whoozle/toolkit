@@ -5,7 +5,8 @@
 #include <tuple>
 #include <type_traits>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	template<std::size_t I = 0, typename Tuple, typename Func>
 	typename std::enable_if< I != std::tuple_size<typename std::decay<Tuple>::type>::value, void >::type
@@ -45,7 +46,7 @@ TOOLKIT_NS_BEGIN
 		return serialization::Transformer<TransformerType, Tuple>::Transform(args);
 	}
 
-TOOLKIT_NS_END
+}
 
 #endif
 

@@ -4,8 +4,7 @@
 #include <toolkit/io/IStream.h>
 #include <toolkit/io/IPollable.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 	struct ISerialPort :
 		public virtual IBidirectionalStream,
@@ -16,7 +15,7 @@ namespace io
 	};
 
 	DECLARE_PTR(ISerialPort);
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

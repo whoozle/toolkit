@@ -5,7 +5,8 @@
 #include <toolkit/core/types.h>
 #include <stddef.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	template<typename T>
 	class BasicBuffer
@@ -104,6 +105,6 @@ TOOLKIT_NS_BEGIN
 	using Buffer		= BasicBuffer<u8>;
 	using ConstBuffer	= BasicBuffer<const u8>;
 
-TOOLKIT_NS_END
+}
 
 #endif

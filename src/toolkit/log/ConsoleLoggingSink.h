@@ -3,8 +3,7 @@
 
 #include <toolkit/log/ILoggingSink.h>
 
-TOOLKIT_NS_BEGIN
-namespace log
+namespace TOOLKIT_NS { namespace log
 {
 
 	class ConsoleLoggingSink : public ILoggingSink
@@ -19,7 +18,7 @@ namespace log
 		void Log(LogLevel level, const std::string& logger, const timespec& ts, const std::string& value) override;
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

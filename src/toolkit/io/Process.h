@@ -7,8 +7,7 @@
 #include <sys/time.h>
 #include <sys/resource.h>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 	class Process
 	{
@@ -22,8 +21,8 @@ namespace io
 
 		static Statistics GetProcessStatistics();
 	};
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif
 

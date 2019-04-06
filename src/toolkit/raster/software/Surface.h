@@ -8,8 +8,7 @@
 
 #include <vector>
 
-TOOLKIT_NS_BEGIN
-namespace raster { namespace software
+namespace TOOLKIT_NS { namespace raster { namespace software
 {
 
 	template<typename PixelFormat_>
@@ -64,7 +63,7 @@ namespace raster { namespace software
 		{ }
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

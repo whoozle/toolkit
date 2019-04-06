@@ -4,8 +4,7 @@
 #include <toolkit/core/types.h>
 #include <string>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace ipv4
+namespace TOOLKIT_NS { namespace net { namespace ipv4
 {
 
 	class Address
@@ -29,7 +28,7 @@ namespace net { namespace ipv4
 		static Address FromString(const std::string &addr);
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

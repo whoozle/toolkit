@@ -5,8 +5,7 @@
 #include <toolkit/raster/Rect.h>
 #include <toolkit/raster/Blender.h>
 
-TOOLKIT_NS_BEGIN
-namespace raster { namespace software
+namespace TOOLKIT_NS { namespace raster { namespace software
 {
 
 	template<typename ContextType>
@@ -190,7 +189,7 @@ namespace raster { namespace software
 		{ Blit(_context.GetFrontBuffer(), rect, rect.TopLeft(), _context.GetBackBuffer(), rect); }
 	};
 
-}}
-TOOLKIT_NS_END
+}}}
+
 
 #endif

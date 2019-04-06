@@ -4,7 +4,8 @@
 #include <toolkit/core/types.h>
 #include <type_traits>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 	//add type checks for integral types here
 
@@ -51,6 +52,6 @@ TOOLKIT_NS_BEGIN
 	inline T LCM(T a, T b)
 	{ return a * b / GCD(a, b); } //fixme: double type here
 
-TOOLKIT_NS_END
+}
 
 #endif

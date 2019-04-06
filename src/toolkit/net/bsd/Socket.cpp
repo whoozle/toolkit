@@ -6,8 +6,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace bsd
+namespace TOOLKIT_NS { namespace net { namespace bsd
 {
 
 	Socket::Socket(int family, int type, int proto): _socket(socket(family, type, proto)), _nonBlocking(false)
@@ -92,5 +91,5 @@ namespace net { namespace bsd
 	void Socket::Shutdown(int how)
 	{ shutdown(_socket, how); }
 
-}}
-TOOLKIT_NS_END
+}}}
+

@@ -1,8 +1,7 @@
 #include <toolkit/log/Logger.h>
 #include <toolkit/log/ConsoleLoggingSink.h>
 
-TOOLKIT_NS_BEGIN
-namespace log
+namespace TOOLKIT_NS { namespace log
 {
 
 	ILoggingSinkPtr LogDispatcher::GetDefaultSink()
@@ -12,5 +11,5 @@ namespace log
 		return _defaultSink;
 	}
 
-}
-TOOLKIT_NS_END
+}}
+

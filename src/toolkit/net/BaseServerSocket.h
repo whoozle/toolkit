@@ -4,8 +4,7 @@
 #include <toolkit/net/bsd/Socket.h>
 #include <toolkit/net/ISocket.h>
 
-TOOLKIT_NS_BEGIN
-namespace net
+namespace TOOLKIT_NS { namespace net
 {
 
 	struct Endpoint;
@@ -39,7 +38,7 @@ namespace net
 		}
 	};
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

@@ -6,8 +6,7 @@
 #include <sys/types.h>
 #include <memory>
 
-TOOLKIT_NS_BEGIN
-namespace io
+namespace TOOLKIT_NS { namespace io
 {
 
 	enum struct SyncMode
@@ -78,8 +77,8 @@ namespace io
 	};
 	DECLARE_PTR(IBufferedStream);
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif
 

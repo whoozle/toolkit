@@ -3,8 +3,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-TOOLKIT_NS_BEGIN
-namespace net { namespace unix
+namespace TOOLKIT_NS { namespace net { namespace unix
 {
 	void Endpoint::Connect(bsd::Socket & socket) const
 	{
@@ -24,5 +23,5 @@ namespace net { namespace unix
 		socket.Bind((struct sockaddr *)&address, sizeof(address));
 	}
 
-}}
-TOOLKIT_NS_END
+}}}
+

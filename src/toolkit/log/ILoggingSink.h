@@ -6,8 +6,7 @@
 #include <string>
 #include <memory>
 
-TOOLKIT_NS_BEGIN
-namespace log
+namespace TOOLKIT_NS { namespace log
 {
 
 	enum struct LogLevel
@@ -41,7 +40,7 @@ namespace log
 	};
 	DECLARE_PTR(ILoggingSink);
 
-}
-TOOLKIT_NS_END
+}}
+
 
 #endif

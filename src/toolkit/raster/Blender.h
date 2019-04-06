@@ -4,7 +4,8 @@
 #include <toolkit/raster/PixelFormat.h>
 #include <toolkit/core/type_traits.h>
 
-TOOLKIT_NS_BEGIN
+namespace TOOLKIT_NS
+{
 
 namespace raster { namespace software
 {
@@ -85,6 +86,6 @@ namespace raster { namespace software
 		};
 }}
 
-TOOLKIT_NS_END
+}
 
 #endif
