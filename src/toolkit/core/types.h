@@ -29,7 +29,7 @@ namespace TOOLKIT_NS
 #define DECLARE_CONST_WEAK_PTR(C) using C##WeakPtr = std::weak_ptr<const C>
 #define DECLARE_UPTR(C) using C##UPtr = std::unique_ptr<C>
 
-#define _FORWARD_DECLARE(NS, TYPE, NAME, DECL) TOOLKIT_NS_BEGIN namespace NS { TYPE NAME ; DECL } TOOLKIT_NS_END
+#define _FORWARD_DECLARE(NS, TYPE, NAME, DECL) namespace TOOLKIT_NS { namespace NS { TYPE NAME ; DECL } }
 
 #define FORWARD_DECLARE_CLASS(NS, NAME) _FORWARD_DECLARE(NS, class, NAME, /**/ )
 #define FORWARD_DECLARE_CLASS_PTR(NS, NAME) _FORWARD_DECLARE(NS, class, NAME, DECLARE_PTR(NAME) ; )
