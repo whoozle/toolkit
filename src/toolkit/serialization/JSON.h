@@ -36,6 +36,7 @@ namespace TOOLKIT_NS { namespace serialization
 			else
 				state.First = false;
 		}
+
 		template<typename StreamType, typename DescriptorType>
 		void WriteDescriptor(StreamType & stream, State & state, const DescriptorType & desc) const
 		{
@@ -45,15 +46,15 @@ namespace TOOLKIT_NS { namespace serialization
 
 		template<std::size_t MemberCount, size_t Index = 0, typename StreamType>
 		typename std::enable_if<Index < MemberCount, void>::type
-		WriteProperties(StreamType & stream, State & state) const
+		WriteDescriptors(StreamType & stream, State & state) const
 		{
 			WriteDescriptor(stream, state, std::get<Index>(_descriptor.Data));
-			WriteProperties<MemberCount, Index + 1>(stream, state);
+			WriteDescriptors<MemberCount, Index + 1>(stream, state);
 		}
 
 		template<std::size_t MemberCount, size_t Index = 0, typename StreamType>
 		typename std::enable_if<Index == MemberCount, void>::type
-		WriteProperties(StreamType & stream, State & state) const
+		WriteDescriptors(StreamType & stream, State & state) const
 		{ }
 
 	public:
@@ -144,7 +145,7 @@ namespace TOOLKIT_NS { namespace serialization
 			if (_descriptor.Version != 0)
 				WriteProperty(stream, state, "__version", _descriptor.Version);
 
-			WriteProperties<ClassDescriptor::MemberCount>(stream, state);
+			WriteDescriptors<ClassDescriptor::MemberCount>(stream, state);
 			stream << "}";
 		}
 	};
