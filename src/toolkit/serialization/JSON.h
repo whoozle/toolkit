@@ -13,7 +13,6 @@ namespace TOOLKIT_NS { namespace serialization
 {
 
 	template<typename ClassType, typename ClassDescriptor>
-
 	class JSONWriter
 	{
 		ClassDescriptor				_descriptor;
@@ -21,9 +20,10 @@ namespace TOOLKIT_NS { namespace serialization
 	public:
 		struct State
 		{
+			const ClassType *	Object;
 			bool				First;
 
-			State(): First(true)
+			State(const ClassType * object): Object(object), First(true)
 			{ }
 		};
 
@@ -37,22 +37,31 @@ namespace TOOLKIT_NS { namespace serialization
 				state.First = false;
 		}
 		template<typename StreamType, typename DescriptorType>
-		void WriteDescriptor(StreamType & stream, const DescriptorType & desc)
-		{ }
-
-		template<typename StreamType, std::size_t... Index>
-		void WriteProperties(StreamType & stream,
-							State & state, std::index_sequence<Index...>) const
+		void WriteDescriptor(StreamType & stream, State & state, const DescriptorType & desc) const
 		{
-			//WriteDescriptor(std::get<Index>(_descriptor.Data) ...);
+			if (!desc.Name.empty())
+				WriteProperty(stream, state, desc.Name, desc.Get(state.Object));
 		}
+
+		template<std::size_t MemberCount, size_t Index = 0, typename StreamType>
+		typename std::enable_if<Index < MemberCount, void>::type
+		WriteProperties(StreamType & stream, State & state) const
+		{
+			WriteDescriptor(stream, state, std::get<Index>(_descriptor.Data));
+			WriteProperties<MemberCount, Index + 1>(stream, state);
+		}
+
+		template<std::size_t MemberCount, size_t Index = 0, typename StreamType>
+		typename std::enable_if<Index == MemberCount, void>::type
+		WriteProperties(StreamType & stream, State & state) const
+		{ }
 
 	public:
 		JSONWriter(ClassDescriptor && descriptor) : _descriptor(descriptor)
 		{ }
 
-		static State NewState()
-		{ return State(); }
+		static State NewState(const ClassType & object)
+		{ return State(&object); }
 
 		template<typename StreamType>
 		static void WriteString(StreamType & stream, const std::string &str)
@@ -111,6 +120,15 @@ namespace TOOLKIT_NS { namespace serialization
 			WriteString(stream, value);
 		}
 
+		template<typename StreamType>
+		void WriteProperty(StreamType & stream, State & state, const std::string &name, const std::wstring &value) const
+		{
+			MaybeComma(stream, state);
+			WriteString(stream, name);
+			stream << ':';
+			WriteString(stream, value);
+		}
+
 		template<typename StreamType, typename ValueType>
 		void WriteProperty(StreamType & stream, State & state, const std::string &name, ValueType && value) const
 		{
@@ -120,7 +138,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType>
-		void Write(StreamType & stream, State & state, const ClassType & object) const
+		void Write(StreamType & stream, State & state) const
 		{
 			stream << "{";
 			if (!_descriptor.Name.empty())
@@ -128,7 +146,7 @@ namespace TOOLKIT_NS { namespace serialization
 			if (_descriptor.Version != 0)
 				WriteProperty(stream, state, "__version", _descriptor.Version);
 
-			WriteProperties(stream, state, std::make_index_sequence<ClassDescriptor::MemberCount>());
+			WriteProperties<ClassDescriptor::MemberCount>(stream, state);
 			stream << "}";
 		}
 	};

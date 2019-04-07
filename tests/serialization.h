@@ -35,9 +35,9 @@ namespace
 			auto jsonWriter = ts::MakeSerializator<Test, ts::JSONWriter>();
 			Test test(2, 3, "юникод\n©2008\r\n");
 
-			auto state = jsonWriter.NewState();
+			auto state = jsonWriter.NewState(test);
 			toolkit::text::StringOutputStream ss;
-			jsonWriter.Write(ss, state, test);
+			jsonWriter.Write(ss, state);
 			EXPECT( ss.Get() == "{}" );
 		},
 	};
