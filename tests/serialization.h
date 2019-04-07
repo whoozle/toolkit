@@ -33,12 +33,12 @@ namespace
 		CASE( "JSON serialization test" )
 		{
 			auto jsonWriter = ts::MakeSerializator<Test, ts::JSONWriter>();
-			Test test(2, 3, "юникод\n©2008\r\n");
+			Test test(2, 3, "юникод\ncopyright ©1738\r\n");
 
 			auto state = jsonWriter.NewState(test);
 			toolkit::text::StringOutputStream ss;
 			jsonWriter.Write(ss, state);
-			EXPECT( ss.Get() == "{}" );
+			EXPECT( ss.Get() == "{\"__classname\":\"Test\",\"__version\":1,\"p\":2,\"q\":3,\"comment\":\"\\u044E\\u043D\\u0438\\u043A\\u043E\\u0434\\ncopyright \\u00A91738\\r\\n\"}" );
 		},
 	};
 }
