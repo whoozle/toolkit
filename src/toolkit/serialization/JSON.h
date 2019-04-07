@@ -73,39 +73,37 @@ namespace TOOLKIT_NS { namespace serialization
 			stream << '"';
 			for(auto uc : str)
 			{
-				if (uc >= 0x20 && uc < 0x7f)
-					stream << static_cast<char>(uc);
-				else
+				switch(uc)
 				{
-					switch(uc)
-					{
-						case '"':
-							stream << "\\\"";
-							break;
-						case '\\':
-							stream << "\\\\";
-							break;
-						case '/':
-							stream << "\\/";
-							break;
-						case '\b':
-							stream << "\\b";
-							break;
-						case '\f':
-							stream << "\\f";
-							break;
-						case '\n':
-							stream << "\\n";
-							break;
-						case '\r':
-							stream << "\\r";
-							break;
-						case '\t':
-							stream << "\\t";
-							break;
-						default:
+					case '"':
+						stream << "\\\"";
+						break;
+					case '\\':
+						stream << "\\\\";
+						break;
+					case '/':
+						stream << "\\/";
+						break;
+					case '\b':
+						stream << "\\b";
+						break;
+					case '\f':
+						stream << "\\f";
+						break;
+					case '\n':
+						stream << "\\n";
+						break;
+					case '\r':
+						stream << "\\r";
+						break;
+					case '\t':
+						stream << "\\t";
+						break;
+					default:
+						if (uc >= 0x20 && uc < 0x7f)
+							stream << static_cast<char>(uc);
+						else
 							stream << "\\u" << text::Hex(uc, 4);
-					}
 				}
 			}
 			stream << '"';
