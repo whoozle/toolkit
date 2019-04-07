@@ -57,7 +57,35 @@ namespace TOOLKIT_NS { namespace serialization
 					stream << static_cast<char>(uc);
 				else
 				{
-					stream << "\\u" << text::Hex(uc, 4);
+					switch(uc)
+					{
+						case '"':
+							stream << "\\\"";
+							break;
+						case '\\':
+							stream << "\\\\";
+							break;
+						case '/':
+							stream << "\\/";
+							break;
+						case '\b':
+							stream << "\\b";
+							break;
+						case '\f':
+							stream << "\\f";
+							break;
+						case '\n':
+							stream << "\\n";
+							break;
+						case '\r':
+							stream << "\\r";
+							break;
+						case '\t':
+							stream << "\\t";
+							break;
+						default:
+							stream << "\\u" << text::Hex(uc, 4);
+					}
 				}
 			}
 			stream << '"';
