@@ -11,7 +11,7 @@ namespace
 	class Test
 	{
 		int _p;
-		int _q;
+		float _q;
 		std::string _c;
 
 	public:

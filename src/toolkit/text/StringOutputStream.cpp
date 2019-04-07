@@ -23,6 +23,9 @@ namespace TOOLKIT_NS { namespace text
 	TOOLKIT_IO_SS_DECLARE_WRITE("%lu", unsigned long);
 	TOOLKIT_IO_SS_DECLARE_WRITE("%lld", long long);
 	TOOLKIT_IO_SS_DECLARE_WRITE("%llu", unsigned long long);
+	TOOLKIT_IO_SS_DECLARE_WRITE("%g", float);
+	TOOLKIT_IO_SS_DECLARE_WRITE("%g", double);
+	TOOLKIT_IO_SS_DECLARE_WRITE("%Lg", long double);
 
 #undef TOOLKIT_IO_SS_DECLARE_WRITE
 
