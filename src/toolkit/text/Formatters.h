@@ -10,14 +10,32 @@ namespace TOOLKIT_NS { namespace text
 	struct HexNumber
 	{
 		ValueType 	Value;
-		unsigned	Padding;
+		unsigned	Width;
 
-		HexNumber(ValueType value, unsigned padding):
-			Value(value), Padding(padding)
+		HexNumber(ValueType value, unsigned width = 0):
+			Value(value), Width(width)
 		{ }
 
 		void ToString(StringOutputStream & ss) const
-		{ }
+		{
+			static constexpr size_t Size = sizeof(ValueType) * 2;
+
+			auto value = Value;
+			auto width = Width;
+			char buf[Size];
+
+			size_t n;
+			for(n = Size; n--; value >>= 4)
+			{
+				char ch = value & 0x0f;
+				if (ch > 9)
+					ch += 7;
+				buf[n] = ch + '0';
+				if (value == 0 && Size - n >= width)
+					break;
+			}
+			ss.Write(buf + n, Size - n);
+		}
 	};
 
 	template<typename ValueType>
