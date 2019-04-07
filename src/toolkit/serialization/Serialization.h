@@ -31,6 +31,7 @@ namespace TOOLKIT_NS { namespace serialization
 		struct ClassDescriptor
 		{
 			using DataType = std::tuple<MemberDescriptors ...>;
+			static constexpr size_t MemberCount = std::tuple_size<DataType>::value;
 
 			std::string 						Name;
 			uint								Version;

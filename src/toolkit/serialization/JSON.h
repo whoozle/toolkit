@@ -7,6 +7,7 @@
 #include <toolkit/text/Formatters.h>
 #include <string>
 #include <tuple>
+#include <utility>
 
 namespace TOOLKIT_NS { namespace serialization
 {
@@ -34,6 +35,16 @@ namespace TOOLKIT_NS { namespace serialization
 				stream << ',';
 			else
 				state.First = false;
+		}
+		template<typename StreamType, typename DescriptorType>
+		void WriteDescriptor(StreamType & stream, const DescriptorType & desc)
+		{ }
+
+		template<typename StreamType, std::size_t... Index>
+		void WriteProperties(StreamType & stream,
+							State & state, std::index_sequence<Index...>) const
+		{
+			//WriteDescriptor(std::get<Index>(_descriptor.Data) ...);
 		}
 
 	public:
@@ -108,7 +119,6 @@ namespace TOOLKIT_NS { namespace serialization
 			stream << ':' << std::forward<ValueType>(value);
 		}
 
-
 		template<typename StreamType>
 		void Write(StreamType & stream, State & state, const ClassType & object) const
 		{
@@ -117,6 +127,8 @@ namespace TOOLKIT_NS { namespace serialization
 				WriteProperty(stream, state, "__classname", _descriptor.Name);
 			if (_descriptor.Version != 0)
 				WriteProperty(stream, state, "__version", _descriptor.Version);
+
+			WriteProperties(stream, state, std::make_index_sequence<ClassDescriptor::MemberCount>());
 			stream << "}";
 		}
 	};
