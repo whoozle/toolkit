@@ -29,7 +29,7 @@ namespace TOOLKIT_NS { namespace text
 			{
 				char ch = value & 0x0f;
 				if (ch > 9)
-					ch += 7;
+					ch += 39;
 				buf[n] = ch + '0';
 				if (value == 0 && Size - n >= width)
 					break;
