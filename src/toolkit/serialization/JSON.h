@@ -150,6 +150,37 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 	};
 
+	namespace json
+	{
+		class NumberReader
+		{
+		public:
+			struct State
+			{
+				bool 	IsNumber;
+				s64		Integer;
+				double 	Number;
+				bool	IsExponent;
+
+				State(): IsNumber(false), Integer(0), Number(0), IsExponent(false)
+				{ }
+			};
+		};
+
+		class StringReader
+		{
+		public:
+			struct State
+			{
+				std::string 	String;
+				bool			Escape;
+
+				State(): Escape(false)
+				{ }
+			};
+		};
+	}
+
 	template<typename ClassType, typename ClassDescriptor>
 	class JSONReader
 	{
