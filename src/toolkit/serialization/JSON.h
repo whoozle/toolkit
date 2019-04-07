@@ -150,6 +150,37 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 	};
 
+	template<typename ClassType, typename ClassDescriptor>
+	class JSONReader
+	{
+		ClassDescriptor				_descriptor;
+
+	public:
+		struct State
+		{
+			const ClassType *	Object;
+			enum struct CurrentState
+			{
+				Initial
+			};
+
+			State(const ClassType * object): Object(object)
+			{ }
+		};
+
+		JSONReader(ClassDescriptor && descriptor) : _descriptor(descriptor)
+		{ }
+
+		static State NewState(const ClassType & object)
+		{ return State(&object); }
+
+		void Handle(State & state, u8 ch) const
+		{
+			printf("HELLO: %u\n", ch);
+		}
+	};
+
+
 }}
 
 

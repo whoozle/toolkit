@@ -16,6 +16,7 @@ namespace
 
 	public:
 		Test(int p, int q, const std::string &c): _p(p), _q(q), _c(c) { }
+		Test(): _p(), _q(), _c() { }
 
 		static auto GetClassDescriptor()
 		{
@@ -39,6 +40,18 @@ namespace
 			toolkit::text::StringOutputStream ss;
 			jsonWriter.Write(ss, state);
 			EXPECT( ss.Get() == "{\"__classname\":\"Test\",\"__version\":1,\"p\":2,\"q\":3,\"comment\":\"\\u044e\\u043d\\u0438\\u043a\\u043e\\u0434\\ncopyright \\u00a91738\\r\\n\"}" );
+		},
+		CASE( "JSON deserialization test" )
+		{
+			auto jsonReader = ts::MakeSerializator<Test, ts::JSONReader>();
+			Test test(2, 3, "юникод\ncopyright ©1738\r\n");
+
+			auto state = jsonReader.NewState(test);
+			std::string text = "{\"__classname\":\"Test\",\"__version\":1,\"p\":2,\"q\":3,\"comment\":\"\\u044e\\u043d\\u0438\\u043a\\u043e\\u0434\\ncopyright \\u00a91738\\r\\n\"}";
+			for(auto ch : text)
+			{
+				jsonReader.Handle(state, ch);
+			}
 		},
 	};
 }
