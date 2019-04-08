@@ -207,7 +207,6 @@ namespace TOOLKIT_NS { namespace serialization
 
 		void Handle(State & state, u8 ch) const
 		{
-			printf("HELLO: %u\n", ch);
 		}
 	};
 
