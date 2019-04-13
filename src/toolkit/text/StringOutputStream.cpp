@@ -26,6 +26,8 @@ namespace TOOLKIT_NS { namespace text
 	TOOLKIT_IO_SS_DECLARE_WRITE("%g", float);
 	TOOLKIT_IO_SS_DECLARE_WRITE("%g", double);
 	TOOLKIT_IO_SS_DECLARE_WRITE("%Lg", long double);
+	TOOLKIT_IO_SS_DECLARE_WRITE("%p", void *);
+	TOOLKIT_IO_SS_DECLARE_WRITE("%p", const void *);
 
 #undef TOOLKIT_IO_SS_DECLARE_WRITE
 

@@ -37,6 +37,8 @@ namespace TOOLKIT_NS { namespace text
 		TOOLKIT_IO_SS_DECLARE_WRITE(double);
 		TOOLKIT_IO_SS_DECLARE_WRITE(long double);
 		TOOLKIT_IO_SS_DECLARE_WRITE(const std::string &);
+		TOOLKIT_IO_SS_DECLARE_WRITE(const void *);
+		TOOLKIT_IO_SS_DECLARE_WRITE(void *);
 
 #undef TOOLKIT_IO_SS_DECLARE_WRITE
 
