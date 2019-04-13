@@ -123,7 +123,7 @@ namespace TOOLKIT_NS { namespace raster
 		Rect & operator -= (Point pos)
 		{ Left -= pos.X; Right -= pos.X; Top -= pos.Y; Bottom -= pos.Y; return *this; }
 
-		void ToString(io::StringOutputStream & ss) const
+		void ToString(text::StringOutputStream & ss) const
 		{ ss << '[' << Left << ", " << Top << ", " << Right << ", " << Bottom << ']'; }
 
 		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
