@@ -66,14 +66,10 @@ namespace TOOLKIT_NS { namespace raster
 
 		void Intersect(Rect other)
 		{
-			if (Left < other.Left)
-				Left = other.Left;
-			if (Right > other.Right)
-				Right = other.Right;
-			if (Top < other.Top)
-				Top = other.Top;
-			if (Bottom > other.Bottom)
-				Bottom = other.Bottom;
+			Left 	= std::max(Left, other.Left);
+			Top		= std::max(Top, other.Top);
+			Right 	= std::min(Right, other.Right);
+			Bottom	= std::min(Bottom, other.Bottom);
 		}
 
 		static Rect Intersect(Rect r1, Rect r2)
