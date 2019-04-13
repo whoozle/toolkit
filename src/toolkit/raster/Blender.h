@@ -32,6 +32,7 @@ namespace raster { namespace software
 			static DstMappedType Blend(DstMappedType dst, SrcMappedType src, Color color)
 			{
 				Color cs = SrcPixelFormat::Unmap(src);
+				cs.A = Mul255<u8, u16>(cs.A, color.A);
 				if (cs.A == 0)
 					return dst;
 
@@ -56,6 +57,7 @@ namespace raster { namespace software
 			static MappedType Blend(MappedType dst, MappedType src, Color color)
 			{
 				u8 srcAlpha = ARGB::A::Unmap(src);
+				srcAlpha = Mul255<u8, u16>(srcAlpha, color.A);
 				if (srcAlpha == 0)
 					return dst;
 
