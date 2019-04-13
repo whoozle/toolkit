@@ -23,11 +23,15 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 
 		bool ClipRect(const raster::Rect &clipRect, raster::Rect &dstRect, raster::Rect &srcRect)
 		{
-			raster::Point srcOffset = dstRect.TopLeft() - srcRect.TopLeft();
+			Point delta = clipRect.TopLeft() - dstRect.TopLeft();
+			//if we're clipping dstRect left/top position, we need to move src rectangle for the same amount too
+			if (delta.X < 0)
+				delta.X = 0;
+			if (delta.Y < 0)
+				delta.Y = 0;
 			dstRect.Intersect(clipRect);
-			srcRect += srcOffset;
-			srcRect.Intersect(clipRect);
-			srcRect -= srcOffset;
+			srcRect.Left += delta.X;
+			srcRect.Top += delta.Y;
 			//printf("%s %d <- %s %d\n", dstRect.ToString().c_str(), dstRect.Valid(), srcRect.ToString().c_str(), srcRect.Valid());
 			return dstRect.Valid() && srcRect.Valid();
 		}
