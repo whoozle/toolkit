@@ -14,6 +14,9 @@ namespace TOOLKIT_NS { namespace raster
 		int Left, Top, Right, Bottom;
 
 		Rect(): Left(0), Top(0), Right(0), Bottom(0) { }
+		Rect(int left, int top, int right, int bottom):
+			Left(left), Top(top), Right(right), Bottom(bottom)
+		{ }
 		Rect(Size size): Left(0), Top(0), Right(size.Width), Bottom(size.Height) { }
 		Rect(Point pos, Size size): Left(pos.X), Top(pos.Y), Right(pos.X + size.Width), Bottom(pos.Y + size.Height) { }
 		Rect(Point pos1, Point pos2): Left(pos1.X), Top(pos1.Y), Right(pos2.X), Bottom(pos2.Y) { }
