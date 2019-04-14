@@ -92,14 +92,10 @@ namespace TOOLKIT_NS { namespace raster
 
 		void Union(Rect other)
 		{
-			if (Left > other.Left)
-				Left = other.Left;
-			if (Right < other.Right)
-				Right = other.Right;
-			if (Top > other.Top)
-				Top = other.Top;
-			if (Bottom < other.Bottom)
-				Bottom = other.Bottom;
+			Left 	= std::min(Left, other.Left);
+			Top		= std::min(Top, other.Top);
+			Right 	= std::max(Right, other.Right);
+			Bottom	= std::max(Bottom, other.Bottom);
 		}
 
 		static Rect Union(Rect r1, Rect r2)
