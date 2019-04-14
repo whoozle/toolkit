@@ -21,6 +21,9 @@ namespace TOOLKIT_NS { namespace raster
 		Rect(Point pos, Size size): Left(pos.X), Top(pos.Y), Right(pos.X + size.Width), Bottom(pos.Y + size.Height) { }
 		Rect(Point pos1, Point pos2): Left(pos1.X), Top(pos1.Y), Right(pos2.X), Bottom(pos2.Y) { }
 
+		void Reset()
+		{ Left = Top = Right = Bottom = 0; }
+
 		int Width() const
 		{ return Right - Left; }
 		int Height() const
@@ -69,6 +72,12 @@ namespace TOOLKIT_NS { namespace raster
 
 		void Intersect(Rect other)
 		{
+			if (!other.Valid() || !Valid())
+			{
+				Reset();
+				return;
+			}
+
 			Left 	= std::max(Left, other.Left);
 			Top		= std::max(Top, other.Top);
 			Right 	= std::min(Right, other.Right);
@@ -92,6 +101,15 @@ namespace TOOLKIT_NS { namespace raster
 
 		void Union(Rect other)
 		{
+			if (!other.Valid())
+				return;
+
+			if (!Valid())
+			{
+				*this = other;
+				return;
+			}
+
 			Left 	= std::min(Left, other.Left);
 			Top		= std::min(Top, other.Top);
 			Right 	= std::max(Right, other.Right);
