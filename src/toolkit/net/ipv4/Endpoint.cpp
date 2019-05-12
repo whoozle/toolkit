@@ -12,7 +12,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 		address.sin_family = AF_INET;
 		address.sin_addr.s_addr = Address.GetNetworkAddress();
 		address.sin_port = htons(Port);
-		socket.Connect((struct sockaddr *)&address, sizeof(address));
+		socket.Connect(reinterpret_cast<struct sockaddr *>(&address), sizeof(address));
 	}
 
 	void Endpoint::Bind(bsd::Socket & socket) const
@@ -21,7 +21,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 		address.sin_family = AF_INET;
 		address.sin_addr.s_addr = Address.GetNetworkAddress();
 		address.sin_port = htons(Port);
-		socket.Bind((struct sockaddr *)&address, sizeof(address));
+		socket.Bind(reinterpret_cast<struct sockaddr *>(&address), sizeof(address));
 	}
 
 }}}

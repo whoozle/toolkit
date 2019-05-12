@@ -11,7 +11,7 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 		address.sun_family = AF_UNIX;
 		strncpy(address.sun_path, Path.c_str(), sizeof(address.sun_path) - 1);
 		address.sun_path[sizeof(address.sun_path) - 1] = 0;
-		socket.Connect((struct sockaddr *)&address, sizeof(address));
+		socket.Connect(reinterpret_cast<struct sockaddr *>(&address), sizeof(address));
 	}
 
 	void Endpoint::Bind(bsd::Socket & socket) const
@@ -20,7 +20,7 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 		address.sun_family = AF_UNIX;
 		strncpy(address.sun_path, Path.c_str(), sizeof(address.sun_path) - 1);
 		address.sun_path[sizeof(address.sun_path) - 1] = 0;
-		socket.Bind((struct sockaddr *)&address, sizeof(address));
+		socket.Bind(reinterpret_cast<struct sockaddr *>(&address), sizeof(address));
 	}
 
 }}}
