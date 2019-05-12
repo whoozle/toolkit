@@ -10,8 +10,11 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 	class LocalServerSocket :
 		public BaseServerSocket<LocalSocket>
 	{
+		using super = BaseServerSocket<LocalSocket>;
 	public:
-		using BaseServerSocket::BaseServerSocket;
+		LocalServerSocket(int flags = ISocket::DefaultFlags):
+			super(AF_UNIX, SOCK_STREAM, 0, flags)
+		{ }
 	};
 
 }}}

@@ -16,7 +16,7 @@ namespace TOOLKIT_NS { namespace net
 		public virtual ISocket
 	{
 	public:
-		BaseServerSocket(int flags = ISocket::DefaultFlags): bsd::Socket(AF_INET, SOCK_STREAM, 0)
+		BaseServerSocket(int family, int type, int proto, int flags = ISocket::DefaultFlags): bsd::Socket(family, type, proto)
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 
 		template<typename EndpointType>
