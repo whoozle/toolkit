@@ -28,6 +28,8 @@ namespace TOOLKIT_NS { namespace net
 
 		using bsd::Socket::SetNonBlocking;
 		using bsd::Socket::GetNonBlocking;
+		using bsd::Socket::SetOption;
+		using bsd::Socket::GetOption;
 
 		SocketType * Accept()
 		{
