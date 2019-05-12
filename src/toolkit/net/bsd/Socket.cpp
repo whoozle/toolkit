@@ -17,7 +17,8 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 
 	Socket::~Socket()
 	{
-		close(_socket);
+		if (_socket >= 0)
+			close(_socket);
 	}
 
 	void Socket::GetOption(int level, int optname, void *optval, socklen_t *optlen)

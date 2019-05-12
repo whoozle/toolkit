@@ -16,6 +16,8 @@ namespace TOOLKIT_NS { namespace net
 	public:
 		BaseSocket(int family, int type, int proto, int flags = ISocket::DefaultFlags): bsd::Socket(family, type, proto)
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
+		BaseSocket(BaseSocket && socket) noexcept: bsd::Socket(std::move(socket))
+		{ }
 		~BaseSocket();
 
 		using bsd::Socket::SetNonBlocking;
