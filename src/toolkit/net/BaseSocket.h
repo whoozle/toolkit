@@ -24,6 +24,7 @@ namespace TOOLKIT_NS { namespace net
 		using bsd::Socket::GetNonBlocking;
 		using bsd::Socket::SetOption;
 		using bsd::Socket::GetOption;
+		using bsd::Socket::GetFileDescriptor;
 
 		template<typename EndpointType>
 		void Connect(const EndpointType & ep)
