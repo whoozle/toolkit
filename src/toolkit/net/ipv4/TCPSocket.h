@@ -11,7 +11,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 	{
 	public:
 		TCPSocket(int flags = ISocket::DefaultFlags): BaseSocket(AF_INET, SOCK_STREAM, 0, flags)
-		{ SetNonBlocking(flags & ISocket::NonBlocking); }
+		{ }
 	};
 
 }}}

@@ -9,7 +9,7 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 	{
 	public:
 		LocalSocket(int flags = ISocket::DefaultFlags): BaseSocket(AF_UNIX, SOCK_STREAM, 0, flags)
-		{ SetNonBlocking(flags & ISocket::NonBlocking); }
+		{ }
 
 	};
 }}}
