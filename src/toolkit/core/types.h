@@ -26,7 +26,7 @@ namespace TOOLKIT_NS
 #define DECLARE_PTR(C) using C##Ptr = std::shared_ptr<C>
 #define DECLARE_WEAK_PTR(C) using C##WeakPtr = std::weak_ptr<C>
 #define DECLARE_CONST_PTR(C) using C##ConstPtr = std::shared_ptr<const C>
-#define DECLARE_CONST_WEAK_PTR(C) using C##WeakPtr = std::weak_ptr<const C>
+#define DECLARE_CONST_WEAK_PTR(C) using C##ConstWeakPtr = std::weak_ptr<const C>
 #define DECLARE_UPTR(C) using C##UPtr = std::unique_ptr<C>
 
 #define _FORWARD_DECLARE(NS, TYPE, NAME, DECL) namespace TOOLKIT_NS { namespace NS { TYPE NAME ; DECL } }
