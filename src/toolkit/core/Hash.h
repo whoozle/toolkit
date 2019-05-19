@@ -33,6 +33,20 @@ namespace TOOLKIT_NS
 		return CombineHashRange(hashes.begin(), hashes.end());
 	}
 
+#define TOOLKIT_DECLARE_STD_HASH(TYPE, HASH_TYPE) \
+	namespace std \
+	{ \
+		template<> \
+		struct hash< TYPE > \
+		{ \
+			std::size_t operator() (const TYPE & id) const \
+			{ \
+				HASH_TYPE hash; \
+				return hash(id); \
+			} \
+		}; \
+	}
+
 }
 
 #endif
