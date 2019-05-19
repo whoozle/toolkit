@@ -19,7 +19,7 @@ namespace net { namespace unix
 	{
 		std::string Path;
 
-		Endpoint(const std::string &path): Path(path)
+		Endpoint(const std::string &path, bool abstract = true): Path(abstract? std::string(1, '\0') + path: path)
 		{ }
 
 		void Connect(bsd::Socket & socket) const;
