@@ -27,7 +27,7 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 		int GetFileDescriptor() const override
 		{ return _socket; }
 
-		void GetOption(int level, int optname, void *optval, socklen_t *optlen);
+		void GetOption(int level, int optname, void *optval, socklen_t *optlen) const;
 		void SetOption(int level, int optname, const void *optval, socklen_t optlen);
 
 		int GetFlags() const;

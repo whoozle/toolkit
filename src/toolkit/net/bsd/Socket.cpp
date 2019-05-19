@@ -21,7 +21,7 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 			close(_socket);
 	}
 
-	void Socket::GetOption(int level, int optname, void *optval, socklen_t *optlen)
+	void Socket::GetOption(int level, int optname, void *optval, socklen_t *optlen) const
 	{ SYSTEM_CALL(getsockopt(_socket, level, optname, optval, optlen)); }
 
 	void Socket::SetOption(int level, int optname, const void *optval, socklen_t optlen)
