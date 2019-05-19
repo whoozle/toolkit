@@ -11,6 +11,13 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 		LocalSocket(int flags = ISocket::DefaultFlags): BaseSocket(AF_UNIX, SOCK_STREAM, 0, flags)
 		{ }
 
+		struct ucred GetPeerCredentials() const
+		{
+			struct ucred creds = {};
+			socklen_t size = sizeof(struct ucred);
+			GetOption(SOL_SOCKET, SO_PEERCRED, &creds, &size);
+			return creds;
+		}
 	};
 }}}
 
