@@ -77,8 +77,12 @@ namespace TOOLKIT_NS { namespace io
 	{
 		epoll_event pollEvents[MaxEvents]; //fixme
 		int r = epoll_wait(_fd, pollEvents, MaxEvents, timeout);
-		if (r < 0)
-			throw io::SystemException("epoll_wait");
+		if (r < 0) {
+			if (errno == EINTR) //interrupted system call is normal
+				return 0;
+			else
+				throw io::SystemException("epoll_wait");
+		}
 
 		epoll_event *src = pollEvents;
 
