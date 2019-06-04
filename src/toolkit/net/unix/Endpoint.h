@@ -18,8 +18,10 @@ namespace net { namespace unix
 	struct Endpoint
 	{
 		std::string Path;
+		bool		Abstract;
 
-		Endpoint(const std::string &path, bool abstract = true): Path(abstract? std::string(1, '\0') + path: path)
+		Endpoint(const std::string &path, bool abstract = true):
+			Path(path), Abstract(abstract)
 		{ }
 
 		void Connect(bsd::Socket & socket) const;
