@@ -90,7 +90,10 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 	{ SYSTEM_CALL_RETURN(sendfile(_socket, in_fd, offset, count)); }
 
 	void Socket::Shutdown(int how)
-	{ shutdown(_socket, how); }
+	{
+		if (_socket >= 0)
+			shutdown(_socket, how);
+	}
 
 }}}
 
