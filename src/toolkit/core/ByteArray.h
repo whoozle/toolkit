@@ -15,6 +15,9 @@ namespace TOOLKIT_NS
 		std::vector<u8>		_data;
 
 	public:
+		using const_iterator	= std::vector<u8>::const_iterator;
+		using iterator 			= std::vector<u8>::iterator;
+
 		ByteArray(size_t size): _data(size) { }
 		ByteArray(std::vector<u8> && data): _data(data) { }
 		ByteArray(ByteArray && data): ByteArray(std::move(data._data)) { }
@@ -32,11 +35,20 @@ namespace TOOLKIT_NS
 		{ return _data.data(); }
 		size_t size() const
 		{ return _data.size(); }
+		void clear()
+		{ _data.clear(); }
 
 		void Resize(size_t size)
 		{ return _data.resize(size); }
 		void Reserve(size_t size)
 		{ _data.reserve(size); }
+		void Clear()
+		{ _data.clear(); }
+
+		iterator begin() 				{ return _data.begin(); }
+		iterator end() 					{ return _data.begin(); }
+		const_iterator begin() const	{ return _data.begin(); }
+		const_iterator end() const		{ return _data.begin(); }
 	};
 	DECLARE_PTR(ByteArray);
 
