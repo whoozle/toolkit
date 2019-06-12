@@ -1,46 +1,17 @@
 #ifndef TOOLKIT_SOFTWARERENDERER_H
 #define TOOLKIT_SOFTWARERENDERER_H
 
-#include <toolkit/raster/Point.h>
-#include <toolkit/raster/Rect.h>
+#include <toolkit/raster/software/BaseRenderer.h>
 #include <toolkit/raster/Blender.h>
 
 namespace TOOLKIT_NS { namespace raster { namespace software
 {
 
 	template<typename ContextType>
-	struct Renderer
+	struct Renderer : public BaseRenderer<ContextType>
 	{
-		ContextType & _context;
-
-		Renderer(ContextType &ctx): _context(ctx) { }
-
-		ContextType & GetContext()
-		{ return _context; }
-
-		const ContextType & GetContext() const
-		{ return _context; }
-
-		bool ClipRect(const raster::Rect &clipRect, raster::Rect &dstRect, raster::Rect &srcRect)
-		{
-			Point delta = clipRect.TopLeft() - dstRect.TopLeft();
-			//if we're clipping dstRect left/top position, we need to move src rectangle for the same amount too
-			if (delta.X < 0)
-				delta.X = 0;
-			if (delta.Y < 0)
-				delta.Y = 0;
-			dstRect.Intersect(clipRect);
-			srcRect.Left += delta.X;
-			srcRect.Top += delta.Y;
-			//printf("%s %d <- %s %d\n", dstRect.ToString().c_str(), dstRect.Valid(), srcRect.ToString().c_str(), srcRect.Valid());
-			return dstRect.Valid() && srcRect.Valid();
-		}
-
-		bool ClipRect(const raster::Rect &clipRect, raster::Rect &dstRect)
-		{
-			dstRect.Intersect(clipRect);
-			return dstRect.Valid();
-		}
+		using super = BaseRenderer<ContextType>;
+		using super::super;
 
 		template<typename DstSurface, typename SrcSurface>
 		void Blend(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect, Color color)
@@ -49,7 +20,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 
 			srcRect.Intersect(srcSurface.GetSize());
 			raster::Rect dstRect(dstPos, srcRect.GetSize());
-			if (!ClipRect(clipRect, dstRect, srcRect))
+			if (!super::ClipRect(clipRect, dstRect, srcRect))
 				return;
 
 			auto dstLock = dstSurface.Lock(dstRect);
@@ -80,7 +51,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 			}
 
 			srcRect.Intersect(srcSurface.GetSize());
-			if (!ClipRect(clipRect, dstRect, srcRect))
+			if (!super::ClipRect(clipRect, dstRect, srcRect))
 				return;
 
 			auto dstLock = dstSurface.Lock(dstRect);
@@ -131,7 +102,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 
 			srcRect.Intersect(srcSurface.GetSize());
 			raster::Rect dstRect(dstPos, srcRect.GetSize());
-			if (!ClipRect(clipRect, dstRect, srcRect))
+			if (!super::ClipRect(clipRect, dstRect, srcRect))
 				return;
 
 			auto dstLock = dstSurface.Lock(dstRect);
@@ -154,7 +125,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 		template<typename DstSurface>
 		void ClearRect(DstSurface &dstSurface, raster::Rect clipRect, raster::Rect rect, raster::Color color)
 		{
-			if (!ClipRect(clipRect, rect))
+			if (!super::ClipRect(clipRect, rect))
 				return;
 
 			auto lock = dstSurface.Lock(rect);
@@ -175,7 +146,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 			using Blender = raster::software::Blender<typename DstSurface::PixelFormat, typename DstSurface::PixelFormat>;
 			auto srcColor = DstSurface::PixelFormat::Map(color);
 
-			if (!ClipRect(clipRect, rect))
+			if (!super::ClipRect(clipRect, rect))
 				return;
 
 			auto lock = dstSurface.Lock(rect);
@@ -190,7 +161,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 		}
 
 		void Flip(raster::Rect rect)
-		{ Blit(_context.GetFrontBuffer(), rect, rect.TopLeft(), _context.GetBackBuffer(), rect); }
+		{ Blit(super::_context.GetFrontBuffer(), rect, rect.TopLeft(), super::_context.GetBackBuffer(), rect); }
 	};
 
 }}}
