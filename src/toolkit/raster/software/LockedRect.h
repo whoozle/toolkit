@@ -95,7 +95,8 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 			_rect(rect), _data(data.Data), _pitch(data.Pitch)
 		{ }
 
-		LockedRect(LockedRect &&r) noexcept: _rect(std::move(r._rect)), _data(std::move(r._data)), _pitch(std::move(r._pitch))
+		LockedRect(LockedRect &&r) noexcept:
+			_rect(std::move(r._rect)), _data(std::move(r._data)), _pitch(std::move(r._pitch))
 		{ }
 
 		u8 * GetData()
