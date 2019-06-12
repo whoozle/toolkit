@@ -16,7 +16,9 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 		unsigned	_w;
 
 	public:
-		PixelIterator(u8 * data, unsigned w): _data(data), _w(w) { }
+		PixelIterator(u8 * data, unsigned w) noexcept:
+			_data(data), _w(w)
+		{ }
 
 		bool operator--(int)
 		{ return _w--; }
@@ -47,7 +49,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 		const unsigned		_pitch;
 
 	public:
-		PixelRowsIterator(raster::Size size, u8 *data, unsigned pitch):
+		PixelRowsIterator(raster::Size size, u8 *data, unsigned pitch) noexcept:
 			_size(size), _y(size.Height), _data(data), _pitch(pitch)
 		{ }
 
@@ -73,6 +75,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 	template<typename PixelFormat>
 	class LockedRect : Noncopyable
 	{
+	protected:
 		raster::Rect	_rect;
 		u8 *			_data;
 		unsigned		_pitch;
@@ -84,15 +87,15 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 			unsigned	Pitch;
 		};
 
-		LockedRect(raster::Rect rect, u8 *data, unsigned pitch):
+		LockedRect(raster::Rect rect, u8 *data, unsigned pitch) noexcept:
 			_rect(rect), _data(data), _pitch(pitch)
 		{ }
 
-		LockedRect(raster::Rect rect, Data data):
+		LockedRect(raster::Rect rect, Data data) noexcept:
 			_rect(rect), _data(data.Data), _pitch(data.Pitch)
 		{ }
 
-		LockedRect(LockedRect &&r): _rect(std::move(r._rect)), _data(std::move(r._data)), _pitch(std::move(r._pitch))
+		LockedRect(LockedRect &&r) noexcept: _rect(std::move(r._rect)), _data(std::move(r._data)), _pitch(std::move(r._pitch))
 		{ }
 
 		u8 * GetData()
