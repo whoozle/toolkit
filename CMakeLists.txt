@@ -47,6 +47,17 @@ set(TOOLKIT_SRC
 	src/toolkit/text/StringOutputStream.cpp
 )
 
+if (TOOLKIT_GL_VARIANT)
+	add_definitions(-DGL_GLEXT_PROTOTYPES)
+	add_definitions(-DTOOLKIT_GL_VARIANT=${TOOLKIT_GL_VARIANT})
+	list(APPEND TOOLKIT_SRC
+		src/toolkit/raster/gl/Buffer.cpp
+		src/toolkit/raster/gl/Program.cpp
+		src/toolkit/raster/gl/Shader.cpp
+		src/toolkit/raster/gl/VertexArray.cpp
+	)
+endif()
+
 set(TOOLKIT_LIB toolkit)
 add_library(${TOOLKIT_LIB} STATIC ${TOOLKIT_SRC})
 target_compile_definitions(${TOOLKIT_LIB} PUBLIC -DTOOLKIT_NS=${TOOLKIT_NS})
