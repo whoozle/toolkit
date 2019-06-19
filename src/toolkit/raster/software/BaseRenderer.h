@@ -7,19 +7,8 @@
 namespace TOOLKIT_NS { namespace raster { namespace software
 {
 
-	template<typename ContextType>
 	struct BaseRenderer
 	{
-		ContextType & _context;
-
-		BaseRenderer(ContextType &ctx): _context(ctx) { }
-
-		ContextType & GetContext()
-		{ return _context; }
-
-		const ContextType & GetContext() const
-		{ return _context; }
-
 		bool ClipRect(const raster::Rect &clipRect, raster::Rect &dstRect, raster::Rect &srcRect)
 		{
 			Point delta = clipRect.TopLeft() - dstRect.TopLeft();

@@ -7,10 +7,9 @@
 namespace TOOLKIT_NS { namespace raster { namespace software
 {
 
-	template<typename ContextType>
-	struct Renderer : public BaseRenderer<ContextType>
+	struct Renderer : public BaseRenderer
 	{
-		using super = BaseRenderer<ContextType>;
+		using super = BaseRenderer;
 		using super::super;
 
 		template<typename DstSurface, typename SrcSurface>
@@ -159,9 +158,6 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 				}
 			}
 		}
-
-		void Flip(raster::Rect rect)
-		{ Blit(super::_context.GetFrontBuffer(), rect, rect.TopLeft(), super::_context.GetBackBuffer(), rect); }
 	};
 
 }}}
