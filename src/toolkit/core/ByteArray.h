@@ -46,9 +46,9 @@ namespace TOOLKIT_NS
 		{ _data.clear(); }
 
 		iterator begin() 				{ return _data.begin(); }
-		iterator end() 					{ return _data.begin(); }
+		iterator end() 					{ return _data.end(); }
 		const_iterator begin() const	{ return _data.begin(); }
-		const_iterator end() const		{ return _data.begin(); }
+		const_iterator end() const		{ return _data.end(); }
 	};
 	DECLARE_PTR(ByteArray);
 
