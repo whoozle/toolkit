@@ -14,7 +14,7 @@ namespace TOOLKIT_NS { namespace text
 	}
 
 	TOOLKIT_IO_SS_DECLARE_WRITE("%c", char);
-	TOOLKIT_IO_SS_DECLARE_WRITE("%hhd", unsigned char);
+	TOOLKIT_IO_SS_DECLARE_WRITE("%hhu", unsigned char);
 	TOOLKIT_IO_SS_DECLARE_WRITE("%hd", short);
 	TOOLKIT_IO_SS_DECLARE_WRITE("%hu", unsigned short);
 	TOOLKIT_IO_SS_DECLARE_WRITE("%d", int);
