@@ -2,6 +2,7 @@
 #define TOOLKIT_RASTER_COLOR_H
 
 #include <toolkit/core/types.h>
+#include <toolkit/text/StringOutputStream.h>
 
 namespace TOOLKIT_NS { namespace raster
 {
@@ -24,6 +25,11 @@ namespace TOOLKIT_NS { namespace raster
 
 		bool IsOpaque() const
 		{ return A == 255; }
+
+		void ToString(text::StringOutputStream & ss) const
+		{ ss << "(r: " << R << ", g: " << G << ", b: " << B << ", a: " << A << ')'; }
+
+		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
 
 	template<typename PixelFormat_>
