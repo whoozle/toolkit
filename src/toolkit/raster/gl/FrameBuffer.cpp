@@ -14,10 +14,15 @@ namespace TOOLKIT_NS { namespace gl
 		glDeleteFramebuffers(1, &_fbo);
 	}
 
+	void FrameBuffer::Bind(GLenum target, GLuint fb)
+	{
+		glBindFramebuffer(target, fb);
+		CheckGLError();
+	}
+
 	void FrameBuffer::Bind(GLenum target)
 	{
-		glBindFramebuffer(target, _fbo);
-		CheckGLError();
+		Bind(target, _fbo);
 	}
 
 }}

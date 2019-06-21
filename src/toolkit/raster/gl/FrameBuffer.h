@@ -15,6 +15,7 @@ namespace TOOLKIT_NS { namespace gl
 		~FrameBuffer();
 
 		void Bind(GLenum target);
+		static void Bind(GLenum target, GLuint fb);
 	};
 }}
 
