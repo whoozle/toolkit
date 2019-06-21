@@ -104,6 +104,7 @@ namespace TOOLKIT_NS { namespace raster
 	using BGR555	= impl::PixelFormat<u16,  0,  5,  5, 5,  10, 5,  0,  0>;
 	using RGB24		= impl::PixelFormat<u32,  16, 8,  8, 8,  0,  8,  0,  0>;
 	using ARGB		= impl::PixelFormat<u32,  16, 8,  8, 8,  0,  8,  24, 8>;
+	using ABGR		= impl::PixelFormat<u32,  0,  8,  8, 8,  16, 8,  24, 8>;
 	using A8		= impl::PixelFormat<u8,   0,  0,  0, 0,  0,  0,  0,  8>;
 }}
 
