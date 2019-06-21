@@ -4,9 +4,11 @@
 #include <toolkit/io/IStream.h>
 #include <toolkit/io/IPollable.h>
 #include <toolkit/io/MemoryMapping.h>
+#include <toolkit/io/SystemException.h>
 #include <string>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
+#include <sys/ioctl.h>
 
 namespace TOOLKIT_NS { namespace io
 {
@@ -46,6 +48,15 @@ namespace TOOLKIT_NS { namespace io
 
 		MemoryMappingPtr Map(off_t offset, size_t size, int prot, int flags, void *addr = nullptr)
 		{ return std::make_shared<MemoryMapping>(addr, size, prot, flags, _fd, offset); }
+
+		template<typename ... Args>
+		int Ioctl(Args && ... args)
+		{
+			int r = ioctl(_fd, args ... );
+			if (r < 0)
+				throw SystemException("ioctl");
+			return r;
+		}
 
 	private:
 		static int MapMode(FileOpenMode mode);
