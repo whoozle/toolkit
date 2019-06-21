@@ -25,12 +25,11 @@ namespace TOOLKIT_NS { namespace text
 			char buf[Size];
 
 			size_t n;
-			for(n = Size; n--; value >>= 4)
+			for(n = Size; n; value >>= 4)
 			{
 				char ch = value & 0x0f;
-				if (ch > 9)
-					ch += 39;
-				buf[n] = ch + '0';
+				ch = ch > 9? ch + 'a' - 10: ch + '0';
+				buf[--n] = ch;
 				if (value == 0 && Size - n >= width)
 					break;
 			}
@@ -40,7 +39,7 @@ namespace TOOLKIT_NS { namespace text
 
 	template<typename ValueType>
 	HexNumber<ValueType> Hex(ValueType value, unsigned padding = 0)
-	{ return HexNumber<ValueType> { value, padding }; }
+	{ return HexNumber<typename std::decay<ValueType>::type> { value, padding }; }
 
 }}
 
