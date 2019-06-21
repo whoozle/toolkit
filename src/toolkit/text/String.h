@@ -12,6 +12,25 @@ namespace TOOLKIT_NS { namespace text
 
 	std::wstring FromUtf8(const std::string &text);
 	std::string ToUtf8(const std::wstring &text);
+
+	template<typename StringType>
+	bool StartsWith(const StringType & text, const StringType & substr) {
+		auto size = substr.size();
+		if (size > text.size())
+			return false;
+
+		return text.compare(0, size, substr) == 0;
+	}
+
+	template<typename StringType>
+	bool EndsWith(const StringType & text, const StringType & substr) {
+		auto size = substr.size();
+		if (size > text.size())
+			return false;
+
+		return text.compare(text.size() - size, size, substr) == 0;
+	}
+
 }}
 
 
