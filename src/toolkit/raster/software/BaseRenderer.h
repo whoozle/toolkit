@@ -11,16 +11,26 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 	{
 		bool ClipRect(const raster::Rect &clipRect, raster::Rect &dstRect, raster::Rect &srcRect)
 		{
-			Point delta = clipRect.TopLeft() - dstRect.TopLeft();
-			//if we're clipping dstRect left/top position, we need to move src rectangle for the same amount too
-			if (delta.X < 0)
-				delta.X = 0;
-			if (delta.Y < 0)
-				delta.Y = 0;
-			dstRect.Intersect(clipRect);
-			srcRect.Left += delta.X;
-			srcRect.Top += delta.Y;
-			//printf("%s %d <- %s %d\n", dstRect.ToString().c_str(), dstRect.Valid(), srcRect.ToString().c_str(), srcRect.Valid());
+			auto result = Rect::Intersect(dstRect, clipRect);
+			auto tl = result.TopLeft() - dstRect.TopLeft();
+			auto br = result.BottomRight() - dstRect.BottomRight();
+			if (srcRect.GetSize() == dstRect.GetSize())
+			{
+				srcRect.Left 	+= tl.X;
+				srcRect.Top 	+= tl.Y;
+				srcRect.Right 	+= br.X;
+				srcRect.Bottom 	+= br.Y;
+			}
+			else
+			{
+				auto mx = srcRect.Width() * 1.0f / dstRect.Width();
+				auto my = srcRect.Height() * 1.0f / dstRect.Height();
+				srcRect.Left 	+= tl.X * mx;
+				srcRect.Top 	+= tl.Y * my;
+				srcRect.Right 	+= br.X * mx;
+				srcRect.Bottom 	+= br.Y * my;
+			}
+			dstRect = result;
 			return dstRect.Valid() && srcRect.Valid();
 		}
 
