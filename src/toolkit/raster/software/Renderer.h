@@ -121,6 +121,34 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 			}
 		}
 
+		template<typename DstSurface, typename SrcSurface>
+		typename std::enable_if<std::is_same<typename SrcSurface::PixelFormat, A8>::value, void>::type Blit(DstSurface &dstSurface, raster::Rect clipRect, raster::Point dstPos, SrcSurface &srcSurface, raster::Rect srcRect, raster::Color color)
+		{
+			using DstSurfacePixelFormat = typename DstSurface::PixelFormat;
+
+			srcRect.Intersect(srcSurface.GetSize());
+			raster::Rect dstRect(dstPos, srcRect.GetSize());
+			if (!super::ClipRect(clipRect, dstRect, srcRect))
+				return;
+
+			auto dstLock = dstSurface.Lock(dstRect);
+			auto srcLock = srcSurface.Lock(srcRect);
+
+			auto dstRow = dstLock.GetPixels();
+			auto srcRow = srcLock.GetPixels();
+
+			for(; dstRow--; ++dstRow, ++srcRow)
+			{
+				auto dst = dstRow.GetLine();
+				auto src = srcRow.GetLine();
+				for(; dst--; ++dst, ++src)
+				{
+					color.A = **src;
+					*dst = DstSurfacePixelFormat::Map(color);
+				}
+			}
+		}
+
 		template<typename DstSurface>
 		void ClearRect(DstSurface &dstSurface, raster::Rect clipRect, raster::Rect rect, raster::Color color)
 		{
