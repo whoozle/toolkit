@@ -24,6 +24,7 @@ set(TOOLKIT_SRC
 	src/toolkit/log/Logger.cpp
 	src/toolkit/log/ConsoleLoggingSink.cpp
 
+	src/toolkit/io/DirectoryReader.cpp
 	src/toolkit/io/Event.cpp
 	src/toolkit/io/File.cpp
 	src/toolkit/io/MemoryMapping.cpp
