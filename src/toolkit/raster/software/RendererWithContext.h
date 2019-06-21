@@ -11,7 +11,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
     {
     protected:
         using super = Renderer;
-        ContextType _context;
+        ContextType & _context;
 
     public:
 	    RendererWithContext(ContextType &ctx): _context(ctx) { }
@@ -23,7 +23,7 @@ namespace TOOLKIT_NS { namespace raster { namespace software
 		{ return _context; }
 
 		void Flip(raster::Rect rect)
-		{ Blit(super::_context.GetFrontBuffer(), rect, rect.TopLeft(), super::_context.GetBackBuffer(), rect); }
+		{ Blit(_context.GetFrontBuffer(), rect, rect.TopLeft(), _context.GetBackBuffer(), rect); }
     };
 
 }}}
