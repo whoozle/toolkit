@@ -2,6 +2,7 @@
 #define TOOLKIT_RASTER_GL_UTILS_H
 
 #include <toolkit/core/core.h>
+#include <toolkit/text/StringOutputStream.h>
 #include <stdio.h>
 #include <string>
 #include <stdexcept>
@@ -36,25 +37,25 @@
 
 namespace TOOLKIT_NS { namespace gl
 {
-	inline void CheckGLError()
+	inline void CheckGLError(const char * file, int line, const char * what)
 	{
-		std::string r;
-		while(true)
+		GLenum error = glGetError();
+		if (error == GL_NO_ERROR)
+			return;
+
+		text::StringOutputStream ss;
+		ss << file << ":" << line << ": " << what << ": ";
+		while(error != GL_NO_ERROR)
 		{
-			GLenum error = glGetError();
-			if (error == GL_NO_ERROR)
-			{
-				if (r.empty())
-					return;
-				else
-					break;
-			}
-			char buf[256];
-			snprintf(buf, sizeof(buf), "OpenGL error %u%s", error, r.empty()? "": ", ");
-			r += buf;
+			ss << "OpenGL error " << error << " ";
+
+			error = glGetError();
 		}
-		throw std::runtime_error(r);
+		throw std::runtime_error(ss.Get());
 	}
+
+#define TOOLKIT_GL_CALL(...) \
+	do { __VA_ARGS__ ; TOOLKIT_NS :: gl :: CheckGLError( __FILE__, __LINE__, #__VA_ARGS__ ); } while(false)
 
 }}
 

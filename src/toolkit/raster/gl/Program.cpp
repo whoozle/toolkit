@@ -5,23 +5,21 @@
 
 namespace TOOLKIT_NS { namespace gl
 {
-	Program::Program() : _program(glCreateProgram())
+	Program::Program()
 	{
-		CheckGLError();
+		TOOLKIT_GL_CALL(_program = glCreateProgram());
 		if (!_program)
 			throw std::runtime_error("glCreateProgram failed");
 	}
 
 	void Program::Attach(Shader &shader)
 	{
-		glAttachShader(_program, shader._shader);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glAttachShader(_program, shader._shader));
 	}
 
 	void Program::Detach(Shader &shader)
 	{
-		glDetachShader(_program, shader._shader);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glDetachShader(_program, shader._shader));
 	}
 
 	void Program::Link()
@@ -49,20 +47,18 @@ namespace TOOLKIT_NS { namespace gl
 
 	void Program::Use()
 	{
-		glUseProgram(_program);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glUseProgram(_program));
 	}
 
 	void Program::BindAttributeLocation(int index, const std::string &name)
 	{
-		glBindAttribLocation(_program, index, name.c_str());
-		CheckGLError();
+		TOOLKIT_GL_CALL(glBindAttribLocation(_program, index, name.c_str()));
 	}
 
 	int Program::GetAttributeLocation(const std::string &name) const
 	{
-		int loc = glGetAttribLocation(_program, name.c_str());
-		CheckGLError();
+		int loc;
+		TOOLKIT_GL_CALL(loc = glGetAttribLocation(_program, name.c_str()));
 		if (loc == -1)
 			throw std::runtime_error("glGetAttribLocation " + name + " failed");
 		return loc;
@@ -70,8 +66,8 @@ namespace TOOLKIT_NS { namespace gl
 
 	int Program::GetUniformLocation(const std::string &name) const
 	{
-		int loc = glGetUniformLocation(_program, name.c_str());
-		CheckGLError();
+		int loc;
+		TOOLKIT_GL_CALL(loc = glGetUniformLocation(_program, name.c_str()));
 		if (loc == -1)
 			throw std::runtime_error("glGetUniformLocation " + name + " failed");
 		return loc;

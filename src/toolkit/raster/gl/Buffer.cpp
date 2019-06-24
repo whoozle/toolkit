@@ -5,8 +5,7 @@ namespace TOOLKIT_NS { namespace gl
 {
 	Buffer::Buffer()
 	{
-		glGenBuffers(1, &_buffer);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glGenBuffers(1, &_buffer));
 	}
 
 	Buffer::~Buffer()
@@ -16,14 +15,12 @@ namespace TOOLKIT_NS { namespace gl
 
 	void Buffer::Bind(GLenum target)
 	{
-		glBindBuffer(target, _buffer);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glBindBuffer(target, _buffer));
 	}
 
 	void Buffer::BufferData(GLenum target, gl::BufferData data, GLenum usage)
 	{
-		glBufferData(target, data.Size, data.Data, usage);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glBufferData(target, data.Size, data.Data, usage));
 	}
 
 }}

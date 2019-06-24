@@ -4,9 +4,9 @@
 
 namespace TOOLKIT_NS { namespace gl
 {
-	Shader::Shader(GLenum type): _shader(glCreateShader(type))
+	Shader::Shader(GLenum type)
 	{
-		CheckGLError();
+		TOOLKIT_GL_CALL(_shader = glCreateShader(type));
 		if (!_shader)
 			throw std::runtime_error("shader creation failed");
 	}
@@ -15,8 +15,7 @@ namespace TOOLKIT_NS { namespace gl
 	{
 		const char *s = source.c_str();
 		GLint n = source.size();
-		glShaderSource(_shader, 1, &s, &n);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glShaderSource(_shader, 1, &s, &n));
 	}
 
 	std::string Shader::GetSource() const

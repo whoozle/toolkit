@@ -5,8 +5,7 @@ namespace TOOLKIT_NS { namespace gl
 {
 	VertexArray::VertexArray()
 	{
-		glGenVertexArrays(1, &_array);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glGenVertexArrays(1, &_array));
 	}
 
 	VertexArray::~VertexArray()
@@ -16,8 +15,7 @@ namespace TOOLKIT_NS { namespace gl
 
 	void VertexArray::Bind()
 	{
-		glBindVertexArray(_array);
-		CheckGLError();
+		TOOLKIT_GL_CALL(glBindVertexArray(_array));
 	}
 
 }}
