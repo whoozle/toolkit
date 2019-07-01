@@ -39,7 +39,8 @@ namespace TOOLKIT_NS { namespace serialization
 		void Write(const std::string &str)
 		{ Write(str.begin(), str.end()); }
 
-		void Write(const ByteArray &str)
+		template<typename ContainerType>
+		void Write(const ContainerType &str)
 		{ Write(str.begin(), str.end()); }
 
 		template<typename IteratorType_>
