@@ -13,6 +13,8 @@ namespace TOOLKIT_NS { namespace io
 	{
 	public:
 		using File::File;
+		SerialPort(const std::string &path, FileOpenMode mode = FileOpenMode::ReadWrite): File(path, mode)
+		{ }
 
 		bool GetParityBit() override;
 		void SetParityBit(bool bit) override;
