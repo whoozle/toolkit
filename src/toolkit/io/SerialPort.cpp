@@ -26,5 +26,17 @@ namespace TOOLKIT_NS { namespace io
 		SYSTEM_CALL(tcsetattr(_fd, TCSADRAIN, &state));
 	}
 
+	termios SerialPort::GetState()
+	{
+		termios state;
+		SYSTEM_CALL(tcgetattr(_fd, &state));
+		return state;
+	}
+
+	void SerialPort::SetState(const termios & state)
+	{
+		SYSTEM_CALL(tcsetattr(_fd, TCSANOW, &state));
+	}
+
 }}
 

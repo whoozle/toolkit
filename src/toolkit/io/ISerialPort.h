@@ -3,6 +3,7 @@
 
 #include <toolkit/io/IStream.h>
 #include <toolkit/io/IPollable.h>
+#include <termios.h>
 
 namespace TOOLKIT_NS { namespace io
 {
@@ -12,6 +13,8 @@ namespace TOOLKIT_NS { namespace io
 	{
 		virtual bool GetParityBit() = 0;
 		virtual void SetParityBit(bool bit) = 0;
+		virtual termios GetState() = 0;
+		virtual void SetState(const termios & state) = 0;
 	};
 
 	DECLARE_PTR(ISerialPort);

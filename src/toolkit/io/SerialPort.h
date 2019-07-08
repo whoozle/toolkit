@@ -16,6 +16,9 @@ namespace TOOLKIT_NS { namespace io
 		SerialPort(const std::string &path, FileOpenMode mode = FileOpenMode::ReadWrite): File(path, mode)
 		{ }
 
+		termios GetState() override;
+		void SetState(const termios & state) override;
+
 		bool GetParityBit() override;
 		void SetParityBit(bool bit) override;
 	};
