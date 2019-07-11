@@ -2,6 +2,7 @@
 #define TOOLKIT_TASK
 
 #include <functional>
+#include <toolkit/core/core.h>
 
 namespace TOOLKIT_NS
 {
