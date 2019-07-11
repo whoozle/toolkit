@@ -1,9 +1,10 @@
 #ifndef TOOLKIT_THREAD_POOL
 #define TOOLKIT_THREAD_POOL
 
-#include <toolkit/log/Logger.h>
 #include <toolkit/core/Noncopyable.h>
+#include <toolkit/core/Task.h>
 #include <toolkit/core/types.h>
+#include <toolkit/log/Logger.h>
 #include <condition_variable>
 #include <future>
 #include <memory>
@@ -15,8 +16,6 @@ namespace TOOLKIT_NS
 {
 	class ThreadPool : Noncopyable
 	{
-		using Task = std::function<void ()>;
-
 		class Thread : Noncopyable
 		{
 			static log::Logger	_log;
