@@ -35,6 +35,9 @@ namespace TOOLKIT_NS { namespace raster
 		bool operator != (Size other) const
 		{ return !(*this == other); }
 
+		bool Valid() const
+		{ return Width > 0 && Height > 0; }
+
 		void ToString(text::StringOutputStream & ss) const
 		{ ss << Width << 'x' << Height; }
 
