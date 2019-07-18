@@ -4,13 +4,14 @@
 #include <toolkit/core/types.h>
 #include <toolkit/serialization/BSON.h>
 #include <toolkit/serialization/BinaryWriter.h>
+#include <toolkit/serialization/ISerializationStream.h>
 #include <string>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 
 	template<typename IteratorType>
-	class Writer: private BinaryWriter<IteratorType>
+	class Writer: private BinaryWriter<IteratorType>, public IOutputStream
 	{
 		using super = BinaryWriter<IteratorType>;
 		IteratorType _iter;

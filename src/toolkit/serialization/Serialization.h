@@ -54,7 +54,7 @@ namespace TOOLKIT_NS { namespace serialization
 	MemberDescriptor<ClassType, MemberType> Member(MemberType ClassType::* pointer, const std::string & name = std::string())
 	{ return MemberDescriptor<ClassType, MemberType>(pointer, name); }
 
-	impl::ClassDescriptor<> ClassDescriptor(const std::string &name, uint version)
+	inline impl::ClassDescriptor<> ClassDescriptor(const std::string &name, uint version)
 	{ return impl::ClassDescriptor<>(name, version, std::make_tuple()); }
 
 	template<typename ClassType, template<typename, typename> typename SerializatorType>

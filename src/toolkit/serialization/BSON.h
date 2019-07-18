@@ -23,8 +23,6 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		ObjectEnd		= 12,
 		Null			= 13,
 	};
-
-	struct Undefined { };
 }}}
 
 #endif
