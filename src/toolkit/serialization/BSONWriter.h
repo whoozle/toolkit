@@ -19,16 +19,16 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	public:
 		Writer(IteratorType iter): _iter(iter) { }
 
-		void Write(const Undefined &)
+		void Write(const Undefined &) override
 		{ WriteTag(Tag::Undefined); }
 
-		void Write(std::nullptr_t)
+		void Write(std::nullptr_t) override
 		{ WriteTag(Tag::Null); }
 
-		void Write(bool value)
+		void Write(bool value) override
 		{ WriteTag(value? Tag::BooleanTrue: Tag::BooleanFalse); }
 
-		void Write(s64 value)
+		void Write(s64 value) override
 		{
 			using Type = s64;
 			using UnsignedType = typename std::make_unsigned<Type>::type;
@@ -39,7 +39,13 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				WriteIntegral<Tag::PositiveInteger, UnsignedType>(static_cast<UnsignedType>(value));
 		}
 
-		void Write(const std::string & value)
+		void Write(double value) override
+		{
+			WriteTag(Tag::Number);
+			throw std::runtime_error("implement Write(double)");
+		}
+
+		void Write(const std::string & value) override
 		{
 			WriteTag(Tag::String);
 			WriteRaw(value);
@@ -56,10 +62,15 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void WriteRaw(Type value)
 		{ super::Write(value); }
 
-		void BeginObject()
+		void BeginObject() override
 		{ WriteTag(Tag::ObjectBegin); }
-		void EndObject()
-		{ WriteTag(Tag::ObjectBegin); }
+		void EndObject() override
+		{ WriteTag(Tag::ObjectEnd); }
+
+		void BeginList() override
+		{ WriteTag(Tag::ListBegin); }
+		void EndList() override
+		{ WriteTag(Tag::ListEnd); }
 
 	protected:
 		void WriteTag(Tag tag)
