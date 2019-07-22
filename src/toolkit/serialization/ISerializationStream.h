@@ -18,7 +18,11 @@ namespace TOOLKIT_NS { namespace serialization
 
 		virtual void Write(bool value) = 0;
 		virtual void Write(s64 value) = 0;
+		virtual void Write(double value) = 0;
 		virtual void Write(const std::string & value) = 0;
+
+		virtual void BeginArray() = 0;
+		virtual void EndArray() = 0;
 
 		virtual void BeginObject() = 0;
 		virtual void EndObject() = 0;
