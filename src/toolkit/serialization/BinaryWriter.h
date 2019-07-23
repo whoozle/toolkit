@@ -10,13 +10,14 @@ namespace TOOLKIT_NS { namespace serialization
 	template<typename IteratorType>
 	class BinaryWriter
 	{
+	protected:
 		IteratorType _iter;
 
 	public:
 		BinaryWriter(IteratorType iter): _iter(iter) { }
 
 		template<typename Type>
-		void Write(Type value)
+		void WriteInteger(Type value)
 		{
 			//static_assert(std::is_unsigned<Type>::value, "only unsigned types supported");
 			if (value < 0)
@@ -33,21 +34,15 @@ namespace TOOLKIT_NS { namespace serialization
 			while(value != 0);
 		}
 
-		void Write(std::nullptr_t)
-		{ }
-
-		void Write(const std::string &str)
-		{ Write(str.begin(), str.end()); }
-
 		template<typename ContainerType>
-		void Write(const ContainerType &str)
-		{ Write(str.begin(), str.end()); }
+		void WriteBlock(const ContainerType &str)
+		{ WriteBlock(str.begin(), str.end()); }
 
 		template<typename IteratorType_>
-		void Write(IteratorType_ begin, IteratorType_ end)
+		void WriteBlock(IteratorType_ begin, IteratorType_ end)
 		{
 			size_t size = std::distance(begin, end);
-			Write(size);
+			WriteInteger(size);
 			_iter = std::copy(begin, end, _iter);
 		}
 	};

@@ -14,10 +14,9 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	class Writer: private BinaryWriter<IteratorType>, public IOutputStream
 	{
 		using super = BinaryWriter<IteratorType>;
-		IteratorType _iter;
 
 	public:
-		Writer(IteratorType iter): _iter(iter) { }
+		Writer(IteratorType iter): super(iter) { }
 
 		void Write(const Undefined &) override
 		{ WriteTag(Tag::Undefined); }
@@ -48,19 +47,15 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void Write(const std::string & value) override
 		{
 			WriteTag(Tag::String);
-			WriteRaw(value);
+			super::WriteBlock(value);
 		}
 
 		template<typename IteratorType_>
 		void Write(IteratorType_ begin, IteratorType_ end)
 		{
 			WriteTag(Tag::String);
-			WriteRaw(begin, end);
+			super::WriteBlock(begin, end);
 		}
-
-		template<typename Type>
-		void WriteRaw(Type value)
-		{ super::Write(value); }
 
 		void BeginObject() override
 		{ WriteTag(Tag::ObjectBegin); }
@@ -74,7 +69,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	protected:
 		void WriteTag(Tag tag)
-		{ *_iter++ = static_cast<u8>(tag); }
+		{ *super::_iter++ = static_cast<u8>(tag); }
 
 		template<Tag tag, typename Type>
 		void WriteIntegral(Type value)
@@ -82,7 +77,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			if (value != 0)
 			{
 				WriteTag(tag);
-				WriteRaw<Type>(value);
+				super::WriteInteger(value);
 			}
 			else
 				WriteTag(Tag::Zero);
