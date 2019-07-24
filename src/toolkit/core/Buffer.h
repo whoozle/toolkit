@@ -95,8 +95,14 @@ namespace TOOLKIT_NS
 		const T * end() const
 		{ return _ptr + _size; }
 
+		bool IsEmpty() const
+		{ return empty(); }
+
+		bool empty() const
+		{ return _size == 0; }
+
 		size_t GetSize() const
-		{ return _size; }
+		{ return size(); }
 
 		size_t size() const
 		{ return _size; }
