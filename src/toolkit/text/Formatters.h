@@ -2,9 +2,12 @@
 #define TOOLKIT_SERIALISATION_FORMATTERS_H
 
 #include <toolkit/text/StringOutputStream.h>
+#include <toolkit/core/Buffer.h>
+#include <string>
 
 namespace TOOLKIT_NS { namespace text
 {
+	class StringOutputStream;
 
 	template<typename ValueType>
 	struct HexNumber
@@ -35,11 +38,25 @@ namespace TOOLKIT_NS { namespace text
 			}
 			ss.Write(buf + n, Size - n);
 		}
+		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
 
 	template<typename ValueType>
 	HexNumber<ValueType> Hex(ValueType value, unsigned padding = 0)
 	{ return HexNumber<typename std::decay<ValueType>::type> { value, padding }; }
+
+	struct HexDump
+	{
+		ConstBuffer 	Buffer;
+		std::string 	Name;
+
+		HexDump(ConstBuffer buffer, std::string name = std::string()):
+			Buffer(buffer), Name(name)
+		{ }
+
+		void ToString(StringOutputStream & ss) const;
+		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
+	};
 
 }}
 
