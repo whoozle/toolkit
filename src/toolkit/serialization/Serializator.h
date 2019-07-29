@@ -40,6 +40,14 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(const std::string &, const std::string &);
 
 #undef TOOLKIT_SERIALIZATOR_FORWARD_TYPE
+
+
+	template<typename ... Type>
+	void Serialize(IOutputStream & out, const Type & value)
+	{
+		Serializator<Type>::Write(out, value);
+	}
+
 }}
 
 #endif
