@@ -43,9 +43,10 @@ namespace TOOLKIT_NS { namespace serialization
 
 
 	template<typename ... Type>
-	void Serialize(IOutputStream & out, const Type & value)
+	void Serialize(IOutputStream & out, const Type & ... value)
 	{
-		Serializator<Type>::Write(out, value);
+		using expand_type = int[];
+		expand_type { (Serializator<Type>::Write(out, value), 0) ... };
 	}
 
 }}
