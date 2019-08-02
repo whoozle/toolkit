@@ -1,3 +1,4 @@
+project(toolkit-tests)
 cmake_minimum_required(VERSION 3.3)
 add_subdirectory(.. ${CMAKE_CURRENT_BINARY_DIR}/toolkit)
 
