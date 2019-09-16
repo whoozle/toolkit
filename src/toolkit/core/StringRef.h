@@ -4,8 +4,11 @@
 #include <toolkit/core/Buffer.h>
 #include <string>
 
+FORWARD_DECLARE_CLASS(text, StringOutputStream);
+
 namespace TOOLKIT_NS
 {
+
 	class StringRef : public BasicBuffer<char>
     {
         using super = BasicBuffer<char>;
@@ -15,6 +18,8 @@ namespace TOOLKIT_NS
 
 		std::string ToString() const
 		{ return std::string(static_cast<const char *>(data()), size()); }
+
+		void ToString(text::StringOutputStream & ss) const;
     };
 }
 
