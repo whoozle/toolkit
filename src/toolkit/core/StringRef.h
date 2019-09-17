@@ -9,18 +9,22 @@ FORWARD_DECLARE_CLASS(text, StringOutputStream);
 namespace TOOLKIT_NS
 {
 
-	class StringRef : public BasicBuffer<char>
+	template <typename Char>
+	class BasicStringRef : public BasicBuffer<Char>
     {
-        using super = BasicBuffer<char>;
+        using super = BasicBuffer<Char>;
 
     public:
         using super::super;
 
 		std::string ToString() const
-		{ return std::string(static_cast<const char *>(data()), size()); }
+		{ return std::string(static_cast<const Char *>(this->data()), this->size()); }
 
 		void ToString(text::StringOutputStream & ss) const;
     };
+
+	using StringRef = BasicStringRef<char>;
+	using ConstStringRef = BasicStringRef<const char>;
 }
 
 #endif
