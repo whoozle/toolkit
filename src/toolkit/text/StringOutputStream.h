@@ -19,7 +19,7 @@ namespace TOOLKIT_NS { namespace text
 		}
 
 #define TOOLKIT_IO_SS_DECLARE_WRITE(TYPE) \
-		size_t WriteImpl( TYPE value );
+		size_t WriteImpl( TYPE value )
 
 		TOOLKIT_IO_SS_DECLARE_WRITE(char);
 		TOOLKIT_IO_SS_DECLARE_WRITE(unsigned char);
