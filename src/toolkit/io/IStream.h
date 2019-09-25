@@ -51,16 +51,19 @@ namespace TOOLKIT_NS { namespace io
 		public virtual IInputStream,
 		public virtual IOutputStream
 	{ };
+	DECLARE_PTR(IBidirectionalStream);
 
 	struct ISeekableInputStream :
 			public virtual IInputStream,
 			public virtual ISeekable
 	{ };
+	DECLARE_PTR(ISeekableInputStream);
 
 	struct ISeekableOutputStream :
 			public virtual IOutputStream,
 			public virtual ISeekable
 	{ };
+	DECLARE_PTR(ISeekableOutputStream);
 
 	struct IStorage :
 		public virtual ISeekableInputStream,
