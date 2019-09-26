@@ -32,7 +32,7 @@ namespace TOOLKIT_NS
 
 			void Run();
 		};
-		DECLARE_PTR(Thread);
+		TOOLKIT_DECLARE_PTR(Thread);
 
 		static log::Logger		_log;
 		std::mutex				_mutex;

@@ -27,7 +27,7 @@ namespace TOOLKIT_NS { namespace io
 		void Cancel();
 		bool Active() const;
 	};
-	DECLARE_PTR(Event);
+	TOOLKIT_DECLARE_PTR(Event);
 
 }}
 

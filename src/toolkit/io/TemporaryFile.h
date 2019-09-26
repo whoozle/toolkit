@@ -20,7 +20,7 @@ namespace TOOLKIT_NS { namespace io
 	private:
 		int CreateTemporaryFileDescriptor(const std::string &filenameTemplate, char *storagePath);
 	};
-	DECLARE_PTR(TemporaryFile);
+	TOOLKIT_DECLARE_PTR(TemporaryFile);
 
 }}
 

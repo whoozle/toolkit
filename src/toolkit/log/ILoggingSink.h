@@ -38,7 +38,7 @@ namespace TOOLKIT_NS { namespace log
 		virtual ~ILoggingSink() { }
 		virtual void Log(LogLevel level, const std::string & logger, const timespec &ts, const std::string &value) = 0;
 	};
-	DECLARE_PTR(ILoggingSink);
+	TOOLKIT_DECLARE_PTR(ILoggingSink);
 
 }}
 

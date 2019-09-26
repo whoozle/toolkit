@@ -46,7 +46,7 @@ namespace TOOLKIT_NS { namespace io
 	private:
 		//int Map(MemoryProtection prot);
 	};
-	DECLARE_PTR(MemoryMapping);
+	TOOLKIT_DECLARE_PTR(MemoryMapping);
 }}
 
 

@@ -50,7 +50,7 @@ namespace TOOLKIT_NS
 		const_iterator begin() const	{ return _data.begin(); }
 		const_iterator end() const		{ return _data.end(); }
 	};
-	DECLARE_PTR(ByteArray);
+	TOOLKIT_DECLARE_PTR(ByteArray);
 
 }
 

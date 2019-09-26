@@ -11,7 +11,7 @@ namespace TOOLKIT_NS
 		virtual ~ISerializableType() = default;
 		virtual const std::string GetType() const = 0;
 	};
-	DECLARE_CONST_PTR(ISerializableType);
+	TOOLKIT_DECLARE_CONST_PTR(ISerializableType);
 
 	struct ISerializable
 	{

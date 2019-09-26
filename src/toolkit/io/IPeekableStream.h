@@ -15,7 +15,7 @@ namespace TOOLKIT_NS { namespace io
         virtual ConstBuffer GetReadBuffer() const = 0;
         virtual void ReadComplete(size_t bytes) = 0;
 	};
-	DECLARE_PTR(IPeekableInputStream);
+	TOOLKIT_DECLARE_PTR(IPeekableInputStream);
 
 	struct IPeekableOutputStream
 	{
@@ -25,13 +25,13 @@ namespace TOOLKIT_NS { namespace io
         virtual void WriteComplete(size_t bytes) = 0;
         virtual void WriteSkip(size_t bytes) = 0;
 	};
-	DECLARE_PTR(IPeekableOutputStream);
+	TOOLKIT_DECLARE_PTR(IPeekableOutputStream);
 
 	struct IPeekableBidirectionalStream :
         virtual IPeekableInputStream,
         virtual IPeekableOutputStream
 	{ };
-	DECLARE_PTR(IPeekableBidirectionalStream);
+	TOOLKIT_DECLARE_PTR(IPeekableBidirectionalStream);
 
 }}
 

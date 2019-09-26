@@ -17,7 +17,7 @@ namespace TOOLKIT_NS { namespace io
 		virtual void SetState(const termios & state) = 0;
 	};
 
-	DECLARE_PTR(ISerialPort);
+	TOOLKIT_DECLARE_PTR(ISerialPort);
 }}
 
 
