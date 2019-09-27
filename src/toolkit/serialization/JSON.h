@@ -38,7 +38,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType, typename DescriptorType>
-		void WriteDescriptor(StreamType & stream, State & state, const DescriptorType & desc) const
+		void WriteDescriptor(StreamType & stream, State & state, const DescriptorType & desc)
 		{
 			if (!desc.Name.empty())
 				WriteProperty(stream, state, desc.Name, desc.Get(state.Object));
@@ -46,15 +46,15 @@ namespace TOOLKIT_NS { namespace serialization
 
 		template<std::size_t MemberCount, size_t Index = 0, typename StreamType>
 		typename std::enable_if<Index < MemberCount, void>::type
-		WriteDescriptors(StreamType & stream, State & state) const
+		WriteDescriptors(StreamType & stream, State & state)
 		{
 			WriteDescriptor(stream, state, std::get<Index>(_descriptor.Data));
 			WriteDescriptors<MemberCount, Index + 1>(stream, state);
 		}
 
 		template<std::size_t MemberCount, size_t Index = 0, typename StreamType>
-		typename std::enable_if<Index == MemberCount, void>::type
-		WriteDescriptors(StreamType & stream, State & state) const
+		static typename std::enable_if<Index == MemberCount, void>::type
+		WriteDescriptors(StreamType & stream, State & state)
 		{ }
 
 	public:
@@ -111,7 +111,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType>
-		static void WriteProperty(StreamType & stream, State & state, const std::string &name, const std::string &value) const
+		static void WriteProperty(StreamType & stream, State & state, const std::string &name, const std::string &value)
 		{
 			MaybeComma(stream, state);
 			WriteString(stream, name);
@@ -120,7 +120,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType>
-		static void WriteProperty(StreamType & stream, State & state, const std::string &name, const std::wstring &value) const
+		static void WriteProperty(StreamType & stream, State & state, const std::string &name, const std::wstring &value)
 		{
 			MaybeComma(stream, state);
 			WriteString(stream, name);
@@ -129,7 +129,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType, typename ValueType>
-		static void WriteProperty(StreamType & stream, State & state, const std::string &name, ValueType && value) const
+		static void WriteProperty(StreamType & stream, State & state, const std::string &name, ValueType && value)
 		{
 			MaybeComma(stream, state);
 			WriteString(stream, name);
@@ -137,7 +137,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType>
-		static void Write(StreamType & stream, State & state) const
+		void Write(StreamType & stream, State & state)
 		{
 			stream << "{";
 			if (!_descriptor.Name.empty())
