@@ -34,6 +34,7 @@ namespace TOOLKIT_NS { namespace io
 			throw SystemException("mremap");
 		_data = Buffer(static_cast<u8*>(addr), new_size);
 	}
+
 	void MemoryMapping::Remap(size_t new_size, int flags, void *new_address)
 	{
 		void * addr = mremap(_data.data(), _data.size(), new_size, flags, new_address);
