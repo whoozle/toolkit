@@ -8,13 +8,13 @@
 namespace TOOLKIT_NS { namespace io
 {
 
-	class BufferInputStream : public IInputStream
+	class BufferInputStream : public virtual IInputStream
 	{
-		Buffer	_src;
-		size_t		_offset;
+		ConstBuffer		_src;
+		size_t			_offset;
 
 	public:
-		BufferInputStream(Buffer src): _src(src), _offset(0) { }
+		BufferInputStream(ConstBuffer src): _src(src), _offset(0) { }
 
 		size_t Read(Buffer dst) override
 		{
@@ -26,22 +26,33 @@ namespace TOOLKIT_NS { namespace io
 		}
 	};
 
-	class BufferOutputStream : public IOutputStream
+	class BufferOutputStream : public virtual IOutputStream
 	{
-		Buffer	_data;
-		size_t		_offset;
+		Buffer			_dst;
+		size_t			_offset;
 
 	public:
-		BufferOutputStream(Buffer data): _data(data), _offset(0) { }
+		BufferOutputStream(Buffer dst): _dst(dst), _offset(0) { }
 
 		size_t Write(ConstBuffer src) override
 		{
-			Buffer dst(_data, _offset);
+			Buffer dst(_dst, _offset);
 			size_t n = std::min(dst.size(), src.size());
 			_offset += n;
 			memcpy(dst.data(), src.data(), n);
 			return n;
 		}
+	};
+	class BufferBidirectionalStream :
+		public BufferInputStream,
+		public BufferOutputStream,
+		public virtual IBidirectionalStream
+	{
+	public:
+		BufferBidirectionalStream(Buffer buffer):
+			BufferInputStream(buffer),
+			BufferOutputStream(buffer)
+		{ }
 	};
 
 }}
