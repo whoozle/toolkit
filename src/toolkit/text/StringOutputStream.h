@@ -3,6 +3,7 @@
 
 #include <toolkit/core/Buffer.h>
 #include <toolkit/io/MemoryOutputStream.h>
+#include <type_traits>
 
 namespace TOOLKIT_NS { namespace text
 {
@@ -11,7 +12,10 @@ namespace TOOLKIT_NS { namespace text
 		io::MemoryOutputStream	_stream;
 
 		template<typename ValueType>
-		size_t WriteImpl(ValueType value)
+		typename std::enable_if<
+			std::is_class<ValueType>::value || std::is_union<ValueType>::value,
+			size_t
+		>::type WriteImpl(ValueType value)
 		{
 			size_t before = _stream.GetSize();
 			value.ToString(*this);
