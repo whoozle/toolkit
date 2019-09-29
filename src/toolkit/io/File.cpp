@@ -65,6 +65,12 @@ namespace TOOLKIT_NS { namespace io
 		}
 	}
 
+	void File::Sync(off64_t offset, off64_t size, unsigned flags)
+	{
+		SYSTEM_CALL(sync_file_range(_fd, offset, size, flags));
+	}
+
+
 	off_t File::Seek(off_t offset, SeekMode mode)
 	{ SYSTEM_CALL_RETURN(lseek(_fd, offset, MapMode(mode))); }
 

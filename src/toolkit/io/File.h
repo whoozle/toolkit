@@ -35,6 +35,7 @@ namespace TOOLKIT_NS { namespace io
 		{ return _fd; }
 
 		void Sync(SyncMode mode) override;
+		void Sync(off64_t offset, off64_t size, unsigned flags);
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override;
 		off_t Tell() override;
 
