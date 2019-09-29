@@ -3,12 +3,15 @@
 
 #include <toolkit/core/Buffer.h>
 #include <toolkit/io/IStream.h>
+#include <toolkit/io/IPeekableStream.h>
 #include <string.h>
 
 namespace TOOLKIT_NS { namespace io
 {
 
-	class BufferInputStream : public virtual IInputStream
+	class BufferInputStream :
+		public virtual IInputStream,
+		public virtual IPeekableInputStream
 	{
 		ConstBuffer		_src;
 		size_t			_offset;
@@ -24,9 +27,21 @@ namespace TOOLKIT_NS { namespace io
 			_offset += n;
 			return n;
 		}
+        ConstBuffer GetReadBuffer() const override
+		{ return ConstBuffer(_src, _offset); }
+
+        void ReadComplete(size_t bytes) override
+		{
+			if (bytes + _offset > _src.size())
+				throw Exception("ReadComplete: input buffer overflow");
+
+			_offset += bytes;
+		}
 	};
 
-	class BufferOutputStream : public virtual IOutputStream
+	class BufferOutputStream :
+		public virtual IOutputStream,
+		public virtual IPeekableOutputStream
 	{
 		Buffer			_dst;
 		size_t			_offset;
@@ -42,11 +57,26 @@ namespace TOOLKIT_NS { namespace io
 			memcpy(dst.data(), src.data(), n);
 			return n;
 		}
+
+        Buffer GetWriteBuffer() const override
+		{ return _dst; }
+
+        void WriteComplete(size_t bytes) override
+		{
+			if (bytes + _offset > _dst.size())
+				throw Exception("WriteComplete: input buffer overflow");
+			_offset += bytes;
+		}
+
+        void WriteSkip(size_t bytes) override
+		{ WriteComplete(bytes); }
 	};
+
 	class BufferBidirectionalStream :
 		public BufferInputStream,
 		public BufferOutputStream,
-		public virtual IBidirectionalStream
+		public virtual IBidirectionalStream,
+		public virtual IPeekableBidirectionalStream
 	{
 	public:
 		BufferBidirectionalStream(Buffer buffer):

@@ -21,7 +21,7 @@ namespace TOOLKIT_NS { namespace io
 	{
 		virtual ~IPeekableOutputStream() = default;
 
-        virtual ConstBuffer GetWriteBuffer() const = 0;
+        virtual Buffer GetWriteBuffer() const = 0;
         virtual void WriteComplete(size_t bytes) = 0;
         virtual void WriteSkip(size_t bytes) = 0;
 	};
