@@ -29,8 +29,7 @@ namespace TOOLKIT_NS { namespace io
 		MemoryMapping(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
 		~MemoryMapping();
 
-		void Remap(size_t new_size, int flags);
-		void Remap(size_t new_size, int flags, void *new_address);
+		void Remap(size_t new_size, int flags, void *new_address = nullptr);
 
 		static void Sync(void *addr, size_t size, int flags);
 		static void Sync(Buffer data, int flags)
