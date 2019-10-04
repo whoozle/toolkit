@@ -83,6 +83,12 @@ namespace TOOLKIT_NS { namespace io
 	size_t File::Read(Buffer data)
 	{ SYSTEM_CALL_RETURN(read(_fd, data.GetPointer(), data.GetSize())); }
 
+	size_t File::Write(ConstBuffer data, off_t offset)
+	{ SYSTEM_CALL_RETURN(pwrite(_fd, data.GetPointer(), data.GetSize(), offset)); }
+
+	size_t File::Read(Buffer data, off_t offset)
+	{ SYSTEM_CALL_RETURN(pread(_fd, data.GetPointer(), data.GetSize(), offset)); }
+
 	struct stat File::GetStatus()
 	{
 		struct stat buf;

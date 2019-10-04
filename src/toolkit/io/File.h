@@ -42,6 +42,9 @@ namespace TOOLKIT_NS { namespace io
 		size_t Write(ConstBuffer data) override;
 		size_t Read(Buffer) override;
 
+		size_t Write(ConstBuffer data, off_t offset);
+		size_t Read(Buffer, off_t offset);
+
 		void Allocate(int mode, off_t offset, off_t len);
 		void Truncate(size_t size);
 		struct stat GetStatus();
