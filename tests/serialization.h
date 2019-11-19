@@ -1,5 +1,6 @@
 #include <toolkit/serialization/Serialization.h>
 #include <toolkit/serialization/JSON.h>
+#include <toolkit/serialization/BSONWriter.h>
 #include <toolkit/text/StringOutputStream.h>
 #include <lest/lest.hpp>
 #include <string>
@@ -53,5 +54,9 @@ namespace
 				jsonReader.Handle(state, ch);
 			}
 		},
+		CASE( "BSON serialization test" )
+		{
+
+		}
 	};
 }

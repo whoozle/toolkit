@@ -2,6 +2,7 @@
 #define TOOLKIT_SERIALIZATION_BINARYREADER_H
 
 #include <toolkit/core/types.h>
+#include <toolkit/core/ByteArray.h>
 #include <toolkit/core/Optional.h>
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/serialization/BinaryReaderBase.h>
