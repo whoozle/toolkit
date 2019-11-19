@@ -56,7 +56,13 @@ namespace
 		},
 		CASE( "BSON serialization test" )
 		{
+			// auto bsonWriter = ts::MakeSerializator<Test, ts::bson::Writer>();
+			// Test test(2, 3, "юникод\ncopyright ©1738\r\n");
 
+			// auto state = bsonWriter.NewState(test);
+			// toolkit::text::StringOutputStream ss;
+			// bsonWriter.Write(ss, state);
+			// EXPECT( ss.Get() == "{\"__classname\":\"Test\",\"__version\":1,\"p\":2,\"q\":3,\"comment\":\"\\u044e\\u043d\\u0438\\u043a\\u043e\\u0434\\ncopyright \\u00a91738\\r\\n\"}" );
 		}
 	};
 }
