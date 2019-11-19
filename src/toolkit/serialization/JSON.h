@@ -38,7 +38,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType, typename DescriptorType>
-		void WriteDescriptor(StreamType & stream, State & state, const DescriptorType & desc)
+		void WriteDescriptor(StreamType & stream, State & state, const DescriptorType & desc) const
 		{
 			if (!desc.Name.empty())
 				WriteProperty(stream, state, desc.Name, desc.Get(state.Object));
@@ -46,7 +46,7 @@ namespace TOOLKIT_NS { namespace serialization
 
 		template<std::size_t MemberCount, size_t Index = 0, typename StreamType>
 		typename std::enable_if<Index < MemberCount, void>::type
-		WriteDescriptors(StreamType & stream, State & state)
+		WriteDescriptors(StreamType & stream, State & state) const
 		{
 			WriteDescriptor(stream, state, std::get<Index>(_descriptor.Data));
 			WriteDescriptors<MemberCount, Index + 1>(stream, state);
@@ -137,7 +137,7 @@ namespace TOOLKIT_NS { namespace serialization
 		}
 
 		template<typename StreamType>
-		void Write(StreamType & stream, State & state)
+		void Write(StreamType & stream, State & state) const
 		{
 			stream << "{";
 			if (!_descriptor.Name.empty())
