@@ -3,7 +3,7 @@
 
 #include <toolkit/core/types.h>
 #include <toolkit/core/Optional.h>
-#include <toolkit/serialization/BSON.h>
+#include <toolkit/serialization/bson/Tag.h>
 #include <toolkit/serialization/BinaryReader.h>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson

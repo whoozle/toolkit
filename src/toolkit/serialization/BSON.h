@@ -2,27 +2,25 @@
 #define TOOLKIT_SERIALIZATION_BSON_H
 
 #include <toolkit/core/types.h>
+#include <toolkit/serialization/Serialization.h>
+#include <toolkit/serialization/bson/OutputStream.h>
+#include <toolkit/core/ByteArray.h>
 #include <string>
 
-namespace TOOLKIT_NS { namespace serialization { namespace bson
+namespace TOOLKIT_NS { namespace serialization
 {
-	enum struct Tag : u8
+
+	template<typename ClassType>
+	struct BSON
 	{
-		Undefined		= 0,
-		BooleanFalse	= 1,
-		BooleanTrue		= 2,
-		Zero			= 3,
-		PositiveInteger	= 4,
-		NegativeInteger	= 5,
-		Number			= 6,
-		String			= 7,
-		ListBegin		= 8,
-		ListEnd			= 9,
-		ObjectBegin		= 10,
-		ObjectKey		= 11,
-		ObjectEnd		= 12,
-		Null			= 13,
+		static void Write(ByteArray::Storage & outStorage, ClassType & value)
+		{
+			auto & decriptor = ClassDescriptorHolder<ClassType>::Get();
+			auto iter = std::back_inserter(outStorage);
+			serialization::bson::OutputStream<decltype(iter)> out(iter);
+		}
 	};
-}}}
+
+}}
 
 #endif

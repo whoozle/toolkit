@@ -12,13 +12,17 @@ namespace TOOLKIT_NS
 
 	class ByteArray : public Noncopyable
 	{
-		using StorageType = std::vector<u8>;
-		StorageType			_data;
+	public:
+		using Storage = std::vector<u8>;
+
+	private:
+		Storage			_data;
 
 	public:
 		using const_iterator	= std::vector<u8>::const_iterator;
 		using iterator 			= std::vector<u8>::iterator;
 
+		ByteArray(): _data() { }
 		ByteArray(size_t size): _data(size) { }
 		ByteArray(std::vector<u8> && data): _data(data) { }
 		ByteArray(ByteArray && data): ByteArray(std::move(data._data)) { }
@@ -46,9 +50,11 @@ namespace TOOLKIT_NS
 		void Clear()
 		{ _data.clear(); }
 
-		StorageType & GetStorage()
+public:
+		Storage & GetStorage()
 		{ return _data; }
-		const StorageType & GetStorage() const
+		public:
+		const Storage & GetStorage() const
 		{ return _data; }
 
 		iterator begin() 				{ return _data.begin(); }

@@ -2,7 +2,7 @@
 #define TOOLKIT_SERIALIZATION_BSONWRITER_H
 
 #include <toolkit/core/types.h>
-#include <toolkit/serialization/BSON.h>
+#include <toolkit/serialization/bson/Tag.h>
 #include <toolkit/serialization/BinaryWriter.h>
 #include <toolkit/serialization/ISerializationStream.h>
 #include <string>
@@ -11,12 +11,12 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 
 	template<typename IteratorType>
-	class Writer: private BinaryWriter<IteratorType>, public IOutputStream
+	class OutputStream: private BinaryWriter<IteratorType>, public IOutputStream
 	{
 		using super = BinaryWriter<IteratorType>;
 
 	public:
-		Writer(IteratorType iter): super(iter) { }
+		OutputStream(IteratorType iter): super(iter) { }
 
 		void Write(const Undefined &) override
 		{ WriteTag(Tag::Undefined); }

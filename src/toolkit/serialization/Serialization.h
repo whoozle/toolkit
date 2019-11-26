@@ -57,14 +57,15 @@ namespace TOOLKIT_NS { namespace serialization
 	inline impl::ClassDescriptor<> ClassDescriptor(const std::string &name = std::string(), uint version = 0)
 	{ return impl::ClassDescriptor<>(name, version, std::make_tuple()); }
 
-	template<typename ClassType, template<typename, typename> class SerializatorType>
-	auto MakeSerializator()
+	template<typename ClassType>
+	struct ClassDescriptorHolder
 	{
-		auto descriptor = ClassType::GetClassDescriptor();
-		using DescriptorType = decltype(descriptor);
-		SerializatorType<ClassType, DescriptorType> serializator(std::move(descriptor));
-		return serializator;
-	}
+		static auto & Get()
+		{
+			static auto descriptor = ClassType::GetClassDescriptor();
+			return descriptor;
+		}
+	};
 
 }}
 
