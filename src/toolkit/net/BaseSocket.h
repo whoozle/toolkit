@@ -10,7 +10,6 @@ namespace TOOLKIT_NS { namespace net
 
 	class BaseSocket :
 		protected bsd::Socket,
-		public virtual io::IPollable,
 		public virtual ISocket
 	{
 	public:

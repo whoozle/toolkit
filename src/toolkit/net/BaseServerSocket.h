@@ -12,7 +12,6 @@ namespace TOOLKIT_NS { namespace net
 	template<typename SocketType>
 	class BaseServerSocket :
 		protected bsd::Socket,
-		public virtual io::IPollable,
 		public virtual ISocket
 	{
 	public:

@@ -3,14 +3,14 @@
 
 #include <toolkit/core/core.h>
 #include <toolkit/core/Noncopyable.h>
-#include <toolkit/io/IPollable.h>
+#include <toolkit/net/ISocket.h>
 #include <sys/socket.h>
 
 namespace TOOLKIT_NS { namespace net { namespace bsd
 {
 
 	class Socket :
-		public virtual io::IPollable,
+		public virtual net::ISocket,
 		Noncopyable
 	{
 		int		_socket;
