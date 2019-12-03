@@ -1,4 +1,5 @@
 #include <toolkit/serialization/Serialization.h>
+#include <toolkit/serialization/Grammar.h>
 #include <toolkit/serialization/JSON.h>
 #include <toolkit/serialization/BSON.h>
 #include <toolkit/text/StringOutputStream.h>
@@ -60,6 +61,7 @@ namespace
 			toolkit::ByteArray data;
 			Test test(2, 3, "юникод\ncopyright ©1738\r\n");
 			Serializator::Write(data.GetStorage(), test);
+			ts::GrammarDescriptor grammar(ts::ClassDescriptorHolder<Test>::Get());
 			// auto bsonWriter = ts::MakeSerializator<Test, ts::bson::Writer>();
 
 			// auto state = bsonWriter.NewState(test);
