@@ -3,11 +3,55 @@
 
 #include <toolkit/serialization/Serialization.h>
 #include <unordered_map>
+#include <list>
+#include <memory>
 
 namespace TOOLKIT_NS { namespace serialization
 {
+	struct IDescriptor
+	{
+		virtual ~IDescriptor() = default;
+	};
+	TOOLKIT_DECLARE_PTR(IDescriptor);
+	TOOLKIT_DECLARE_CONST_PTR(IDescriptor);
+
+
+	template<typename Type>
+	struct ITypedDescriptor : public IDescriptor
+	{
+		virtual ~ITypedDescriptor() = default;
+	};
+
+	template<typename ClassType, typename MemberType>
+	class GrammarMemberDescriptor final : public ITypedDescriptor<MemberType>
+	{
+		using Pointer 		= MemberType ClassType::*;
+
+		Pointer				_pointer;
+
+	public:
+		GrammarMemberDescriptor(Pointer pointer): _pointer(pointer)
+		{ }
+	};
+
 	class GrammarDescriptor
 	{
+		using MemberMap 	= std::unordered_map<std::string, IDescriptorPtr>;
+		using MemberList 	= std::list<IDescriptorPtr>;
+
+		MemberMap			_map;
+		MemberList			_list;
+
+	private:
+		template<typename ClassType, typename MemberType>
+		void Add(const MemberDescriptor<ClassType, MemberType> & desc)
+		{
+			if (desc.Name.empty())
+				_list.push_back(std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer));
+			else
+				_map[desc.Name] = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer);
+		}
+
 	public:
 		template <typename DescriptorsType>
 		GrammarDescriptor(const DescriptorsType & descriptor)
@@ -18,6 +62,7 @@ namespace TOOLKIT_NS { namespace serialization
 		template<typename DescriptorType>
 		void AddDescriptor(const DescriptorType & desc) const
 		{
+			Add(desc);
 		}
 
 		template<std::size_t MemberCount, size_t Index = 0, typename DescriptorsType>
