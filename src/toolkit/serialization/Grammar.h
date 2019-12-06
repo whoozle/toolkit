@@ -46,10 +46,11 @@ namespace TOOLKIT_NS { namespace serialization
 		template<typename ClassType, typename MemberType>
 		void Add(const MemberDescriptor<ClassType, MemberType> & desc)
 		{
+			auto grammarDesc = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer);
 			if (desc.Name.empty())
-				_list.push_back(std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer));
+				_list.push_back(desc);
 			else
-				_map[desc.Name] = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer);
+				_map[desc.Name] = desc;
 		}
 
 	public:
