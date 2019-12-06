@@ -17,12 +17,6 @@ namespace TOOLKIT_NS { namespace serialization
 
 		MemberDescriptor(Type pointer, std::string name): Pointer(pointer), Name(name)
 		{ }
-
-		const MemberType & Get(const ClassType * self) const
-		{ return self->*Pointer; }
-
-		MemberType & Get(ClassType * self)
-		{ return self->*Pointer; }
 	};
 
 	namespace impl

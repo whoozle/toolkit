@@ -15,15 +15,8 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_DECLARE_PTR(IDescriptor);
 	TOOLKIT_DECLARE_CONST_PTR(IDescriptor);
 
-
-	template<typename Type>
-	struct ITypedDescriptor : public IDescriptor
-	{
-		virtual ~ITypedDescriptor() = default;
-	};
-
 	template<typename ClassType, typename MemberType>
-	class GrammarMemberDescriptor final : public ITypedDescriptor<MemberType>
+	class GrammarMemberDescriptor final : public IDescriptor
 	{
 		using Pointer 		= MemberType ClassType::*;
 
@@ -32,6 +25,11 @@ namespace TOOLKIT_NS { namespace serialization
 	public:
 		GrammarMemberDescriptor(Pointer pointer): _pointer(pointer)
 		{ }
+		const MemberType & Get(const ClassType * self) const
+		{ return self->*_pointer; }
+
+		MemberType & Get(ClassType * self) override
+		{ return self->*_pointer; }
 	};
 
 	class GrammarDescriptor
