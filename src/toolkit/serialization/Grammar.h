@@ -28,7 +28,7 @@ namespace TOOLKIT_NS { namespace serialization
 		const MemberType & Get(const ClassType * self) const
 		{ return self->*_pointer; }
 
-		MemberType & Get(ClassType * self) override
+		MemberType & Get(ClassType * self)
 		{ return self->*_pointer; }
 	};
 
@@ -46,27 +46,27 @@ namespace TOOLKIT_NS { namespace serialization
 		{
 			auto grammarDesc = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer);
 			if (desc.Name.empty())
-				_list.push_back(desc);
+				_list.push_back(grammarDesc);
 			else
-				_map[desc.Name] = desc;
+				_map[desc.Name] = grammarDesc;
 		}
 
 	public:
 		template <typename DescriptorsType>
 		GrammarDescriptor(const DescriptorsType & descriptor)
 		{
-
+			AddDescriptors<DescriptorsType::MemberCount>(descriptor);
 		}
 
 		template<typename DescriptorType>
-		void AddDescriptor(const DescriptorType & desc) const
+		void AddDescriptor(const DescriptorType & desc)
 		{
 			Add(desc);
 		}
 
 		template<std::size_t MemberCount, size_t Index = 0, typename DescriptorsType>
 		typename std::enable_if<Index < MemberCount, void>::type
-		AddDescriptors(const DescriptorsType & descriptors) const
+		AddDescriptors(const DescriptorsType & descriptors)
 		{
 			AddDescriptor(std::get<Index>(descriptors.Data));
 			AddDescriptors<MemberCount, Index + 1>(descriptors);
