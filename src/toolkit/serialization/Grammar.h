@@ -25,6 +25,7 @@ namespace TOOLKIT_NS { namespace serialization
 	public:
 		GrammarMemberDescriptor(Pointer pointer): _pointer(pointer)
 		{ }
+
 		const MemberType & Get(const ClassType * self) const
 		{ return self->*_pointer; }
 
@@ -37,6 +38,8 @@ namespace TOOLKIT_NS { namespace serialization
 		using MemberMap 	= std::unordered_map<std::string, IDescriptorPtr>;
 		using MemberList 	= std::list<IDescriptorPtr>;
 
+		std::string			_name;
+		uint				_version;
 		MemberMap			_map;
 		MemberList			_list;
 
@@ -53,7 +56,7 @@ namespace TOOLKIT_NS { namespace serialization
 
 	public:
 		template <typename DescriptorsType>
-		GrammarDescriptor(const DescriptorsType & descriptor)
+		GrammarDescriptor(const DescriptorsType & descriptor): _name(descriptor.Name), _version(descriptor.Version)
 		{
 			AddDescriptors<DescriptorsType::MemberCount>(descriptor);
 		}
