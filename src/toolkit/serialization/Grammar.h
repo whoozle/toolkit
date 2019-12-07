@@ -3,7 +3,7 @@
 
 #include <toolkit/serialization/Serialization.h>
 #include <unordered_map>
-#include <list>
+#include <vector>
 #include <memory>
 
 namespace TOOLKIT_NS { namespace serialization
@@ -36,7 +36,7 @@ namespace TOOLKIT_NS { namespace serialization
 	class GrammarDescriptor
 	{
 		using MemberMap 	= std::unordered_map<std::string, IDescriptorPtr>;
-		using MemberList 	= std::list<IDescriptorPtr>;
+		using MemberList 	= std::vector<IDescriptorPtr>;
 
 		std::string			_name;
 		uint				_version;
@@ -59,6 +59,18 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarDescriptor(const DescriptorsType & descriptor): _name(descriptor.Name), _version(descriptor.Version)
 		{
 			AddDescriptors<DescriptorsType::MemberCount>(descriptor);
+		}
+
+		size_t GetListSize() const
+		{ return _list.size(); }
+
+		IDescriptorPtr GetMember(size_t index) const
+		{ return _list.at(index); }
+
+		IDescriptorPtr GetMember(const std::string & name) const
+		{
+			auto i = _map.find(name);
+			return i != _map.end()? i->second: nullptr;
 		}
 
 		template<typename DescriptorType>
