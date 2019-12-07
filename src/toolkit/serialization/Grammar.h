@@ -57,9 +57,7 @@ namespace TOOLKIT_NS { namespace serialization
 	public:
 		template <typename DescriptorsType>
 		GrammarDescriptor(const DescriptorsType & descriptor): _name(descriptor.Name), _version(descriptor.Version)
-		{
-			AddDescriptors<DescriptorsType::MemberCount>(descriptor);
-		}
+		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
 
 		size_t GetListSize() const
 		{ return _list.size(); }
