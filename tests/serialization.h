@@ -23,7 +23,7 @@ namespace
 		static auto GetClassDescriptor()
 		{
 			return
-				ts::ClassDescriptor("Test", 1) &
+				ts::ClassDescriptor<Test>("Test", 1) &
 				ts::Member(&Test::_p) &
 				ts::Member(&Test::_q) &
 				ts::Member(&Test::_c, "comment");

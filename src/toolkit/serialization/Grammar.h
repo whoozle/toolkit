@@ -15,6 +15,25 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_DECLARE_PTR(IDescriptor);
 	TOOLKIT_DECLARE_CONST_PTR(IDescriptor);
 
+	struct IParserFactory
+	{
+		virtual ~IParserFactory() = default;
+	};
+	TOOLKIT_DECLARE_PTR(IParserFactory);
+	TOOLKIT_DECLARE_CONST_PTR(IParserFactory);
+
+	template<typename ClassType>
+	class GrammarObjectFactory : public IParserFactory
+	{
+		std::string			_name;
+		uint				_version;
+
+	public:
+		GrammarObjectFactory(const std::string & name, uint version):
+			_name(name), _version(version)
+		{ }
+	};
+
 	template<typename ClassType, typename MemberType>
 	class GrammarMemberDescriptor final : public IDescriptor
 	{
@@ -38,8 +57,7 @@ namespace TOOLKIT_NS { namespace serialization
 		using MemberMap 	= std::unordered_map<std::string, IDescriptorPtr>;
 		using MemberList 	= std::vector<IDescriptorPtr>;
 
-		std::string			_name;
-		uint				_version;
+		IParserFactoryPtr	_factory;
 		MemberMap			_map;
 		MemberList			_list;
 
@@ -52,23 +70,6 @@ namespace TOOLKIT_NS { namespace serialization
 				_list.push_back(grammarDesc);
 			else
 				_map[desc.Name] = grammarDesc;
-		}
-
-	public:
-		template <typename DescriptorsType>
-		GrammarDescriptor(const DescriptorsType & descriptor): _name(descriptor.Name), _version(descriptor.Version)
-		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
-
-		size_t GetListSize() const
-		{ return _list.size(); }
-
-		IDescriptorPtr GetMember(size_t index) const
-		{ return _list.at(index); }
-
-		IDescriptorPtr GetMember(const std::string & name) const
-		{
-			auto i = _map.find(name);
-			return i != _map.end()? i->second: nullptr;
 		}
 
 		template<typename DescriptorType>
@@ -89,6 +90,24 @@ namespace TOOLKIT_NS { namespace serialization
 		static typename std::enable_if<Index == MemberCount, void>::type
 		AddDescriptors(const DescriptorsType & descriptors)
 		{ }
+
+	public:
+		template <typename DescriptorsType>
+		GrammarDescriptor(const DescriptorsType & descriptor):
+			_factory(std::make_shared<GrammarObjectFactory<typename DescriptorsType::ClassType>>(descriptor.Name, descriptor.Version))
+		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
+
+		size_t GetListSize() const
+		{ return _list.size(); }
+
+		IDescriptorPtr GetMember(size_t index) const
+		{ return _list.at(index); }
+
+		IDescriptorPtr GetMember(const std::string & name) const
+		{
+			auto i = _map.find(name);
+			return i != _map.end()? i->second: nullptr;
+		}
 	};
 }}
 
