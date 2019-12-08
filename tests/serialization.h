@@ -23,7 +23,7 @@ namespace
 		static auto GetClassDescriptor()
 		{
 			return
-				ts::ClassDescriptor<Test>("Test", 1) &
+				ts::ClassDescriptor("Test", 1) &
 				ts::Member(&Test::_p) &
 				ts::Member(&Test::_q) &
 				ts::Member(&Test::_c, "comment");
@@ -57,11 +57,13 @@ namespace
 		// },
 		CASE( "BSON serialization test" )
 		{
-			using Serializator = ts::BSON<Test>;
-			toolkit::ByteArray data;
-			Test test(2, 3, "юникод\ncopyright ©1738\r\n");
-			Serializator::Write(data.GetStorage(), test);
-			ts::GrammarDescriptor grammar(ts::ClassDescriptorHolder<Test>::Get());
+			// using Serializator = ts::BSON<Test>;
+			// toolkit::ByteArray data;
+			// Test test(2, 3, "юникод\ncopyright ©1738\r\n");
+			// Serializator::Write(data.GetStorage(), test);
+
+			//ts::GrammarDescriptor grammar(ts::ClassDescriptorHolder<Test>::Get());
+			auto & desc = ts::GrammarDescriptorHolder<Test>::Get();
 			// auto bsonWriter = ts::MakeSerializator<Test, ts::bson::Writer>();
 
 			// auto state = bsonWriter.NewState(test);

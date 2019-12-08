@@ -2,6 +2,7 @@
 #define TOOLKIT_SERIALIZATION_GRAMMAR_H
 
 #include <toolkit/serialization/Serialization.h>
+#include <toolkit/serialization/ISerializationStream.h>
 #include <unordered_map>
 #include <vector>
 #include <memory>
@@ -22,6 +23,32 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_DECLARE_PTR(IParserFactory);
 	TOOLKIT_DECLARE_CONST_PTR(IParserFactory);
 
+	struct IObjectWriter
+	{
+		virtual ~IObjectWriter() = default;
+		virtual void Write(IOutputStream & out) = 0;
+	};
+	TOOLKIT_DECLARE_PTR(IObjectWriter);
+
+	template<typename ClassType>
+	class ObjectWriter : public IObjectWriter
+	{
+	public:
+		TOOLKIT_DECLARE_PTR(ClassType);
+
+	private:
+		ClassTypePtr	_object;
+
+	public:
+		ObjectWriter(ClassTypePtr object): _object(object)
+		{ }
+
+		void Write(IOutputStream & out) override
+		{
+
+		}
+	};
+
 	template<typename ClassType>
 	class GrammarObjectFactory : public IParserFactory
 	{
@@ -32,6 +59,11 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarObjectFactory(const std::string & name, uint version):
 			_name(name), _version(version)
 		{ }
+
+		IObjectWriterPtr CreateWriter(IOutputStreamPtr output)
+		{
+			return nullptr;
+		}
 	};
 
 	template<typename ClassType, typename MemberType>
@@ -52,6 +84,7 @@ namespace TOOLKIT_NS { namespace serialization
 		{ return self->*_pointer; }
 	};
 
+	template<typename ClassType>
 	class GrammarDescriptor
 	{
 		using MemberMap 	= std::unordered_map<std::string, IDescriptorPtr>;
@@ -62,7 +95,7 @@ namespace TOOLKIT_NS { namespace serialization
 		MemberList			_list;
 
 	private:
-		template<typename ClassType, typename MemberType>
+		template<typename MemberType>
 		void Add(const MemberDescriptor<ClassType, MemberType> & desc)
 		{
 			auto grammarDesc = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer);
@@ -94,8 +127,9 @@ namespace TOOLKIT_NS { namespace serialization
 	public:
 		template <typename DescriptorsType>
 		GrammarDescriptor(const DescriptorsType & descriptor):
-			_factory(std::make_shared<GrammarObjectFactory<typename DescriptorsType::ClassType>>(descriptor.Name, descriptor.Version))
+			_factory(std::make_shared<GrammarObjectFactory<ClassType>>(descriptor.Name, descriptor.Version))
 		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
+
 
 		size_t GetListSize() const
 		{ return _list.size(); }
@@ -109,6 +143,18 @@ namespace TOOLKIT_NS { namespace serialization
 			return i != _map.end()? i->second: nullptr;
 		}
 	};
+
+	template<typename ClassType>
+	struct GrammarDescriptorHolder
+	{
+		static auto & Get()
+		{
+			static GrammarDescriptor<ClassType> desc(ClassDescriptorHolder<ClassType>::Get());
+			return desc;
+		}
+	};
+
+
 }}
 
 #endif

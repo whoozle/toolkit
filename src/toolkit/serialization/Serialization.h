@@ -21,10 +21,9 @@ namespace TOOLKIT_NS { namespace serialization
 
 	namespace impl
 	{
-		template<typename ClassType_, typename ... MemberDescriptors>
+		template<typename ... MemberDescriptors>
 		struct ClassDescriptor
 		{
-			using ClassType = ClassType_;
 			using DataType = std::tuple<MemberDescriptors ...>;
 			static constexpr size_t MemberCount = std::tuple_size<DataType>::value;
 
@@ -37,9 +36,9 @@ namespace TOOLKIT_NS { namespace serialization
 			{ }
 
 			template<typename ClassType, typename MemberType>
-			ClassDescriptor<ClassType, MemberDescriptors..., MemberDescriptor<ClassType, MemberType>> operator &(const MemberDescriptor<ClassType, MemberType> & md)
+			ClassDescriptor<MemberDescriptors..., MemberDescriptor<ClassType, MemberType>> operator &(const MemberDescriptor<ClassType, MemberType> & md)
 			{
-				using Next = ClassDescriptor<ClassType, MemberDescriptors..., MemberDescriptor<ClassType, MemberType>>;
+				using Next = ClassDescriptor<MemberDescriptors..., MemberDescriptor<ClassType, MemberType>>;
 				return Next(Name, Version, std::tuple_cat(Data, std::make_tuple(md)));
 			}
 		};
@@ -49,9 +48,8 @@ namespace TOOLKIT_NS { namespace serialization
 	MemberDescriptor<ClassType, MemberType> Member(MemberType ClassType::* pointer, const std::string & name = std::string())
 	{ return MemberDescriptor<ClassType, MemberType>(pointer, name); }
 
-	template<typename ClassType>
-	impl::ClassDescriptor<ClassType> ClassDescriptor(const std::string &name = std::string(), uint version = 0)
-	{ return impl::ClassDescriptor<ClassType>(name, version, std::make_tuple()); }
+	impl::ClassDescriptor<> ClassDescriptor(const std::string &name = std::string(), uint version = 0)
+	{ return impl::ClassDescriptor<>(name, version, std::make_tuple()); }
 
 	template<typename ClassType>
 	struct ClassDescriptorHolder
