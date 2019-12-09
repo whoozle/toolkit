@@ -1,11 +1,11 @@
-#ifndef TOOLKIT_SERIALIZATION_BINARYREADER_H
-#define TOOLKIT_SERIALIZATION_BINARYREADER_H
+#ifndef TOOLKIT_SERIALIZATION_BSON_BINARYREADER_H
+#define TOOLKIT_SERIALIZATION_BSON_BINARYREADER_H
 
 #include <toolkit/core/types.h>
 #include <toolkit/core/ByteArray.h>
 #include <toolkit/core/Optional.h>
 #include <toolkit/core/Noncopyable.h>
-#include <toolkit/serialization/BinaryReaderBase.h>
+#include <toolkit/serialization/bson/BinaryReaderBase.h>
 #include <string>
 #include <algorithm>
 #include <tuple>

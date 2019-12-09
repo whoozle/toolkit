@@ -2,9 +2,9 @@
 #define TOOLKIT_SERIALIZATION_BSONWRITER_H
 
 #include <toolkit/core/types.h>
-#include <toolkit/serialization/bson/Tag.h>
-#include <toolkit/serialization/BinaryWriter.h>
 #include <toolkit/serialization/ISerializationStream.h>
+#include <toolkit/serialization/bson/Tag.h>
+#include <toolkit/serialization/bson/BinaryWriter.h>
 #include <string>
 #include <cmath>
 #include <limits>
