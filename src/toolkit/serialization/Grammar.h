@@ -17,6 +17,13 @@ namespace TOOLKIT_NS { namespace serialization
 	};
 	TOOLKIT_DECLARE_PTR(IObjectWriter);
 
+	struct IObjectReader
+	{
+		virtual ~IObjectReader() = default;
+		virtual void Read(ConstBuffer data) = 0;
+	};
+	TOOLKIT_DECLARE_PTR(IObjectReader);
+
 	template<typename ClassType>
 	struct IDescriptor
 	{
@@ -168,6 +175,10 @@ namespace TOOLKIT_NS { namespace serialization
 
 		IObjectWriterPtr CreateWriter(const ClassType & object) const
 		{ return std::make_shared<ObjectWriter>(*this, object); }
+
+		IObjectReaderPtr CreateReader(ClassType & object) const
+		//{ return std::make_shared<ObjectReader>(*this, object); }
+		{ return nullptr; }
 	};
 
 	template<typename ClassType>

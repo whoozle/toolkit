@@ -21,6 +21,13 @@ namespace TOOLKIT_NS { namespace serialization
 			serialization::bson::OutputStream<decltype(iter)> out(iter);
 			writer->Write(out);
 		}
+
+		static void Read(ClassType & value, const ByteArray::Storage & inStorage)
+		{
+			auto & descriptor = GrammarDescriptorHolder<ClassType>::Get();
+			auto reader = descriptor.CreateReader(value);
+			reader->Read(inStorage);
+		}
 	};
 
 }}
