@@ -3,6 +3,7 @@
 
 #include <toolkit/serialization/ISerializationStream.h>
 #include <toolkit/core/types.h>
+#include <string>
 
 namespace TOOLKIT_NS { namespace serialization
 {
@@ -16,7 +17,8 @@ namespace TOOLKIT_NS { namespace serialization
 #define TOOLKIT_SERIALIZATOR_FORWARD_TYPE(TYPE, CTYPE)  \
 	template<> \
 	struct Serializator< TYPE > \
-	{ static void Write(IOutputStream & out, TYPE value) { out.Write(static_cast<CTYPE>(value)); } }
+	{ static void Write(IOutputStream & out, TYPE value) \
+	{ out.Write(static_cast<CTYPE>(value)); } }
 
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(const Undefined &, const Undefined &);
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(std::nullptr_t, std::nullptr_t);
@@ -37,7 +39,7 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(float, double);
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(double, double);
 
-	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(const std::string &, const std::string &);
+	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(std::string, const std::string &);
 
 #undef TOOLKIT_SERIALIZATOR_FORWARD_TYPE
 

@@ -1,27 +1,28 @@
 #ifndef TOOLKIT_SERIALIZATION_GRAMMAR_H
 #define TOOLKIT_SERIALIZATION_GRAMMAR_H
 
-#include <toolkit/serialization/Serialization.h>
 #include <toolkit/serialization/ISerializationStream.h>
+#include <toolkit/serialization/Serialization.h>
+#include <toolkit/serialization/Serializator.h>
 #include <unordered_map>
 #include <vector>
 #include <memory>
 
 namespace TOOLKIT_NS { namespace serialization
 {
-	struct IDescriptor
-	{
-		virtual ~IDescriptor() = default;
-	};
-	TOOLKIT_DECLARE_PTR(IDescriptor);
-	TOOLKIT_DECLARE_CONST_PTR(IDescriptor);
-
 	struct IObjectWriter
 	{
 		virtual ~IObjectWriter() = default;
 		virtual void Write(IOutputStream & out) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IObjectWriter);
+
+	template<typename ClassType>
+	struct IDescriptor
+	{
+		virtual ~IDescriptor() = default;
+		virtual void Write(IOutputStream & out, const ClassType & self) const = 0;
+	};
 
 	template<typename ClassType>
 	class GrammarDescriptor;
@@ -41,7 +42,18 @@ namespace TOOLKIT_NS { namespace serialization
 		{ }
 
 		void Write(IOutputStream & out) override
-		{ }
+		{
+			out.BeginObject();
+			{
+				out.Write("t");
+				_descriptor.WriteRecord(out);
+			}
+			{
+				out.Write("d");
+				_descriptor.WriteObject(out);
+			}
+			out.EndObject();
+		}
 	};
 
 	template<typename ClassType>
@@ -60,7 +72,7 @@ namespace TOOLKIT_NS { namespace serialization
 	};
 
 	template<typename ClassType, typename MemberType>
-	class GrammarMemberDescriptor final : public IDescriptor
+	class GrammarMemberDescriptor final : public IDescriptor<ClassType>
 	{
 		using Pointer 		= MemberType ClassType::*;
 
@@ -70,19 +82,23 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarMemberDescriptor(Pointer pointer): _pointer(pointer)
 		{ }
 
-		const MemberType & Get(const ClassType * self) const
-		{ return self->*_pointer; }
+		void Write(IOutputStream & out, const ClassType & self) const override
+		{ Serialize(out, Get(self)); }
 
-		MemberType & Get(ClassType * self)
-		{ return self->*_pointer; }
+		const MemberType & Get(const ClassType & self) const
+		{ return (&self)->*_pointer; }
+
+		void Set(ClassType & self, const MemberType & value)
+		{ (&self)->*_pointer = value; }
 	};
 
 	template<typename ClassType>
 	class GrammarDescriptor
 	{
-		using MemberMap 	= std::unordered_map<std::string, IDescriptorPtr>;
-		using MemberList 	= std::vector<IDescriptorPtr>;
-		using FactoryPtr    = std::shared_ptr<GrammarObjectFactory<ClassType>>;
+		using IDescriptorPtr 	= std::shared_ptr<IDescriptor<ClassType>>;
+		using MemberMap 		= std::unordered_map<std::string, IDescriptorPtr>;
+		using MemberList 		= std::vector<IDescriptorPtr>;
+		using FactoryPtr    	= std::shared_ptr<GrammarObjectFactory<ClassType>>;
 
 		FactoryPtr			_factory;
 		MemberMap			_map;
@@ -92,7 +108,7 @@ namespace TOOLKIT_NS { namespace serialization
 		template<typename MemberType>
 		void Add(const MemberDescriptor<ClassType, MemberType> & descriptor)
 		{
-			auto grammarDesc = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(descriptor.Pointer);
+			IDescriptorPtr grammarDesc = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(descriptor.Pointer);
 			if (descriptor.Name.empty())
 				_list.push_back(grammarDesc);
 			else
@@ -124,17 +140,25 @@ namespace TOOLKIT_NS { namespace serialization
 			_factory(std::make_shared<GrammarObjectFactory<ClassType>>(descriptor.Name, descriptor.Version))
 		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
 
-
-		size_t GetListSize() const
-		{ return _list.size(); }
-
-		IDescriptorPtr GetMember(size_t index) const
-		{ return _list.at(index); }
-
-		IDescriptorPtr GetMember(const std::string & name) const
+		void WriteRecord(IOutputStream & out, const ClassType & self) const
 		{
-			auto i = _map.find(name);
-			return i != _map.end()? i->second: nullptr;
+			out.BeginList();
+			for (auto it : _list)
+			{
+				it->Write(out, self);
+			}
+			out.EndList();
+		}
+
+		void WriteObject(IOutputStream & out, const ClassType & self) const
+		{
+			out.BeginObject();
+			for (auto it : _map)
+			{
+				out.Write(it->first);
+				it->second->Write(out, self);
+			}
+			out.EndObject();
 		}
 	};
 
