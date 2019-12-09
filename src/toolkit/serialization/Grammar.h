@@ -16,13 +16,6 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_DECLARE_PTR(IDescriptor);
 	TOOLKIT_DECLARE_CONST_PTR(IDescriptor);
 
-	struct IParserFactory
-	{
-		virtual ~IParserFactory() = default;
-	};
-	TOOLKIT_DECLARE_PTR(IParserFactory);
-	TOOLKIT_DECLARE_CONST_PTR(IParserFactory);
-
 	struct IObjectWriter
 	{
 		virtual ~IObjectWriter() = default;
@@ -50,7 +43,7 @@ namespace TOOLKIT_NS { namespace serialization
 	};
 
 	template<typename ClassType>
-	class GrammarObjectFactory : public IParserFactory
+	class GrammarObjectFactory
 	{
 		std::string			_name;
 		uint				_version;
@@ -89,8 +82,9 @@ namespace TOOLKIT_NS { namespace serialization
 	{
 		using MemberMap 	= std::unordered_map<std::string, IDescriptorPtr>;
 		using MemberList 	= std::vector<IDescriptorPtr>;
+		using FactoryPtr    = std::shared_ptr<GrammarObjectFactory<ClassType>>;
 
-		IParserFactoryPtr	_factory;
+		FactoryPtr			_factory;
 		MemberMap			_map;
 		MemberList			_list;
 
