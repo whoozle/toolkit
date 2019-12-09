@@ -6,6 +6,8 @@
 #include <toolkit/serialization/BinaryWriter.h>
 #include <toolkit/serialization/ISerializationStream.h>
 #include <string>
+#include <cmath>
+#include <limits>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
@@ -41,7 +43,10 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void Write(double value) override
 		{
 			WriteTag(Tag::Number);
-			throw std::runtime_error("implement Write(double)");
+			int exp;
+			s64 normalized = std::numeric_limits<s64>::max() * std::frexp(value, &exp);
+			Write(normalized);
+			Write(static_cast<s64>(exp));
 		}
 
 		void Write(const std::string & value) override
