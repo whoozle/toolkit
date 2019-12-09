@@ -28,35 +28,6 @@ namespace TOOLKIT_NS { namespace serialization
 	class GrammarDescriptor;
 
 	template<typename ClassType>
-	class ObjectWriter : public IObjectWriter
-	{
-	private:
-		using Descriptor = GrammarDescriptor<ClassType>;
-
-		Descriptor &			_descriptor;
-		const ClassType &		_object;
-
-	public:
-		ObjectWriter(GrammarDescriptor<ClassType> & descriptor, const ClassType & object):
-			_descriptor(descriptor), _object(object)
-		{ }
-
-		void Write(IOutputStream & out) override
-		{
-			out.BeginObject();
-			{
-				out.Write("t");
-				_descriptor.WriteRecord(out);
-			}
-			{
-				out.Write("d");
-				_descriptor.WriteObject(out);
-			}
-			out.EndObject();
-		}
-	};
-
-	template<typename ClassType>
 	class GrammarObjectFactory
 	{
 		std::string			_name;
@@ -66,9 +37,6 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarObjectFactory(const std::string & name, uint version):
 			_name(name), _version(version)
 		{ }
-
-		IObjectWriterPtr CreateWriter(const ClassType & object) const
-		{ return std::make_shared<ObjectWriter<ClassType>>(*this, object); }
 	};
 
 	template<typename ClassType, typename MemberType>
@@ -105,6 +73,35 @@ namespace TOOLKIT_NS { namespace serialization
 		MemberList			_list;
 
 	private:
+
+		class ObjectWriter : public IObjectWriter
+		{
+		private:
+			using Descriptor = GrammarDescriptor<ClassType>;
+
+			const Descriptor &		_descriptor;
+			const ClassType &		_object;
+
+		public:
+			ObjectWriter(const GrammarDescriptor<ClassType> & descriptor, const ClassType & object):
+				_descriptor(descriptor), _object(object)
+			{ }
+
+			void Write(IOutputStream & out) override
+			{
+				out.BeginObject();
+				{
+					out.Write("t");
+					_descriptor.WriteRecord(out, _object);
+				}
+				{
+					out.Write("d");
+					_descriptor.WriteObject(out, _object);
+				}
+				out.EndObject();
+			}
+		};
+
 		template<typename MemberType>
 		void Add(const MemberDescriptor<ClassType, MemberType> & descriptor)
 		{
@@ -134,12 +131,6 @@ namespace TOOLKIT_NS { namespace serialization
 		AddDescriptors(const DescriptorsType & descriptors)
 		{ }
 
-	public:
-		template <typename DescriptorsType>
-		GrammarDescriptor(const DescriptorsType & descriptor):
-			_factory(std::make_shared<GrammarObjectFactory<ClassType>>(descriptor.Name, descriptor.Version))
-		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
-
 		void WriteRecord(IOutputStream & out, const ClassType & self) const
 		{
 			out.BeginList();
@@ -155,11 +146,20 @@ namespace TOOLKIT_NS { namespace serialization
 			out.BeginObject();
 			for (auto it : _map)
 			{
-				out.Write(it->first);
-				it->second->Write(out, self);
+				out.Write(it.first);
+				it.second->Write(out, self);
 			}
 			out.EndObject();
 		}
+
+	public:
+		template <typename DescriptorsType>
+		GrammarDescriptor(const DescriptorsType & descriptor):
+			_factory(std::make_shared<GrammarObjectFactory<ClassType>>(descriptor.Name, descriptor.Version))
+		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
+
+		IObjectWriterPtr CreateWriter(const ClassType & object) const
+		{ return std::make_shared<ObjectWriter>(*this, object); }
 	};
 
 	template<typename ClassType>

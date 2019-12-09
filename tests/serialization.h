@@ -3,12 +3,15 @@
 #include <toolkit/serialization/JSON.h>
 #include <toolkit/serialization/BSON.h>
 #include <toolkit/text/StringOutputStream.h>
+#include <toolkit/log/Logger.h>
 #include <lest/lest.hpp>
 #include <string>
 
 namespace
 {
-	namespace ts = toolkit::serialization;
+	namespace t = toolkit;
+	namespace ts = t::serialization;
+	t::log::Logger Log("test");
 
 	class Test
 	{
@@ -57,18 +60,12 @@ namespace
 		// },
 		CASE( "BSON serialization test" )
 		{
-			// using Serializator = ts::BSON<Test>;
-			// toolkit::ByteArray data;
-			// Test test(2, 3, "юникод\ncopyright ©1738\r\n");
-			// Serializator::Write(data.GetStorage(), test);
+			using Serializator = ts::BSON<Test>;
+			toolkit::ByteArray data;
+			Test test(2, 3, "юникод\ncopyright ©1738\r\n");
+			Serializator::Write(data.GetStorage(), test);
+			Log.Debug() << "generated " << data.size() << " bytes";
 
-			//ts::GrammarDescriptor grammar(ts::ClassDescriptorHolder<Test>::Get());
-			auto & desc = ts::GrammarDescriptorHolder<Test>::Get();
-			// auto bsonWriter = ts::MakeSerializator<Test, ts::bson::Writer>();
-
-			// auto state = bsonWriter.NewState(test);
-			// toolkit::text::StringOutputStream ss;
-			// bsonWriter.Write(ss, state);
 			// EXPECT( ss.Get() == "{\"__classname\":\"Test\",\"__version\":1,\"p\":2,\"q\":3,\"comment\":\"\\u044e\\u043d\\u0438\\u043a\\u043e\\u0434\\ncopyright \\u00a91738\\r\\n\"}" );
 		}
 	};
