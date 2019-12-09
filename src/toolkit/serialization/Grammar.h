@@ -96,11 +96,13 @@ namespace TOOLKIT_NS { namespace serialization
 			{
 				out.BeginObject();
 				{
-					out.Write("t");
+					static std::string typeTag("t");
+					Serialize(out, typeTag);
 					_descriptor.WriteRecord(out, _object);
 				}
 				{
-					out.Write("d");
+					static std::string objectTag("o");
+					Serialize(out, objectTag);
 					_descriptor.WriteObject(out, _object);
 				}
 				out.EndObject();
