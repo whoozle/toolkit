@@ -95,7 +95,7 @@ namespace TOOLKIT_NS { namespace serialization
 			const ClassType &		_object;
 
 		public:
-			ObjectWriter(const GrammarDescriptor<ClassType> & descriptor, const ClassType & object):
+			ObjectWriter(const Descriptor & descriptor, const ClassType & object):
 				_descriptor(descriptor), _object(object)
 			{ }
 
@@ -115,6 +115,24 @@ namespace TOOLKIT_NS { namespace serialization
 				out.EndObject();
 			}
 		};
+
+		class ObjectReader : public IObjectReader
+		{
+		private:
+			using Descriptor = GrammarDescriptor<ClassType>;
+
+			const Descriptor &		_descriptor;
+			ClassType &				_object;
+
+		public:
+			ObjectReader(const Descriptor & descriptor, ClassType & object):
+				_descriptor(descriptor), _object(object)
+			{ }
+
+			void Read(ConstBuffer data) override
+			{ }
+		};
+
 
 		template<typename MemberType>
 		void Add(const MemberDescriptor<ClassType, MemberType> & descriptor)
@@ -177,8 +195,7 @@ namespace TOOLKIT_NS { namespace serialization
 		{ return std::make_shared<ObjectWriter>(*this, object); }
 
 		IObjectReaderPtr CreateReader(ClassType & object) const
-		//{ return std::make_shared<ObjectReader>(*this, object); }
-		{ return nullptr; }
+		{ return std::make_shared<ObjectReader>(*this, object); }
 	};
 
 	template<typename ClassType>
