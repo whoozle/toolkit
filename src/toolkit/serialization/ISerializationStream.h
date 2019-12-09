@@ -27,6 +27,7 @@ namespace TOOLKIT_NS { namespace serialization
 		virtual void BeginObject() = 0;
 		virtual void EndObject() = 0;
 	};
+	TOOLKIT_DECLARE_PTR(IOutputStream);
 
 }}
 
