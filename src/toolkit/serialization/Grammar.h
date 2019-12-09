@@ -37,6 +37,11 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarObjectFactory(const std::string & name, uint version):
 			_name(name), _version(version)
 		{ }
+		void WriteTypeDescriptor(IOutputStream & out)
+		{
+			if (!_name.empty())
+				Serialize(out, _name, _version);
+		}
 	};
 
 	template<typename ClassType, typename MemberType>
@@ -134,6 +139,7 @@ namespace TOOLKIT_NS { namespace serialization
 		void WriteRecord(IOutputStream & out, const ClassType & self) const
 		{
 			out.BeginList();
+			_factory->WriteTypeDescriptor(out);
 			for (auto it : _list)
 			{
 				it->Write(out, self);
