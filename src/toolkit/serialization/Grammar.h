@@ -24,22 +24,24 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_DECLARE_PTR(IObjectWriter);
 
 	template<typename ClassType>
+	class GrammarDescriptor;
+
+	template<typename ClassType>
 	class ObjectWriter : public IObjectWriter
 	{
-	public:
-		TOOLKIT_DECLARE_PTR(ClassType);
-
 	private:
-		ClassTypePtr	_object;
+		using Descriptor = GrammarDescriptor<ClassType>;
+
+		Descriptor &			_descriptor;
+		const ClassType &		_object;
 
 	public:
-		ObjectWriter(ClassTypePtr object): _object(object)
+		ObjectWriter(GrammarDescriptor<ClassType> & descriptor, const ClassType & object):
+			_descriptor(descriptor), _object(object)
 		{ }
 
 		void Write(IOutputStream & out) override
-		{
-
-		}
+		{ }
 	};
 
 	template<typename ClassType>
@@ -53,10 +55,8 @@ namespace TOOLKIT_NS { namespace serialization
 			_name(name), _version(version)
 		{ }
 
-		IObjectWriterPtr CreateWriter(IOutputStreamPtr output)
-		{
-			return nullptr;
-		}
+		IObjectWriterPtr CreateWriter(const ClassType & object) const
+		{ return std::make_shared<ObjectWriter<ClassType>>(*this, object); }
 	};
 
 	template<typename ClassType, typename MemberType>
@@ -90,19 +90,19 @@ namespace TOOLKIT_NS { namespace serialization
 
 	private:
 		template<typename MemberType>
-		void Add(const MemberDescriptor<ClassType, MemberType> & desc)
+		void Add(const MemberDescriptor<ClassType, MemberType> & descriptor)
 		{
-			auto grammarDesc = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(desc.Pointer);
-			if (desc.Name.empty())
+			auto grammarDesc = std::make_shared<GrammarMemberDescriptor<ClassType, MemberType>>(descriptor.Pointer);
+			if (descriptor.Name.empty())
 				_list.push_back(grammarDesc);
 			else
-				_map[desc.Name] = grammarDesc;
+				_map[descriptor.Name] = grammarDesc;
 		}
 
 		template<typename DescriptorType>
-		void AddDescriptor(const DescriptorType & desc)
+		void AddDescriptor(const DescriptorType & descriptor)
 		{
-			Add(desc);
+			Add(descriptor);
 		}
 
 		template<std::size_t MemberCount, size_t Index = 0, typename DescriptorsType>
@@ -143,8 +143,8 @@ namespace TOOLKIT_NS { namespace serialization
 	{
 		static auto & Get()
 		{
-			static GrammarDescriptor<ClassType> desc(ClassDescriptorHolder<ClassType>::Get());
-			return desc;
+			static GrammarDescriptor<ClassType> descriptor(ClassDescriptorHolder<ClassType>::Get());
+			return descriptor;
 		}
 	};
 
