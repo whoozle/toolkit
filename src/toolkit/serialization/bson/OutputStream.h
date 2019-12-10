@@ -4,6 +4,7 @@
 #include <toolkit/core/types.h>
 #include <toolkit/serialization/ISerializationStream.h>
 #include <toolkit/serialization/bson/Tag.h>
+#include <toolkit/serialization/bson/Number.h>
 #include <toolkit/serialization/bson/BinaryWriter.h>
 #include <string>
 #include <cmath>
@@ -44,8 +45,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{
 			WriteTag(Tag::Number);
 			int exp;
-			s64 normalized = std::numeric_limits<s64>::max() * std::frexp(value, &exp);
-			Write(normalized);
+			auto sign = frexp(value, &exp);
+			Write(EncodeNumber<s64, double>(sign));
 			Write(static_cast<s64>(exp));
 		}
 
