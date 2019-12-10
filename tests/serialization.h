@@ -2,6 +2,7 @@
 #include <toolkit/serialization/Grammar.h>
 #include <toolkit/serialization/JSON.h>
 #include <toolkit/serialization/BSON.h>
+#include <toolkit/serialization/bson/Number.h>
 #include <toolkit/text/StringOutputStream.h>
 #include <toolkit/log/Logger.h>
 #include <toolkit/text/Formatters.h>
@@ -33,10 +34,33 @@ namespace
 				ts::Member(&Test::_c, "comment");
 		}
 	};
+	namespace
+	{
+		bool NumberMatches(double x)
+		{
+			using namespace t;
+			int exp;
+			auto sign = frexp(x, &exp);
+			auto decoded = ts::DecodeNumber<double, s64>(ts::EncodeNumber<s64, double>( sign ));
+			return fabs(sign - decoded) < std::numeric_limits<double>::epsilon();
+		}
+	}
 
 
 	const lest::test serialization[] =
 	{
+		CASE("NUMBER REPRESENTATION TEST")
+		{
+			EXPECT(NumberMatches(0));
+			EXPECT(NumberMatches(1));
+			EXPECT(NumberMatches(1 / 3.0));
+			EXPECT(NumberMatches(1e77));
+			EXPECT(NumberMatches(M_PI));
+			EXPECT(NumberMatches(-1));
+			EXPECT(NumberMatches(-1 / 3.0));
+			EXPECT(NumberMatches(-1e77));
+			EXPECT(NumberMatches(-M_PI));
+		},
 		// CASE( "JSON serialization test" )
 		// {
 		// 	auto jsonWriter = ts::MakeSerializator<Test, ts::JSONWriter>();

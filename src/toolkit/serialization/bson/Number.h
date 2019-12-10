@@ -22,37 +22,41 @@ namespace TOOLKIT_NS { namespace serialization
 
 		IntegerType bit = 1;
 		value -= v_1_2;
-		while(value != 0)
+		do
 		{
 			if (value >= v_1_4)
 			{
 				value -= v_1_4;
-				result |= bit;
 			}
+			else
+				result |= bit;
+
 			bit <<= 1;
 			value *= 2;
 		}
+		while(value != 0);
+
 		return result;
 	}
 
 	template<typename FloatType, typename IntegerType>
 	FloatType DecodeNumber(IntegerType value)
 	{
-		static const auto eps = std::numeric_limits<FloatType>::epsilon();
+		if (value == 0)
+			return 0;
+
 		static const FloatType v_1_2 = FloatType(1) / 2;
 		static const FloatType v_1_4 = v_1_2 / 2;
-		static const int Bits = sizeof(IntegerType) << 3;
 
 		FloatType result = 0;
-		IntegerType bit = IntegerType(1) << (Bits - 1 - __builtin_clz(value));
-		while(bit)
+		while(value)
 		{
-			if (value & bit)
+			if (!(value & 1))
 			{
 				result += v_1_2;
 			}
 			result *= v_1_2;
-			bit >>= 1;
+			value >>= 1;
 		}
 
 		return result + v_1_2;
