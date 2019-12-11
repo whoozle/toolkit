@@ -41,8 +41,9 @@ namespace
 			using namespace t;
 			int exp;
 			auto sign = frexp(x, &exp);
-			auto decoded = ldexp(ts::DecodeNumber<double, s64>(ts::EncodeNumber<s64, double>(sign)), exp);
-			return fabs(sign - decoded) < std::numeric_limits<double>::epsilon();
+			auto newSign = ts::DecodeNumber<double, u64>(ts::EncodeNumber<u64, double>(sign));
+			auto decoded = ldexp(newSign, exp);
+			return fabs(x - decoded) < std::numeric_limits<double>::epsilon();
 		}
 	}
 
@@ -56,10 +57,7 @@ namespace
 			EXPECT(NumberMatches(1 / 3.0));
 			EXPECT(NumberMatches(1e77));
 			EXPECT(NumberMatches(M_PI));
-			EXPECT(NumberMatches(-1));
-			EXPECT(NumberMatches(-1 / 3.0));
-			EXPECT(NumberMatches(-1e77));
-			EXPECT(NumberMatches(-M_PI));
+			EXPECT(NumberMatches(M_E));
 		},
 		// CASE( "JSON serialization test" )
 		// {

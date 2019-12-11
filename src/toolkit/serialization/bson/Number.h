@@ -13,14 +13,14 @@ namespace TOOLKIT_NS { namespace serialization
 	template<typename IntegerType, typename FloatType>
 	IntegerType EncodeNumber(FloatType value)
 	{
+		static_assert(std::is_unsigned<IntegerType>::value, "IntegerType must be unsigned");
 		static const FloatType v_1_2 = FloatType(1) / 2;
 		static const FloatType v_1_4 = v_1_2 / 2;
 
 		IntegerType bit = 1;
 		IntegerType result = 0;
-		if (value == 0) {
-			return result | bit;
-		}
+		if (value == 0)
+			return 0;
 
 		value -= v_1_2;
 
@@ -43,6 +43,8 @@ namespace TOOLKIT_NS { namespace serialization
 	template<typename FloatType, typename IntegerType>
 	FloatType DecodeNumber(IntegerType value)
 	{
+		static_assert(std::is_unsigned<IntegerType>::value, "IntegerType must be unsigned");
+
 		if (value == 0)
 			return 0;
 
@@ -50,18 +52,19 @@ namespace TOOLKIT_NS { namespace serialization
 		static const FloatType v_1_4 = v_1_2 / 2;
 
 		FloatType result = 0;
-		ssize_t bit;
-		for(bit = (sizeof(IntegerType) << 3) - 1; bit >= 0; --bit)
+		IntegerType bit;
+		for(bit = IntegerType(1) << ((sizeof(IntegerType) << 3) - 1); bit != 0; bit >>= 1)
 		{
-			if ((value & (1L << bit)))
+			if (value & bit)
+			{
+				bit >>= 1;
 				break;
+			}
 		}
-		if (bit == 0)
-			return 0;
-		--bit;
-		for(; bit >= 0; --bit) {
+
+		for(; bit > 0; bit >>= 1) {
 			result /= 2;
-			if (value & (1L << bit))
+			if (value & bit)
 				result += v_1_4;
 		}
 

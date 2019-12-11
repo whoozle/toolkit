@@ -46,7 +46,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			WriteTag(Tag::Number);
 			int exp;
 			auto sign = frexp(value, &exp);
-			Write(EncodeNumber<s64, double>(sign));
+			Write(static_cast<s64>(EncodeNumber<u64, double>(sign)));
 			Write(static_cast<s64>(exp));
 		}
 
