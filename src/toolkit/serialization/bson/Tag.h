@@ -15,14 +15,15 @@ namespace TOOLKIT_NS { namespace serialization {
 			Zero			= 3,
 			PositiveInteger	= 4,
 			NegativeInteger	= 5,
-			Number			= 6,
-			String			= 7,
-			ListBegin		= 8,
-			ListEnd			= 9,
-			ObjectBegin		= 10,
-			ObjectKey		= 11,
-			ObjectEnd		= 12,
-			Null			= 13,
+			PositiveNumber	= 6,
+			NegativeNumber	= 7,
+			String			= 8,
+			ListBegin		= 9,
+			ListEnd			= 10,
+			ObjectBegin		= 11,
+			ObjectKey		= 12,
+			ObjectEnd		= 13,
+			Null			= 14,
 		};
 	}
 

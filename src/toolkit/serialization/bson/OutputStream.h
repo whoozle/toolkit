@@ -43,7 +43,19 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void Write(double value) override
 		{
-			WriteTag(Tag::Number);
+			if (value == 0)
+			{
+				WriteTag(Tag::Zero);
+				return;
+			}
+			else if (value < 0)
+			{
+				WriteTag(Tag::NegativeNumber);
+				value = -value;
+			}
+			else
+				WriteTag(Tag::PositiveNumber);
+
 			int exp;
 			auto sign = frexp(value, &exp);
 			Write(static_cast<s64>(EncodeNumber<u64, double>(sign)));
