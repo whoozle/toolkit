@@ -62,7 +62,8 @@ namespace TOOLKIT_NS { namespace serialization
 			}
 		}
 
-		for(; bit > 0; bit >>= 1) {
+		for(; bit > 0; bit >>= 1)
+		{
 			result *= v_1_2;
 			if (value & bit)
 				result += v_1_4;
