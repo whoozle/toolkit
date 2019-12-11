@@ -41,7 +41,7 @@ namespace
 			using namespace t;
 			int exp;
 			auto sign = frexp(x, &exp);
-			auto decoded = ts::DecodeNumber<double, s64>(ts::EncodeNumber<s64, double>( sign ));
+			auto decoded = ldexp(ts::DecodeNumber<double, s64>(ts::EncodeNumber<s64, double>(sign)), exp);
 			return fabs(sign - decoded) < std::numeric_limits<double>::epsilon();
 		}
 	}
