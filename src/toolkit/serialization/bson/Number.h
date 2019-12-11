@@ -16,25 +16,26 @@ namespace TOOLKIT_NS { namespace serialization
 		static const FloatType v_1_2 = FloatType(1) / 2;
 		static const FloatType v_1_4 = v_1_2 / 2;
 
-		IntegerType result = 0;
-		if (value == 0)
-			return result;
-
 		IntegerType bit = 1;
+		IntegerType result = 0;
+		if (value == 0) {
+			return result | bit;
+		}
+
 		value -= v_1_2;
-		do
+
+		while(value != 0)
 		{
 			if (value >= v_1_4)
 			{
+				result |= bit;
 				value -= v_1_4;
 			}
-			else
-				result |= bit;
 
-			bit <<= 1;
 			value *= 2;
+			bit <<= 1;
 		}
-		while(value != 0);
+		result |= bit;
 
 		return result;
 	}
@@ -49,14 +50,19 @@ namespace TOOLKIT_NS { namespace serialization
 		static const FloatType v_1_4 = v_1_2 / 2;
 
 		FloatType result = 0;
-		while(value)
+		ssize_t bit;
+		for(bit = (sizeof(IntegerType) << 3) - 1; bit >= 0; --bit)
 		{
-			if (!(value & 1))
-			{
-				result += v_1_2;
-			}
-			result *= v_1_2;
-			value >>= 1;
+			if ((value & (1L << bit)))
+				break;
+		}
+		if (bit == 0)
+			return 0;
+		--bit;
+		for(; bit >= 0; --bit) {
+			result /= 2;
+			if (value & (1L << bit))
+				result += v_1_4;
 		}
 
 		return result + v_1_2;
