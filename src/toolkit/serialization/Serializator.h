@@ -10,14 +10,14 @@ namespace TOOLKIT_NS { namespace serialization
 	template<typename Type>
 	struct Serializator
 	{
-		static void Write(IOutputStream & out, const Type & value)
+		static void Write(ISerializationStream & out, const Type & value)
 		{ value.Write(out); }
 	};
 
 #define TOOLKIT_SERIALIZATOR_FORWARD_TYPE(TYPE, CTYPE)  \
 	template<> \
 	struct Serializator< TYPE > \
-	{ static void Write(IOutputStream & out, TYPE value) \
+	{ static void Write(ISerializationStream & out, TYPE value) \
 	{ out.Write(static_cast<CTYPE>(value)); } }
 
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(const Undefined &, const Undefined &);
@@ -45,7 +45,7 @@ namespace TOOLKIT_NS { namespace serialization
 
 
 	template<typename ... Type>
-	void Serialize(IOutputStream & out, const Type & ... value)
+	void Serialize(ISerializationStream & out, const Type & ... value)
 	{
 		using expand_type = int[];
 		expand_type { (Serializator<Type>::Write(out, value), 0) ... };

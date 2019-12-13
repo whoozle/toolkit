@@ -14,7 +14,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 
 	template<typename IteratorType>
-	class OutputStream: private BinaryWriter<IteratorType>, public IOutputStream
+	class OutputStream: private BinaryWriter<IteratorType>, public ISerializationStream
 	{
 		using super = BinaryWriter<IteratorType>;
 

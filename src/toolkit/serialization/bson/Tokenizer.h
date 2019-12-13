@@ -45,10 +45,10 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			case Tag::PositiveInteger:
 				_intReader.Read(begin, end);
 				break;
-			case Tag::Number:
+			case Tag::Undefined:
 				break;
 			default:
-				break;
+				throw Exception("unhandled current tag");
 			}
 
 			while(begin != end)

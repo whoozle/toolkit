@@ -13,7 +13,7 @@ namespace TOOLKIT_NS { namespace serialization
 	struct IObjectWriter
 	{
 		virtual ~IObjectWriter() = default;
-		virtual void Write(IOutputStream & out) = 0;
+		virtual void Write(ISerializationStream & out) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IObjectWriter);
 
@@ -28,7 +28,7 @@ namespace TOOLKIT_NS { namespace serialization
 	struct IDescriptor
 	{
 		virtual ~IDescriptor() = default;
-		virtual void Write(IOutputStream & out, const ClassType & self) const = 0;
+		virtual void Write(ISerializationStream & out, const ClassType & self) const = 0;
 	};
 
 	template<typename ClassType>
@@ -44,7 +44,7 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarObjectFactory(const std::string & name, uint version):
 			_name(name), _version(version)
 		{ }
-		void WriteTypeDescriptor(IOutputStream & out)
+		void WriteTypeDescriptor(ISerializationStream & out)
 		{
 			if (!_name.empty())
 				Serialize(out, _name, _version);
@@ -62,7 +62,7 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarMemberDescriptor(Pointer pointer): _pointer(pointer)
 		{ }
 
-		void Write(IOutputStream & out, const ClassType & self) const override
+		void Write(ISerializationStream & out, const ClassType & self) const override
 		{ Serialize(out, Get(self)); }
 
 		const MemberType & Get(const ClassType & self) const
@@ -99,7 +99,7 @@ namespace TOOLKIT_NS { namespace serialization
 				_descriptor(descriptor), _object(object)
 			{ }
 
-			void Write(IOutputStream & out) override
+			void Write(ISerializationStream & out) override
 			{
 				out.BeginObject();
 				{
@@ -163,7 +163,7 @@ namespace TOOLKIT_NS { namespace serialization
 		AddDescriptors(const DescriptorsType & descriptors)
 		{ }
 
-		void WriteRecord(IOutputStream & out, const ClassType & self) const
+		void WriteRecord(ISerializationStream & out, const ClassType & self) const
 		{
 			out.BeginList();
 			_factory->WriteTypeDescriptor(out);
@@ -174,7 +174,7 @@ namespace TOOLKIT_NS { namespace serialization
 			out.EndList();
 		}
 
-		void WriteObject(IOutputStream & out, const ClassType & self) const
+		void WriteObject(ISerializationStream & out, const ClassType & self) const
 		{
 			out.BeginObject();
 			for (auto it : _map)

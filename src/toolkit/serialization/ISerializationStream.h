@@ -9,9 +9,9 @@ namespace TOOLKIT_NS { namespace serialization
 {
 	struct Undefined { };
 
-	struct IOutputStream
+	struct ISerializationStream
 	{
-		virtual ~IOutputStream() = default;
+		virtual ~ISerializationStream() = default;
 
 		virtual void Write(const Undefined &) = 0;
 		virtual void Write(std::nullptr_t) = 0;
@@ -27,7 +27,7 @@ namespace TOOLKIT_NS { namespace serialization
 		virtual void BeginObject() = 0;
 		virtual void EndObject() = 0;
 	};
-	TOOLKIT_DECLARE_PTR(IOutputStream);
+	TOOLKIT_DECLARE_PTR(ISerializationStream);
 
 }}
 
