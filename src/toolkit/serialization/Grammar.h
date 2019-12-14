@@ -20,7 +20,7 @@ namespace TOOLKIT_NS { namespace serialization
 	struct IObjectReader
 	{
 		virtual ~IObjectReader() = default;
-		virtual void Read(ConstBuffer data) = 0;
+		virtual size_t Read(IInputSerializationStream & in, ConstBuffer data) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IObjectReader);
 
@@ -129,8 +129,10 @@ namespace TOOLKIT_NS { namespace serialization
 				_descriptor(descriptor), _object(object)
 			{ }
 
-			void Read(ConstBuffer data) override
-			{ }
+			size_t Read(IInputSerializationStream & in, ConstBuffer data) override
+			{
+				return in.Parse(data);
+			}
 		};
 
 

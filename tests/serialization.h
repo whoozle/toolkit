@@ -92,10 +92,9 @@ namespace
 			}
 			{
 				Test test;
-				Serializator::Read(test, data.GetStorage());
+				auto r = Serializator::Read(test, data.GetStorage());
+				EXPECT (r == data.size());
 			}
-
-			// EXPECT( ss.Get() == "{\"__classname\":\"Test\",\"__version\":1,\"p\":2,\"q\":3,\"comment\":\"\\u044e\\u043d\\u0438\\u043a\\u043e\\u0434\\ncopyright \\u00a91738\\r\\n\"}" );
 		}
 	};
 }

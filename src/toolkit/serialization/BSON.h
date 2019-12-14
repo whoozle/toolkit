@@ -3,6 +3,7 @@
 
 #include <toolkit/core/types.h>
 #include <toolkit/serialization/Grammar.h>
+#include <toolkit/serialization/bson/InputStream.h>
 #include <toolkit/serialization/bson/OutputStream.h>
 #include <toolkit/core/ByteArray.h>
 #include <string>
@@ -22,11 +23,12 @@ namespace TOOLKIT_NS { namespace serialization
 			writer->Write(out);
 		}
 
-		static void Read(ClassType & value, const ByteArray::Storage & inStorage)
+		static size_t Read(ClassType & value, const ByteArray::Storage & inData)
 		{
 			auto & descriptor = GrammarDescriptorHolder<ClassType>::Get();
 			auto reader = descriptor.CreateReader(value);
-			reader->Read(inStorage);
+			serialization::bson::ObjectInputStream<ClassType> in;
+			return reader->Read(in, inData);
 		}
 	};
 
