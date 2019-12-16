@@ -50,6 +50,8 @@ set(TOOLKIT_SRC
 	src/toolkit/text/String.cpp
 	src/toolkit/text/Formatters.cpp
 	src/toolkit/text/StringOutputStream.cpp
+
+	src/toolkit/serialization/bson/InputStream.cpp
 )
 
 if (TOOLKIT_GL_VARIANT)
