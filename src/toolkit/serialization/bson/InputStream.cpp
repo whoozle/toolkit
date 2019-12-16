@@ -50,6 +50,9 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			bool Parse(ConstBuffer data, size_t & offset) override
 			{ return 0; }
 
+			void Write(s64 value) override //handling zero
+			{ _value = value; }
+
 			void Set(ISerializationStream & target) override
 			{ target.Write(_value); }
 		};
