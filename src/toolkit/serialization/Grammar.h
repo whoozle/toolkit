@@ -190,6 +190,12 @@ namespace TOOLKIT_NS { namespace serialization
 			out.EndObject();
 		}
 
+		const auto & GetList() const
+		{ return _list; }
+
+		const auto & GetMap() const
+		{ return _map; }
+
 	public:
 		template <typename DescriptorsType>
 		GrammarDescriptor(const DescriptorsType & descriptor):
