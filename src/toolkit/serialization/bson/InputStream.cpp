@@ -5,22 +5,41 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 	namespace
 	{
-		class IntegerParser : public IInputStreamParser
+		class IntegerParser : public BaseInputStream
 		{
 			s64		_value;
 			bool	_negative;
+			bool	_loaded;
 
 		public:
-			IntegerParser(bool neg): _value(0), _negative(neg) { }
+			IntegerParser(bool neg): _value(0), _negative(neg), _loaded(false) { }
 
 			bool Parse(ConstBuffer data, size_t & offset) override
-			{ return 0; }
+			{
+				if (_loaded)
+					return false;
+
+				size_t n = data.size();
+				int shift = 0;
+				while(offset < n)
+				{
+					u8 byte = data[offset++];
+					_value |= (static_cast<s64>(byte & 0x7f) << shift);
+					shift += 7;
+					if ((byte & 0x80) == 0)
+					{
+						_loaded = true;
+						return false; //loaded
+					}
+				}
+				return true;
+			}
 
 			void Set(ISerializationStream & target) override
 			{ target.Write(_value); }
 		};
 
-		class NumberParser : public IInputStreamParser
+		class NumberParser : public BaseInputStream
 		{
 			double	_value;
 			bool	_negative;
@@ -35,13 +54,33 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			{ target.Write(_value); }
 		};
 
-		class StringParser : public IInputStreamParser
+		class StringParser : public BaseInputStream
 		{
+			IntegerParser 	_lengthParser;
+			bool			_lengthParsed;
+			size_t			_length;
 			std::string 	_value;
 
 		public:
+			StringParser(): _lengthParser(false), _lengthParsed(false), _length(0)
+			{ }
+
 			bool Parse(ConstBuffer data, size_t & offset) override
-			{ return 0; }
+			{
+				if (!_lengthParsed) {
+					if (_lengthParser.Parse(data, offset))
+						return true;
+					_lengthParsed = true;
+					_lengthParser.Set(*this);
+				}
+				size_t remain = std::min(data.size() - offset, _length);
+				std::copy(data.data() + offset, data.data() + offset + remain, std::back_inserter(_value));
+				offset += remain;
+				_length -= remain;
+				return _length != 0;
+			}
+			void Write(s64 value) override
+			{ _length = value; }
 
 			void Set(ISerializationStream & target) override
 			{ target.Write(_value); }
@@ -145,4 +184,6 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	void BaseInputStream::EndObject()
 	{ throw Exception("unexpected object end"); }
 
+	void BaseInputStream::Set(ISerializationStream & target)
+	{ throw Exception("no set implemented"); }
 }}}

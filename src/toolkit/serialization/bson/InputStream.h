@@ -12,7 +12,7 @@
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
-	class BaseInputStream : public IInputSerializationStream
+	class BaseInputStream : public IInputStreamParser
 	{
 	protected:
 		IInputStreamParserPtr _current;
@@ -34,13 +34,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void EndList() override;
 		void BeginObject() override;
 		void EndObject() override;
-	};
 
-	class StringInputStream : BaseInputStream
-	{
-	public:
-		StringInputStream(): BaseInputStream()
-		{ }
+		void Set(ISerializationStream & target) override;
 	};
 
 	template<typename ClassType>
@@ -70,6 +65,9 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 			return BaseInputStream::Parse(data, offset);
 		}
+
+		void Write(const std::string & value) override
+		{ }
 	};
 
 }}}
