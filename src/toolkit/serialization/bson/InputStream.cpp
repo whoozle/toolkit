@@ -7,39 +7,65 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	{
 		class IntegerParser : public IInputStreamParser
 		{
+			s64		_value;
+			bool	_negative;
+
 		public:
-			IntegerParser(bool neg) { }
+			IntegerParser(bool neg): _value(0), _negative(neg) { }
+
 			size_t Parse(ConstBuffer data) override
 			{ return 0; }
+
+			void Set(ISerializationStream & target) override
+			{ target.Write(_value); }
 		};
 
 		class NumberParser : public IInputStreamParser
 		{
+			double	_value;
+			bool	_negative;
+
 		public:
-			NumberParser(bool neg) { }
+			NumberParser(bool neg): _value(0), _negative(neg) { }
+
 			size_t Parse(ConstBuffer data) override
 			{ return 0; }
+
+			void Set(ISerializationStream & target) override
+			{ target.Write(_value); }
 		};
 
 		class StringParser : public IInputStreamParser
 		{
+			std::string 	_value;
+
 		public:
 			size_t Parse(ConstBuffer data) override
 			{ return 0; }
+
+			void Set(ISerializationStream & target) override
+			{ target.Write(_value); }
 		};
 
 	}
 
 	size_t BaseInputStream::Parse(ConstBuffer data)
 	{
-		auto ptr = data.begin();
-		auto end = data.end();
-		if (ptr == end)
-			return 0;
+		size_t offset = 0, size = data.size();
 
-		while(ptr != end)
+		while(offset < size)
 		{
-			Tag tag = static_cast<Tag>(*ptr++);
+			if (_current)
+			{
+				auto r = _current->Parse(ConstBuffer(data, offset));
+				offset += r;
+				if (r == 0)
+				{
+					_current->Set(*this);
+					_current.reset();
+				}
+			}
+			Tag tag = static_cast<Tag>(data[offset++]);
 			switch(tag)
 			{
 			case Tag::Undefined:
@@ -88,7 +114,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				throw Exception("unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
 			}
 		}
-		return ptr - data.begin();
+		return offset;
 	}
 
 	void BaseInputStream::Write(const Undefined &)
