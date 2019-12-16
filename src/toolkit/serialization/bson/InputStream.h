@@ -21,7 +21,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		BaseInputStream()
 		{ }
 
-		size_t Parse(ConstBuffer data) override;
+		bool Parse(ConstBuffer data, size_t & offset) override;
 
 	public:
 		void Write(const Undefined &) override;
@@ -63,12 +63,12 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				throw Exception("nested object, fixme");
 		}
 
-		size_t Parse(ConstBuffer data) override
+		bool Parse(ConstBuffer data, size_t & offset) override
 		{
 			if (_finished)
-				return 0;
+				return false;
 
-			return BaseInputStream::Parse(data);
+			return BaseInputStream::Parse(data, offset);
 		}
 	};
 

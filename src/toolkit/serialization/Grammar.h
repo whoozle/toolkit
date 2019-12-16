@@ -131,7 +131,9 @@ namespace TOOLKIT_NS { namespace serialization
 
 			size_t Read(IInputSerializationStream & in, ConstBuffer data) override
 			{
-				return in.Parse(data);
+				size_t offset = 0;
+				bool result = in.Parse(data, offset);
+				return offset;
 			}
 		};
 

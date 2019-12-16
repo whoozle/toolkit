@@ -13,7 +13,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		public:
 			IntegerParser(bool neg): _value(0), _negative(neg) { }
 
-			size_t Parse(ConstBuffer data) override
+			bool Parse(ConstBuffer data, size_t & offset) override
 			{ return 0; }
 
 			void Set(ISerializationStream & target) override
@@ -28,7 +28,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		public:
 			NumberParser(bool neg): _value(0), _negative(neg) { }
 
-			size_t Parse(ConstBuffer data) override
+			bool Parse(ConstBuffer data, size_t & offset) override
 			{ return 0; }
 
 			void Set(ISerializationStream & target) override
@@ -40,7 +40,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			std::string 	_value;
 
 		public:
-			size_t Parse(ConstBuffer data) override
+			bool Parse(ConstBuffer data, size_t & offset) override
 			{ return 0; }
 
 			void Set(ISerializationStream & target) override
@@ -49,17 +49,15 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	}
 
-	size_t BaseInputStream::Parse(ConstBuffer data)
+	bool BaseInputStream::Parse(ConstBuffer data, size_t & offset)
 	{
-		size_t offset = 0, size = data.size();
+		size_t size = data.size();
 
 		while(offset < size)
 		{
 			if (_current)
 			{
-				auto r = _current->Parse(ConstBuffer(data, offset));
-				offset += r;
-				if (r == 0)
+				if (!_current->Parse(data, offset))
 				{
 					_current->Set(*this);
 					_current.reset();

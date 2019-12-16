@@ -32,14 +32,14 @@ namespace TOOLKIT_NS { namespace serialization
 	struct IInputStreamParser
 	{
 		virtual ~IInputStreamParser() = default;
-		virtual size_t Parse(ConstBuffer data) = 0;
+		virtual bool Parse(ConstBuffer data, size_t & offset) = 0;
 		virtual void Set(ISerializationStream & target) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IInputStreamParser);
 
 	struct IInputSerializationStream : public ISerializationStream
 	{
-		virtual size_t Parse(ConstBuffer data) = 0;
+		virtual bool Parse(ConstBuffer data, size_t & offset) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IInputSerializationStream);
 
