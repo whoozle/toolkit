@@ -4,6 +4,7 @@
 #include <toolkit/core/types.h>
 #include <toolkit/core/Buffer.h>
 #include <toolkit/serialization/ISerializationStream.h>
+#include <toolkit/serialization/Grammar.h>
 #include <toolkit/serialization/bson/Tag.h>
 #include <toolkit/serialization/bson/Number.h>
 #include <string>
@@ -13,8 +14,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 	class BaseInputStream : public IInputSerializationStream
 	{
-	private:
-		IInputSerializationStreamPtr _current;
+	protected:
+		IInputStreamParserPtr _current;
 
 	protected:
 		BaseInputStream()
@@ -45,12 +46,30 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	template<typename ClassType>
 	class ObjectInputStream : public BaseInputStream
 	{
+		const GrammarDescriptor<ClassType>  & _descriptor;
 		bool _started;
+		bool _finished;
 
 	public:
-		ObjectInputStream(): BaseInputStream()
+		ObjectInputStream():
+			_descriptor(GrammarDescriptorHolder<ClassType>::Get()),
+			_started(false),
+			_finished(false)
 		{ }
 
+		void BeginObject() override
+		{
+			if (_started)
+				throw Exception("nested object, fixme");
+		}
+
+		size_t Parse(ConstBuffer data) override
+		{
+			if (_finished)
+				return 0;
+
+			return BaseInputStream::Parse(data);
+		}
 	};
 
 }}}

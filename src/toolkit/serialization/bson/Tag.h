@@ -20,10 +20,9 @@ namespace TOOLKIT_NS { namespace serialization {
 			String			= 8,
 			ListBegin		= 9,
 			ListEnd			= 10,
-			ObjectBegin		= 11,
-			ObjectKey		= 12,
+			Null			= 11,
+			ObjectBegin		= 12,
 			ObjectEnd		= 13,
-			Null			= 14,
 		};
 	}
 

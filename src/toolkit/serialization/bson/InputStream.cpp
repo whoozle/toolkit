@@ -3,6 +3,33 @@
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
+	namespace
+	{
+		class IntegerParser : public IInputStreamParser
+		{
+		public:
+			IntegerParser(bool neg) { }
+			size_t Parse(ConstBuffer data) override
+			{ return 0; }
+		};
+
+		class NumberParser : public IInputStreamParser
+		{
+		public:
+			NumberParser(bool neg) { }
+			size_t Parse(ConstBuffer data) override
+			{ return 0; }
+		};
+
+		class StringParser : public IInputStreamParser
+		{
+		public:
+			size_t Parse(ConstBuffer data) override
+			{ return 0; }
+		};
+
+	}
+
 	size_t BaseInputStream::Parse(ConstBuffer data)
 	{
 		auto ptr = data.begin();
@@ -18,14 +45,44 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			case Tag::Undefined:
 				Write(Undefined());
 				break;
-			case Tag::Null:
-				Write(nullptr);
-				break;
 			case Tag::BooleanTrue:
 				Write(true);
 				break;
 			case Tag::BooleanFalse:
 				Write(false);
+				break;
+			case Tag::Zero:
+				Write(s64(0));
+				break;
+			case Tag::PositiveInteger:
+				_current = std::make_shared<IntegerParser>(false);
+				break;
+			case Tag::NegativeInteger:
+				_current = std::make_shared<IntegerParser>(true);
+				break;
+			case Tag::PositiveNumber:
+				_current = std::make_shared<NumberParser>(false);
+				break;
+			case Tag::NegativeNumber:
+				_current = std::make_shared<NumberParser>(true);
+				break;
+			case Tag::String:
+				_current = std::make_shared<StringParser>();
+				break;
+			case Tag::ListBegin:
+				BeginList();
+				break;
+			case Tag::ListEnd:
+				EndList();
+				break;
+			case Tag::Null:
+				Write(nullptr);
+				break;
+			case Tag::ObjectBegin:
+				BeginObject();
+				break;
+			case Tag::ObjectEnd:
+				EndObject();
 				break;
 			default:
 				throw Exception("unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
