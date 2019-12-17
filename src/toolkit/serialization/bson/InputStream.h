@@ -88,17 +88,14 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{ target.Write(_value); }
 	};
 
-
-	template<typename ClassType>
-	class ObjectInputStream : public BaseInputStream
+	class BaseObjectInputStream : public BaseInputStream
 	{
-		const GrammarDescriptor<ClassType>  & _descriptor;
+	protected:
 		bool _started;
 		bool _finished;
 
 	public:
-		ObjectInputStream():
-			_descriptor(GrammarDescriptorHolder<ClassType>::Get()),
+		BaseObjectInputStream():
 			_started(false),
 			_finished(false)
 		{ }
@@ -124,6 +121,18 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{
 
 		}
+	};
+
+	template<typename ClassType>
+	class ObjectInputStream : public BaseObjectInputStream
+	{
+		const GrammarDescriptor<ClassType>  & _descriptor;
+
+	public:
+		ObjectInputStream():
+			_descriptor(GrammarDescriptorHolder<ClassType>::Get())
+		{ }
+
 	};
 
 }}}
