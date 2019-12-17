@@ -38,6 +38,57 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void Set(ISerializationStream & target) override;
 	};
 
+	template<typename Type>
+	class IntegralStreamParser : public BaseInputStream
+	{
+	protected:
+		Type	_value;
+		bool	_negative;
+		bool	_loaded;
+
+	public:
+		IntegralStreamParser(bool negative): _value(), _negative(negative), _loaded(false) { }
+
+		void Set(ISerializationStream & target) override
+		{ target.Write(_value); }
+	};
+
+	class IntegerStreamParser : public IntegralStreamParser<s64>
+	{
+	public:
+		using IntegralStreamParser::IntegralStreamParser;
+
+		bool Parse(ConstBuffer data, size_t & offset) override;
+	};
+
+	class NumberStreamParser : public IntegralStreamParser<double>
+	{
+	public:
+		using IntegralStreamParser::IntegralStreamParser;
+
+		bool Parse(ConstBuffer data, size_t & offset) override
+		{ return false; }
+	};
+
+	class StringStreamParser : public BaseInputStream
+	{
+		IntegerStreamParser 	_lengthParser;
+		bool					_lengthParsed;
+		size_t					_length;
+		std::string 			_value;
+
+	public:
+		StringStreamParser(): _lengthParser(false), _lengthParsed(false), _length(0)
+		{ }
+
+		bool Parse(ConstBuffer data, size_t & offset) override;
+		void Write(s64 value) override
+		{ _length = value; }
+		void Set(ISerializationStream & target) override
+		{ target.Write(_value); }
+	};
+
+
 	template<typename ClassType>
 	class ObjectInputStream : public BaseInputStream
 	{
@@ -68,6 +119,11 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void Write(const std::string & value) override
 		{ }
+
+		void BeginList() override
+		{
+
+		}
 	};
 
 }}}

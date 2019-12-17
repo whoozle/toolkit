@@ -3,92 +3,40 @@
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
-	namespace
+	bool IntegerStreamParser::Parse(ConstBuffer data, size_t & offset)
 	{
-		class IntegerParser : public BaseInputStream
+		if (_loaded)
+			return false;
+
+		size_t n = data.size();
+		int shift = 0;
+		while(offset < n)
 		{
-			s64		_value;
-			bool	_negative;
-			bool	_loaded;
-
-		public:
-			IntegerParser(bool neg): _value(0), _negative(neg), _loaded(false) { }
-
-			bool Parse(ConstBuffer data, size_t & offset) override
+			u8 byte = data[offset++];
+			_value |= (static_cast<s64>(byte & 0x7f) << shift);
+			shift += 7;
+			if ((byte & 0x80) == 0)
 			{
-				if (_loaded)
-					return false;
+				_loaded = true;
+				return false; //loaded
+			}
+		}
+		return true;
+	}
 
-				size_t n = data.size();
-				int shift = 0;
-				while(offset < n)
-				{
-					u8 byte = data[offset++];
-					_value |= (static_cast<s64>(byte & 0x7f) << shift);
-					shift += 7;
-					if ((byte & 0x80) == 0)
-					{
-						_loaded = true;
-						return false; //loaded
-					}
-				}
+	bool StringStreamParser::Parse(ConstBuffer data, size_t & offset)
+	{
+		if (!_lengthParsed) {
+			if (_lengthParser.Parse(data, offset))
 				return true;
-			}
-
-			void Set(ISerializationStream & target) override
-			{ target.Write(_value); }
-		};
-
-		class NumberParser : public BaseInputStream
-		{
-			double	_value;
-			bool	_negative;
-
-		public:
-			NumberParser(bool neg): _value(0), _negative(neg) { }
-
-			bool Parse(ConstBuffer data, size_t & offset) override
-			{ return 0; }
-
-			void Write(s64 value) override //handling zero
-			{ _value = value; }
-
-			void Set(ISerializationStream & target) override
-			{ target.Write(_value); }
-		};
-
-		class StringParser : public BaseInputStream
-		{
-			IntegerParser 	_lengthParser;
-			bool			_lengthParsed;
-			size_t			_length;
-			std::string 	_value;
-
-		public:
-			StringParser(): _lengthParser(false), _lengthParsed(false), _length(0)
-			{ }
-
-			bool Parse(ConstBuffer data, size_t & offset) override
-			{
-				if (!_lengthParsed) {
-					if (_lengthParser.Parse(data, offset))
-						return true;
-					_lengthParsed = true;
-					_lengthParser.Set(*this);
-				}
-				size_t remain = std::min(data.size() - offset, _length);
-				std::copy(data.data() + offset, data.data() + offset + remain, std::back_inserter(_value));
-				offset += remain;
-				_length -= remain;
-				return _length != 0;
-			}
-			void Write(s64 value) override
-			{ _length = value; }
-
-			void Set(ISerializationStream & target) override
-			{ target.Write(_value); }
-		};
-
+			_lengthParsed = true;
+			_lengthParser.Set(*this);
+		}
+		size_t remain = std::min(data.size() - offset, _length);
+		std::copy(data.data() + offset, data.data() + offset + remain, std::back_inserter(_value));
+		offset += remain;
+		_length -= remain;
+		return _length != 0;
 	}
 
 	bool BaseInputStream::Parse(ConstBuffer data, size_t & offset)
@@ -121,19 +69,19 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				Write(s64(0));
 				break;
 			case Tag::PositiveInteger:
-				_current = std::make_shared<IntegerParser>(false);
+				_current = std::make_shared<IntegerStreamParser>(false);
 				break;
 			case Tag::NegativeInteger:
-				_current = std::make_shared<IntegerParser>(true);
+				_current = std::make_shared<IntegerStreamParser>(true);
 				break;
 			case Tag::PositiveNumber:
-				_current = std::make_shared<NumberParser>(false);
+				_current = std::make_shared<NumberStreamParser>(false);
 				break;
 			case Tag::NegativeNumber:
-				_current = std::make_shared<NumberParser>(true);
+				_current = std::make_shared<NumberStreamParser>(true);
 				break;
 			case Tag::String:
-				_current = std::make_shared<StringParser>();
+				_current = std::make_shared<StringStreamParser>();
 				break;
 			case Tag::ListBegin:
 				BeginList();
