@@ -81,8 +81,8 @@ namespace TOOLKIT_NS { namespace serialization
 		using FactoryPtr    	= std::shared_ptr<GrammarObjectFactory<ClassType>>;
 
 		FactoryPtr			_factory;
-		MemberMap			_map;
 		MemberList			_list;
+		MemberMap			_map;
 
 	private:
 
