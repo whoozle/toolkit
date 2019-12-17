@@ -39,6 +39,23 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		return _length != 0;
 	}
 
+	bool ListStreamParser::Parse(ConstBuffer data, size_t & offset)
+	{
+		if (_index >= _parsers.size())
+			return false;
+
+		size_t n = data.size();
+		while(offset < n)
+		{
+			if (!_parsers[_index]->Parse(data, offset))
+			{
+				if (++_index >= _parsers.size())
+					return false;
+			}
+		}
+		return true;
+	}
+
 	bool BaseInputStream::Parse(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)
@@ -47,12 +64,13 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		size_t size = data.size();
 		while(offset < size)
 		{
-			if (_current)
+			while (_current)
 			{
 				if (!_current->Parse(data, offset))
 				{
-					_current->Set(*this);
+					auto current = _current;
 					_current.reset();
+					current->Set(*this);
 				}
 			}
 			Tag tag = static_cast<Tag>(data[offset++]);

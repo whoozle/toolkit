@@ -91,9 +91,13 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	class ListStreamParser : public BaseInputStream
 	{
-		std::vector<IInputStreamParserPtr> _parsers;
+		size_t 								_index;
+		std::vector<IInputStreamParserPtr> 	_parsers;
 
 	public:
+		ListStreamParser(): _index(0)
+		{ }
+
 		void Add(IInputStreamParserPtr parser)
 		{ _parsers.push_back(parser); }
 
@@ -102,6 +106,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void EndList() override
 		{ _finished = true; }
+
+		bool Parse(ConstBuffer data, size_t & offset) override;
 	};
 
 	class BaseObjectInputStream : public BaseInputStream
@@ -137,11 +143,14 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void Write(const std::string & value) override
 		{
 			if (value == "m") {
+				//loading metadata
 				auto list = std::make_shared<ListStreamParser>();
 				list->Add(std::make_shared<StringStreamParser>());
 				list->Add(std::make_shared<IntegerStreamParser>());
 				_current = list;
 			}
+			else
+				throw Exception("unknown object property " + value);
 		}
 	};
 
