@@ -44,11 +44,15 @@ namespace TOOLKIT_NS { namespace serialization
 		GrammarObjectFactory(const std::string & name, uint version):
 			_name(name), _version(version)
 		{ }
+
 		void WriteTypeDescriptor(ISerializationStream & out)
 		{
 			if (!_name.empty())
 				Serialize(out, _name, _version);
 		}
+
+		bool IsEmpty() const
+		{ return _name.empty() && _version == 0; }
 	};
 
 	template<typename ClassType, typename MemberType>
@@ -100,20 +104,7 @@ namespace TOOLKIT_NS { namespace serialization
 			{ }
 
 			void Write(ISerializationStream & out) override
-			{
-				out.BeginObject();
-				{
-					static std::string typeTag("t");
-					Serialize(out, typeTag);
-					_descriptor.WriteRecord(out, _object);
-				}
-				{
-					static std::string objectTag("o");
-					Serialize(out, objectTag);
-					_descriptor.WriteObject(out, _object);
-				}
-				out.EndObject();
-			}
+			{ _descriptor.Write(out, _object); }
 		};
 
 		class ObjectReader : public IObjectReader
@@ -168,26 +159,41 @@ namespace TOOLKIT_NS { namespace serialization
 		AddDescriptors(const DescriptorsType & descriptors)
 		{ }
 
-		void WriteRecord(ISerializationStream & out, const ClassType & self) const
-		{
-			out.BeginList();
-			_factory->WriteTypeDescriptor(out);
-			for (auto it : _list)
-			{
-				it->Write(out, self);
-			}
-			out.EndList();
-		}
-
-		void WriteObject(ISerializationStream & out, const ClassType & self) const
+		void Write(ISerializationStream & out, const ClassType & self) const
 		{
 			out.BeginObject();
-			for (auto it : _map)
+
+			if (!_factory->IsEmpty())
 			{
-				out.Write(it.first);
-				it.second->Write(out, self);
+				static const std::string metaTag("m");
+				out.Write(metaTag);
+				out.BeginList();
+				_factory->WriteTypeDescriptor(out);
+				out.EndList();
 			}
-			out.EndObject();
+
+			{
+				static const std::string recordTag("r");
+				out.Write(recordTag);
+				out.BeginList();
+				for (auto it : _list)
+				{
+					it->Write(out, self);
+				}
+				out.EndList();
+			}
+
+			{
+				static const std::string objectTag("d");
+				out.Write(objectTag);
+				out.BeginObject();
+				for (auto it : _map)
+				{
+					out.Write(it.first);
+					it.second->Write(out, self);
+				}
+				out.EndObject();
+			}
 		}
 
 		const auto & GetList() const
