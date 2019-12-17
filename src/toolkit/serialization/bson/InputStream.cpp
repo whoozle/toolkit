@@ -41,8 +41,10 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	bool BaseInputStream::Parse(ConstBuffer data, size_t & offset)
 	{
-		size_t size = data.size();
+		if (_finished)
+			return false;
 
+		size_t size = data.size();
 		while(offset < size)
 		{
 			if (_current)

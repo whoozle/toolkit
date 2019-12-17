@@ -15,10 +15,11 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	class BaseInputStream : public IInputStreamParser
 	{
 	protected:
-		IInputStreamParserPtr _current;
+		IInputStreamParserPtr 	_current;
+		bool 					_finished;
 
 	protected:
-		BaseInputStream()
+		BaseInputStream(): _finished(false)
 		{ }
 
 		bool Parse(ConstBuffer data, size_t & offset) override;
@@ -47,7 +48,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		bool	_loaded;
 
 	public:
-		IntegralStreamParser(bool negative): _value(), _negative(negative), _loaded(false) { }
+		IntegralStreamParser(bool negative = false): _value(), _negative(negative), _loaded(false) { }
 
 		void Set(ISerializationStream & target) override
 		{ target.Write(_value); }
@@ -88,16 +89,29 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{ target.Write(_value); }
 	};
 
+	class ListStreamParser : public BaseInputStream
+	{
+		std::vector<IInputStreamParserPtr> _parsers;
+
+	public:
+		void Add(IInputStreamParserPtr parser)
+		{ _parsers.push_back(parser); }
+
+		void BeginList() override
+		{ }
+
+		void EndList() override
+		{ _finished = true; }
+	};
+
 	class BaseObjectInputStream : public BaseInputStream
 	{
 	protected:
 		bool _started;
-		bool _finished;
 
 	public:
 		BaseObjectInputStream():
-			_started(false),
-			_finished(false)
+			_started(false)
 		{ }
 
 		void BeginObject() override
@@ -106,21 +120,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				throw Exception("nested object, fixme");
 		}
 
-		bool Parse(ConstBuffer data, size_t & offset) override
-		{
-			if (_finished)
-				return false;
-
-			return BaseInputStream::Parse(data, offset);
-		}
-
-		void Write(const std::string & value) override
+		void EndObject() override
 		{ }
-
-		void BeginList() override
-		{
-
-		}
 	};
 
 	template<typename ClassType>
@@ -133,6 +134,15 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			_descriptor(GrammarDescriptorHolder<ClassType>::Get())
 		{ }
 
+		void Write(const std::string & value) override
+		{
+			if (value == "m") {
+				auto list = std::make_shared<ListStreamParser>();
+				list->Add(std::make_shared<StringStreamParser>());
+				list->Add(std::make_shared<IntegerStreamParser>());
+				_current = list;
+			}
+		}
 	};
 
 }}}
