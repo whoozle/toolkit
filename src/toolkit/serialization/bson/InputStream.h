@@ -89,25 +89,25 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{ target.Write(_value); }
 	};
 
-	class ListStreamParser : public BaseInputStream
+
+	struct ObjectMetadataStreamParser : public BaseInputStream
 	{
-		size_t 								_index;
-		std::vector<IInputStreamParserPtr> 	_parsers;
+		std::string			Name;
+		uint				Version;
 
-	public:
-		ListStreamParser(): _index(0)
-		{ }
+		void Set(ISerializationStream & target) override
+		{
+			printf("SET\n");
+		}
 
-		void Add(IInputStreamParserPtr parser)
-		{ _parsers.push_back(parser); }
+		void Write(const std::string & value) override
+		{ Name = value; }
 
-		void BeginList() override
-		{ }
+		void Write(s64 value) override
+		{ Version = value; }
 
 		void EndList() override
 		{ _finished = true; }
-
-		bool Parse(ConstBuffer data, size_t & offset) override;
 	};
 
 	class BaseObjectInputStream : public BaseInputStream
@@ -133,7 +133,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	template<typename ClassType>
 	class ObjectInputStream : public BaseObjectInputStream
 	{
-		const GrammarDescriptor<ClassType>  & _descriptor;
+		const GrammarDescriptor<ClassType>  & 	_descriptor;
+		std::string								_property;
 
 	public:
 		ObjectInputStream():
@@ -141,16 +142,16 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{ }
 
 		void Write(const std::string & value) override
+		{ _property = value; }
+
+		void BeginList() override
 		{
-			if (value == "m") {
+			if (_property == "m") {
 				//loading metadata
-				auto list = std::make_shared<ListStreamParser>();
-				list->Add(std::make_shared<StringStreamParser>());
-				list->Add(std::make_shared<IntegerStreamParser>());
-				_current = list;
+				_current = std::make_shared<ObjectMetadataStreamParser>();
 			}
 			else
-				throw Exception("unknown object property " + value);
+				throw Exception("unknown object property " + _property);
 		}
 	};
 
