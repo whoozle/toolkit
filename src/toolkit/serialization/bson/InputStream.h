@@ -24,6 +24,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{ }
 
 		bool Parse(ConstBuffer data, size_t & offset) override;
+		void ParseGeneric(ConstBuffer data, size_t & offset);
 
 	public:
 		void Write(const Undefined &) override;

@@ -39,6 +39,58 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		return _length != 0;
 	}
 
+	void BaseInputStream::ParseGeneric(ConstBuffer data, size_t & offset)
+	{
+		Tag tag = static_cast<Tag>(data[offset++]);
+		switch(tag)
+		{
+		case Tag::Undefined:
+			Write(Undefined());
+			break;
+		case Tag::BooleanTrue:
+			Write(true);
+			break;
+		case Tag::BooleanFalse:
+			Write(false);
+			break;
+		case Tag::Zero:
+			Write(s64(0));
+			break;
+		case Tag::PositiveInteger:
+			_stack.push(std::make_shared<IntegerStreamParser>(false));
+			break;
+		case Tag::NegativeInteger:
+			_stack.push(std::make_shared<IntegerStreamParser>(true));
+			break;
+		case Tag::PositiveNumber:
+			_stack.push(std::make_shared<NumberStreamParser>(false));
+			break;
+		case Tag::NegativeNumber:
+			_stack.push(std::make_shared<NumberStreamParser>(true));
+			break;
+		case Tag::String:
+			_stack.push(std::make_shared<StringStreamParser>());
+			break;
+		case Tag::ListBegin:
+			BeginList();
+			break;
+		case Tag::ListEnd:
+			EndList();
+			break;
+		case Tag::Null:
+			Write(nullptr);
+			break;
+		case Tag::ObjectBegin:
+			BeginObject();
+			break;
+		case Tag::ObjectEnd:
+			EndObject();
+			break;
+		default:
+			throw Exception("unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
+		}
+	}
+
 	bool BaseInputStream::Parse(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)
@@ -49,6 +101,9 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{
 			while (!_stack.empty())
 			{
+				if (offset >= size)
+					break;
+
 				if (!_stack.top()->Parse(data, offset))
 				{
 					auto current = _stack.top();
@@ -56,56 +111,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 					current->Set(*this);
 				}
 			}
-			if (offset >= size)
-				break;
-			Tag tag = static_cast<Tag>(data[offset++]);
-			switch(tag)
-			{
-			case Tag::Undefined:
-				Write(Undefined());
-				break;
-			case Tag::BooleanTrue:
-				Write(true);
-				break;
-			case Tag::BooleanFalse:
-				Write(false);
-				break;
-			case Tag::Zero:
-				Write(s64(0));
-				break;
-			case Tag::PositiveInteger:
-				_stack.push(std::make_shared<IntegerStreamParser>(false));
-				break;
-			case Tag::NegativeInteger:
-				_stack.push(std::make_shared<IntegerStreamParser>(true));
-				break;
-			case Tag::PositiveNumber:
-				_stack.push(std::make_shared<NumberStreamParser>(false));
-				break;
-			case Tag::NegativeNumber:
-				_stack.push(std::make_shared<NumberStreamParser>(true));
-				break;
-			case Tag::String:
-				_stack.push(std::make_shared<StringStreamParser>());
-				break;
-			case Tag::ListBegin:
-				BeginList();
-				break;
-			case Tag::ListEnd:
-				EndList();
-				break;
-			case Tag::Null:
-				Write(nullptr);
-				break;
-			case Tag::ObjectBegin:
-				BeginObject();
-				break;
-			case Tag::ObjectEnd:
-				EndObject();
-				break;
-			default:
-				throw Exception("unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
-			}
+			ParseGeneric(data, offset);
 		}
 		return offset;
 	}
