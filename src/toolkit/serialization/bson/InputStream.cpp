@@ -47,15 +47,17 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		size_t size = data.size();
 		while(offset < size)
 		{
-			if (_current)
+			while (!_stack.empty())
 			{
-				if (!_current->Parse(data, offset))
+				if (!_stack.top()->Parse(data, offset))
 				{
-					auto current = _current;
-					_current.reset();
+					auto current = _stack.top();
+					_stack.pop();
 					current->Set(*this);
 				}
 			}
+			if (offset >= size)
+				break;
 			Tag tag = static_cast<Tag>(data[offset++]);
 			switch(tag)
 			{
@@ -72,19 +74,19 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				Write(s64(0));
 				break;
 			case Tag::PositiveInteger:
-				_current = std::make_shared<IntegerStreamParser>(false);
+				_stack.push(std::make_shared<IntegerStreamParser>(false));
 				break;
 			case Tag::NegativeInteger:
-				_current = std::make_shared<IntegerStreamParser>(true);
+				_stack.push(std::make_shared<IntegerStreamParser>(true));
 				break;
 			case Tag::PositiveNumber:
-				_current = std::make_shared<NumberStreamParser>(false);
+				_stack.push(std::make_shared<NumberStreamParser>(false));
 				break;
 			case Tag::NegativeNumber:
-				_current = std::make_shared<NumberStreamParser>(true);
+				_stack.push(std::make_shared<NumberStreamParser>(true));
 				break;
 			case Tag::String:
-				_current = std::make_shared<StringStreamParser>();
+				_stack.push(std::make_shared<StringStreamParser>());
 				break;
 			case Tag::ListBegin:
 				BeginList();

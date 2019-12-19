@@ -9,14 +9,15 @@
 #include <toolkit/serialization/bson/Number.h>
 #include <string>
 #include <deque>
+#include <stack>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 	class BaseInputStream : public IInputStreamParser
 	{
 	protected:
-		IInputStreamParserPtr 	_current;
-		bool 					_finished;
+		std::stack<IInputStreamParserPtr> 	_stack;
+		bool 								_finished;
 
 	protected:
 		BaseInputStream(): _finished(false)
@@ -148,7 +149,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{
 			if (_property == "m") {
 				//loading metadata
-				_current = std::make_shared<ObjectMetadataStreamParser>();
+				_stack.push(std::make_shared<ObjectMetadataStreamParser>());
 			}
 			else
 				throw Exception("unknown object property " + _property);
