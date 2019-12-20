@@ -39,6 +39,17 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		return _length != 0;
 	}
 
+	bool BaseObjectInputStream::Parse(ConstBuffer data, size_t & offset)
+	{
+		size_t size = data.size();
+		while(offset < size)
+		{
+			ParseGeneric(data, offset); //read property
+			BaseInputStream::Parse(data, offset);
+		}
+		return !_finished;
+	}
+
 	void BaseInputStream::ParseGeneric(ConstBuffer data, size_t & offset)
 	{
 		Tag tag = static_cast<Tag>(data[offset++]);
@@ -96,24 +107,24 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		if (_finished)
 			return false;
 
-		size_t size = data.size();
-		while(offset < size)
-		{
-			while (!_stack.empty())
-			{
-				if (offset >= size)
-					break;
-
-				if (!_stack.top()->Parse(data, offset))
-				{
-					auto current = _stack.top();
-					_stack.pop();
-					current->Set(*this);
-				}
-			}
+		if (_stack.empty())
 			ParseGeneric(data, offset);
+
+		size_t size = data.size();
+		while (!_stack.empty())
+		{
+			if (offset >= size)
+				break;
+
+			auto current = _stack.top();
+			bool alive = current->Parse(data, offset);
+			if (!alive)
+			{
+				_stack.pop();
+				current->Set(*this);
+			}
 		}
-		return offset;
+		return false;
 	}
 
 	void BaseInputStream::Write(const Undefined &)

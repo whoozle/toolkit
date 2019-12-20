@@ -38,6 +38,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void BeginObject() override;
 		void EndObject() override;
 
+		bool Finished() const
+		{ return _finished; }
 		void Set(ISerializationStream & target) override;
 	};
 
@@ -130,6 +132,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void EndObject() override
 		{ }
+
+		bool Parse(ConstBuffer data, size_t & offset) override;
 	};
 
 	template<typename ClassType>
