@@ -23,7 +23,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		BaseInputStream(): _finished(false)
 		{ }
 
-		bool Parse(ConstBuffer data, size_t & offset) override;
+		void Parse(ConstBuffer data, size_t & offset) override;
 		void ParseGeneric(ConstBuffer data, size_t & offset);
 
 	public:
@@ -38,7 +38,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void BeginObject() override;
 		void EndObject() override;
 
-		bool Finished() const
+		bool Finished() const override
 		{ return _finished; }
 		void Set(ISerializationStream & target) override;
 	};
@@ -49,10 +49,9 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	protected:
 		Type	_value;
 		bool	_negative;
-		bool	_loaded;
 
 	public:
-		IntegralStreamParser(bool negative = false): _value(), _negative(negative), _loaded(false) { }
+		IntegralStreamParser(bool negative = false): _value(), _negative(negative) { }
 
 		void Set(ISerializationStream & target) override
 		{ target.Write(_value); }
@@ -63,7 +62,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	public:
 		using IntegralStreamParser::IntegralStreamParser;
 
-		bool Parse(ConstBuffer data, size_t & offset) override;
+		void Parse(ConstBuffer data, size_t & offset) override;
 	};
 
 	class NumberStreamParser : public IntegralStreamParser<double>
@@ -71,8 +70,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	public:
 		using IntegralStreamParser::IntegralStreamParser;
 
-		bool Parse(ConstBuffer data, size_t & offset) override
-		{ return false; }
+		void Parse(ConstBuffer data, size_t & offset) override
+		{ _finished = true; }
 	};
 
 	class StringStreamParser : public BaseInputStream
@@ -86,7 +85,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		StringStreamParser(): _lengthParser(false), _lengthParsed(false), _length(0)
 		{ }
 
-		bool Parse(ConstBuffer data, size_t & offset) override;
+		void Parse(ConstBuffer data, size_t & offset) override;
 		void Write(s64 value) override
 		{ _length = value; }
 		void Set(ISerializationStream & target) override
@@ -133,7 +132,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void EndObject() override
 		{ }
 
-		bool Parse(ConstBuffer data, size_t & offset) override;
+		void Parse(ConstBuffer data, size_t & offset) override;
 	};
 
 	template<typename ClassType>

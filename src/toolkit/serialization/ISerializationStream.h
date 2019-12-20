@@ -31,7 +31,8 @@ namespace TOOLKIT_NS { namespace serialization
 
 	struct IInputSerializationStream : public ISerializationStream
 	{
-		virtual bool Parse(ConstBuffer data, size_t & offset) = 0;
+		virtual void Parse(ConstBuffer data, size_t & offset) = 0;
+		virtual bool Finished() const = 0;
 	};
 
 	struct IInputStreamParser : public IInputSerializationStream

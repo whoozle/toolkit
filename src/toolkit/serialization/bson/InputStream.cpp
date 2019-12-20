@@ -3,10 +3,10 @@
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
-	bool IntegerStreamParser::Parse(ConstBuffer data, size_t & offset)
+	void IntegerStreamParser::Parse(ConstBuffer data, size_t & offset)
 	{
-		if (_loaded || _finished)
-			return false;
+		if (_finished)
+			return;
 
 		size_t n = data.size();
 		int shift = 0;
@@ -17,21 +17,22 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			shift += 7;
 			if ((byte & 0x80) == 0)
 			{
-				_loaded = true;
-				return false; //loaded
+				_finished = true;
+				return;
 			}
 		}
-		return true;
 	}
 
-	bool StringStreamParser::Parse(ConstBuffer data, size_t & offset)
+	void StringStreamParser::Parse(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)
-			return false;
+			return;
 
 		if (!_lengthParsed) {
-			if (_lengthParser.Parse(data, offset))
-				return true;
+			if (!_lengthParser.Finished())
+				_lengthParser.Parse(data, offset);
+			if (!_lengthParser.Finished())
+				return;
 			_lengthParsed = true;
 			_lengthParser.Set(*this);
 		}
@@ -39,10 +40,10 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		std::copy(data.data() + offset, data.data() + offset + remain, std::back_inserter(_value));
 		offset += remain;
 		_length -= remain;
-		return _length != 0;
+		_finished = _length == 0;
 	}
 
-	bool BaseObjectInputStream::Parse(ConstBuffer data, size_t & offset)
+	void BaseObjectInputStream::Parse(ConstBuffer data, size_t & offset)
 	{
 		size_t size = data.size();
 		while(!_finished && offset < size)
@@ -50,7 +51,6 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			ParseGeneric(data, offset); //read property
 			BaseInputStream::Parse(data, offset);
 		}
-		return !_finished;
 	}
 
 	void BaseInputStream::ParseGeneric(ConstBuffer data, size_t & offset)
@@ -105,10 +105,10 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		}
 	}
 
-	bool BaseInputStream::Parse(ConstBuffer data, size_t & offset)
+	void BaseInputStream::Parse(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)
-			return false;
+			return;
 
 		size_t size = data.size();
 		while (_stack.empty() && offset < size)
@@ -120,15 +120,14 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				break;
 
 			auto current = _stack.top();
-			bool alive = current->Parse(data, offset);
-			if (!alive)
+			current->Parse(data, offset);
+			if (current->Finished())
 			{
 				if (_stack.top() == current)
 					_stack.pop();
 				current->Set(*this);
 			}
 		}
-		return !_finished;
 	}
 
 	void BaseInputStream::Write(const Undefined &)

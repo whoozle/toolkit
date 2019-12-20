@@ -124,7 +124,8 @@ namespace TOOLKIT_NS { namespace serialization
 			{
 				size_t offset = 0;
 				size_t size = data.size();
-				while(offset < size && in.Parse(data, offset)); //loop through all data, even for partial matches
+				while(offset < size && !in.Finished())
+					in.Parse(data, offset); //loop through all data, even for partial matches
 				return offset;
 			}
 		};
