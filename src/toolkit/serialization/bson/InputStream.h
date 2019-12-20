@@ -101,7 +101,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void Set(ISerializationStream & target) override
 		{
-			printf("SET\n");
+			printf("SET METADATA %s:%u\n", Name.c_str(), Version);
 		}
 
 		void Write(const std::string & value) override

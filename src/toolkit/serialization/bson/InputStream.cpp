@@ -110,10 +110,10 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		if (_finished)
 			return false;
 
-		if (_stack.empty())
+		size_t size = data.size();
+		while (_stack.empty() && offset < size)
 			ParseGeneric(data, offset);
 
-		size_t size = data.size();
 		while (!_stack.empty())
 		{
 			if (offset >= size)
@@ -123,7 +123,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			bool alive = current->Parse(data, offset);
 			if (!alive)
 			{
-				_stack.pop();
+				if (_stack.top() == current)
+					_stack.pop();
 				current->Set(*this);
 			}
 		}
