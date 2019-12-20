@@ -128,7 +128,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				current->Set(*this);
 			}
 		}
-		return false;
+		return !_finished;
 	}
 
 	void BaseInputStream::Write(const Undefined &)
