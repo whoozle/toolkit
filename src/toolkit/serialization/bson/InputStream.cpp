@@ -55,6 +55,9 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	void BaseInputStream::ParseGeneric(ConstBuffer data, size_t & offset)
 	{
+		if (_finished)
+			return;
+
 		Tag tag = static_cast<Tag>(data[offset++]);
 		switch(tag)
 		{
@@ -111,7 +114,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			return;
 
 		size_t size = data.size();
-		while (_stack.empty() && offset < size)
+		while (_stack.empty() && !_finished && offset < size)
 			ParseGeneric(data, offset);
 
 		while (!_stack.empty())
