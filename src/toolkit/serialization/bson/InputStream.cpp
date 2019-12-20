@@ -120,7 +120,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				break;
 
 			auto current = _stack.top();
-			current->Parse(data, offset);
+			if (!current->Finished())
+				current->Parse(data, offset);
 			if (current->Finished())
 			{
 				if (_stack.top() == current)
