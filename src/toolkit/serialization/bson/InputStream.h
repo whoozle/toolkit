@@ -136,6 +136,17 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	};
 
 	template<typename ClassType>
+	class ObjectRecordInputStream : public BaseInputStream
+	{
+		using Descriptor = const GrammarDescriptor<ClassType>;
+		Descriptor  & 	_descriptor;
+
+	public:
+		ObjectRecordInputStream(Descriptor & descriptor): _descriptor(descriptor)
+		{ }
+	};
+
+	template<typename ClassType>
 	class ObjectInputStream : public BaseObjectInputStream
 	{
 		const GrammarDescriptor<ClassType>  & 	_descriptor;
@@ -154,6 +165,10 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			if (_property == "m") {
 				//loading metadata
 				_stack.push(std::make_shared<ObjectMetadataStreamParser>());
+			}
+			else if (_property == "r")
+			{
+				_stack.push(std::make_shared<ObjectRecordInputStream<ClassType>>(_descriptor));
 			}
 			else
 				throw Exception("unknown object property " + _property);
