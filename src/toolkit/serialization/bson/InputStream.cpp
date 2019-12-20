@@ -5,7 +5,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 	bool IntegerStreamParser::Parse(ConstBuffer data, size_t & offset)
 	{
-		if (_loaded)
+		if (_loaded || _finished)
 			return false;
 
 		size_t n = data.size();
@@ -26,6 +26,9 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	bool StringStreamParser::Parse(ConstBuffer data, size_t & offset)
 	{
+		if (_finished)
+			return false;
+
 		if (!_lengthParsed) {
 			if (_lengthParser.Parse(data, offset))
 				return true;
@@ -42,7 +45,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	bool BaseObjectInputStream::Parse(ConstBuffer data, size_t & offset)
 	{
 		size_t size = data.size();
-		while(offset < size)
+		while(!_finished && offset < size)
 		{
 			ParseGeneric(data, offset); //read property
 			BaseInputStream::Parse(data, offset);
