@@ -24,6 +24,11 @@ namespace TOOLKIT_NS { namespace serialization
 	};
 	TOOLKIT_DECLARE_PTR(IObjectReader);
 
+	struct IGrammarDescriptor
+	{
+		virtual ~IGrammarDescriptor() = default;
+	};
+
 	template<typename ClassType>
 	struct IDescriptor
 	{
@@ -37,22 +42,21 @@ namespace TOOLKIT_NS { namespace serialization
 	template<typename ClassType>
 	class GrammarObjectFactory
 	{
-		std::string			_name;
-		uint				_version;
+		TypeDescriptor		_type;
 
 	public:
-		GrammarObjectFactory(const std::string & name, uint version):
-			_name(name), _version(version)
+		GrammarObjectFactory(const TypeDescriptor & type):
+			_type(type)
 		{ }
 
 		void WriteTypeDescriptor(ISerializationStream & out)
 		{
-			if (!_name.empty())
-				Serialize(out, _name, _version);
+			if (!_type.Name.empty())
+				Serialize(out, _type.Name, _type.Version);
 		}
 
 		bool IsEmpty() const
-		{ return _name.empty() && _version == 0; }
+		{ return _type.Name.empty() && _type.Version == 0; }
 	};
 
 	template<typename ClassType, typename MemberType>
@@ -77,7 +81,7 @@ namespace TOOLKIT_NS { namespace serialization
 	};
 
 	template<typename ClassType>
-	class GrammarDescriptor
+	class GrammarDescriptor final : public IGrammarDescriptor
 	{
 		using IDescriptorPtr 	= std::shared_ptr<IDescriptor<ClassType>>;
 		using MemberMap 		= std::unordered_map<std::string, IDescriptorPtr>;
@@ -206,7 +210,7 @@ namespace TOOLKIT_NS { namespace serialization
 	public:
 		template <typename DescriptorsType>
 		GrammarDescriptor(const DescriptorsType & descriptor):
-			_factory(std::make_shared<GrammarObjectFactory<ClassType>>(descriptor.Name, descriptor.Version))
+			_factory(std::make_shared<GrammarObjectFactory<ClassType>>(descriptor.Type))
 		{ AddDescriptors<DescriptorsType::MemberCount>(descriptor); }
 
 		IObjectWriterPtr CreateWriter(const ClassType & object) const
@@ -221,8 +225,9 @@ namespace TOOLKIT_NS { namespace serialization
 	{
 		static auto & Get()
 		{
-			static GrammarDescriptor<ClassType> descriptor(ClassDescriptorHolder<ClassType>::Get());
-			return descriptor;
+			auto & descriptor = ClassDescriptorHolder<ClassType>::Get();
+			static GrammarDescriptor<ClassType> grammarDescriptor(descriptor);
+			return grammarDescriptor;
 		}
 	};
 
