@@ -53,6 +53,11 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		}
 	}
 
+	void ObjectMetadataStreamParser::Set(ISerializationStream & target)
+	{
+		dynamic_cast<GenericObjectInputStream &>(target).CreateObject(TypeDescriptor(Name, Version));
+	}
+
 	void BaseInputStream::ParseGeneric(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)

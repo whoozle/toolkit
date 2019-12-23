@@ -98,10 +98,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		std::string			Name;
 		uint				Version;
 
-		void Set(ISerializationStream & target) override
-		{
-			printf("SET METADATA %s:%u\n", Name.c_str(), Version);
-		}
+		void Set(ISerializationStream & target) override;
 
 		void Write(const std::string & value) override
 		{ Name = value; }
@@ -148,6 +145,8 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	class GenericObjectInputStream : public BaseObjectInputStream
 	{
+		friend class ObjectMetadataStreamParser;
+
 		std::string								_property;
 
 	protected:
@@ -156,12 +155,18 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void BeginList() override
 		{
-			if (_property == "r")
+			if (_property == "m")
 			{
-				//_stack.push(std::make_shared<ObjectRecordInputStream<ClassType>>(_descriptor));
+				//loading metadata
+				_stack.push(std::make_shared<ObjectMetadataStreamParser>());
 			}
 			else
 				throw Exception("unknown object property " + _property);
+		}
+
+		void CreateObject(const TypeDescriptor & type)
+		{
+			printf("CREATE OBJECT %s:%u\n", type.Name.c_str(), type.Version);
 		}
 	};
 
@@ -178,10 +183,6 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	// 	void BeginList() override
 	// 	{
-	// 		if (_property == "m") {
-	// 			//loading metadata
-	// 			_stack.push(std::make_shared<ObjectMetadataStreamParser>());
-	// 		}
 	// 		else if (_property == "r")
 	// 		{
 	// 			_stack.push(std::make_shared<ObjectRecordInputStream<ClassType>>(_descriptor));
