@@ -2,7 +2,7 @@
 #define TOOLKIT_NET_BASESERVERSOCKET_H
 
 #include <toolkit/net/bsd/Socket.h>
-#include <toolkit/net/ISocket.h>
+#include <toolkit/net/IServerSocket.h>
 
 namespace TOOLKIT_NS { namespace net
 {
@@ -12,14 +12,14 @@ namespace TOOLKIT_NS { namespace net
 	template<typename SocketType>
 	class BaseServerSocket :
 		protected bsd::Socket,
-		public virtual ISocket
+		public virtual IServerSocket
 	{
 	public:
 		BaseServerSocket(int family, int type, int proto, int flags = ISocket::DefaultFlags): bsd::Socket(family, type, proto)
 		{ SetNonBlocking(flags & ISocket::NonBlocking); }
 
 		template<typename EndpointType>
-		void Listen(const EndpointType & ep, int backlogDepth = ISocket::DefaultBacklogDepth)
+		void Listen(const EndpointType & ep, int backlogDepth = IServerSocket::DefaultBacklogDepth)
 		{
 			ep.Bind(*this);
 			bsd::Socket::Listen(backlogDepth);

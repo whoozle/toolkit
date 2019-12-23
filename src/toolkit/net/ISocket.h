@@ -10,8 +10,6 @@ namespace TOOLKIT_NS { namespace net
 
 	struct ISocket : public io::IPollable
 	{
-		static constexpr int DefaultBacklogDepth = 128;
-
 		static constexpr int DefaultFlags = 0;
 		static constexpr int NonBlocking = 1;
 
