@@ -147,21 +147,34 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	};
 
 	class GenericObjectInputStream : public BaseObjectInputStream
-	{};
+	{
+		std::string								_property;
+
+	protected:
+		void Write(const std::string & value) override
+		{ _property = value; }
+
+		void BeginList() override
+		{
+			if (_property == "r")
+			{
+				//_stack.push(std::make_shared<ObjectRecordInputStream<ClassType>>(_descriptor));
+			}
+			else
+				throw Exception("unknown object property " + _property);
+		}
+	};
 
 	// template<typename ClassType>
 	// class ObjectInputStream : public BaseObjectInputStream
 	// {
 	// 	const GrammarDescriptor<ClassType>  & 	_descriptor;
-	// 	std::string								_property;
 
 	// public:
 	// 	ObjectInputStream():
 	// 		_descriptor(GrammarDescriptorHolder<ClassType>::Get())
 	// 	{ }
 
-	// 	void Write(const std::string & value) override
-	// 	{ _property = value; }
 
 	// 	void BeginList() override
 	// 	{

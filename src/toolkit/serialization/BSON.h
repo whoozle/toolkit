@@ -33,7 +33,7 @@ namespace TOOLKIT_NS { namespace serialization
 			while (!in.Finished())
 				in.Parse(inData, r);
 			//r = reader->Read(in, inData);
-			throw NullPointerException();
+			return nullptr;
 		}
 	};
 
