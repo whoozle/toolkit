@@ -34,6 +34,8 @@ namespace
 				ts::Member(&Test::_c, "comment");
 		}
 	};
+	TOOLKIT_DECLARE_PTR(Test);
+
 	namespace
 	{
 		bool NumberMatches(double x)
@@ -83,17 +85,17 @@ namespace
 		// },
 		CASE( "BSON serialization test" )
 		{
-			using Serializator = ts::BSON<Test>;
 			ts::ClassDescriptorRegistry::Get().Register<Test>();
 			toolkit::ByteArray data;
 			{
 				Test test(2, 3, "юникод\ncopyright ©1738\r\n");
-				Serializator::Write(data.GetStorage(), test);
+				ts::BSON::Write(data.GetStorage(), test);
 				Log.Debug() << "generated " << t::text::HexDump(data, "bson");
 			}
 			{
-				Test test;
-				auto r = Serializator::Read(test, data.GetStorage());
+				size_t r = 0;
+				TestPtr test = std::dynamic_pointer_cast<Test>(ts::BSON::Read(data.GetStorage(), r));
+				EXPECT (test != nullptr);
 				EXPECT (r == data.size());
 			}
 		}

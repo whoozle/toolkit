@@ -146,34 +146,37 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{ }
 	};
 
-	template<typename ClassType>
-	class ObjectInputStream : public BaseObjectInputStream
-	{
-		const GrammarDescriptor<ClassType>  & 	_descriptor;
-		std::string								_property;
+	class GenericObjectInputStream : public BaseObjectInputStream
+	{};
 
-	public:
-		ObjectInputStream():
-			_descriptor(GrammarDescriptorHolder<ClassType>::Get())
-		{ }
+	// template<typename ClassType>
+	// class ObjectInputStream : public BaseObjectInputStream
+	// {
+	// 	const GrammarDescriptor<ClassType>  & 	_descriptor;
+	// 	std::string								_property;
 
-		void Write(const std::string & value) override
-		{ _property = value; }
+	// public:
+	// 	ObjectInputStream():
+	// 		_descriptor(GrammarDescriptorHolder<ClassType>::Get())
+	// 	{ }
 
-		void BeginList() override
-		{
-			if (_property == "m") {
-				//loading metadata
-				_stack.push(std::make_shared<ObjectMetadataStreamParser>());
-			}
-			else if (_property == "r")
-			{
-				_stack.push(std::make_shared<ObjectRecordInputStream<ClassType>>(_descriptor));
-			}
-			else
-				throw Exception("unknown object property " + _property);
-		}
-	};
+	// 	void Write(const std::string & value) override
+	// 	{ _property = value; }
+
+	// 	void BeginList() override
+	// 	{
+	// 		if (_property == "m") {
+	// 			//loading metadata
+	// 			_stack.push(std::make_shared<ObjectMetadataStreamParser>());
+	// 		}
+	// 		else if (_property == "r")
+	// 		{
+	// 			_stack.push(std::make_shared<ObjectRecordInputStream<ClassType>>(_descriptor));
+	// 		}
+	// 		else
+	// 			throw Exception("unknown object property " + _property);
+	// 	}
+	// };
 
 }}}
 

@@ -3,6 +3,7 @@
 
 #include <toolkit/core/types.h>
 #include <toolkit/serialization/Grammar.h>
+#include <toolkit/serialization/ISerializable.h>
 #include <toolkit/serialization/bson/InputStream.h>
 #include <toolkit/serialization/bson/OutputStream.h>
 #include <toolkit/core/ByteArray.h>
@@ -11,9 +12,9 @@
 namespace TOOLKIT_NS { namespace serialization
 {
 
-	template<typename ClassType>
 	struct BSON
 	{
+		template<typename ClassType>
 		static void Write(ByteArray::Storage & outStorage, const ClassType & value)
 		{
 			auto & descriptor = GrammarDescriptorHolder<ClassType>::Get();
@@ -23,12 +24,16 @@ namespace TOOLKIT_NS { namespace serialization
 			writer->Write(out);
 		}
 
-		static size_t Read(ClassType & value, const ByteArray::Storage & inData)
+		static ISerializablePtr Read(const ByteArray::Storage & inData, size_t & r)
 		{
-			auto & descriptor = GrammarDescriptorHolder<ClassType>::Get();
-			auto reader = descriptor.CreateReader(value);
-			serialization::bson::ObjectInputStream<ClassType> in;
-			return reader->Read(in, inData);
+			// auto & descriptor = GrammarDescriptorHolder<ClassType>::Get();
+			// auto reader = descriptor.CreateReader(value);
+			serialization::bson::GenericObjectInputStream in;
+			r = 0;
+			while (!in.Finished())
+				in.Parse(inData, r);
+			//r = reader->Read(in, inData);
+			throw NullPointerException();
 		}
 	};
 

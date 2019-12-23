@@ -18,6 +18,7 @@ namespace TOOLKIT_NS
 		virtual ~ISerializable() = default;
 		virtual ISerializableTypeConstPtr GetType() const = 0;
 	};
+	TOOLKIT_DECLARE_PTR(ISerializable);
 }
 
 #endif
