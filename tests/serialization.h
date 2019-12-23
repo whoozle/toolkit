@@ -84,6 +84,7 @@ namespace
 		CASE( "BSON serialization test" )
 		{
 			using Serializator = ts::BSON<Test>;
+			ts::ClassDescriptorRegistry::Get().Register<Test>();
 			toolkit::ByteArray data;
 			{
 				Test test(2, 3, "юникод\ncopyright ©1738\r\n");

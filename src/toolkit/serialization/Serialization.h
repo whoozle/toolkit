@@ -85,6 +85,16 @@ namespace TOOLKIT_NS { namespace serialization
 	inline impl::ClassDescriptor<> ClassDescriptor(const std::string &name = std::string(), uint version = 0)
 	{ return impl::ClassDescriptor<>(TypeDescriptor(name, version), std::make_tuple()); }
 
+	template<typename ClassType>
+	struct ClassDescriptorHolder
+	{
+		static auto & Get()
+		{
+			static auto descriptor = ClassType::GetClassDescriptor();
+			return descriptor;
+		}
+	};
+
 	class ClassDescriptorRegistry final
 	{
 	private:
@@ -121,16 +131,12 @@ namespace TOOLKIT_NS { namespace serialization
 
 			_registry[type] = &descriptor;
 		}
-	};
 
-	template<typename ClassType>
-	struct ClassDescriptorHolder
-	{
-		static auto & Get()
+		template<typename ClassType>
+		void Register()
 		{
-			static auto descriptor = ClassType::GetClassDescriptor();
-			ClassDescriptorRegistry::Get().Register(descriptor.Type, descriptor);
-			return descriptor;
+			auto & descriptor = ClassDescriptorHolder<ClassType>::Get();
+			Register(descriptor.Type, descriptor);
 		}
 	};
 
