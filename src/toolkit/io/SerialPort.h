@@ -12,7 +12,9 @@ namespace TOOLKIT_NS { namespace io
 		public virtual ISerialPort
 	{
 	public:
-		using File::File;
+		explicit SerialPort(int fd): File(fd)
+		{ }
+
 		SerialPort(const std::string &path, FileOpenMode mode = FileOpenMode::ReadWrite): File(path, mode)
 		{ }
 
