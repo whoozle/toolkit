@@ -26,6 +26,8 @@ namespace TOOLKIT_NS
 		ByteArray(size_t size): _data(size) { }
 		ByteArray(std::vector<u8> && data): _data(data) { }
 		ByteArray(ByteArray && data): ByteArray(std::move(data._data)) { }
+		template<typename U>
+		ByteArray(BasicBuffer<U> buffer): _data(buffer.begin(), buffer.end()) { }
 
 		u8 * GetData()
 		{ return _data.data(); }
