@@ -24,6 +24,12 @@ namespace TOOLKIT_NS { namespace io
 		}
 	}
 
+	int File::GetFlags() const
+	{ SYSTEM_CALL_RETURN(fcntl(_fd, F_GETFL, 0)); }
+
+	void File::SetFlags(int flags)
+	{ SYSTEM_CALL(fcntl(_fd, F_SETFL, flags)); }
+
 	int File::MapMode(FileOpenMode mode)
 	{
 		switch(mode)

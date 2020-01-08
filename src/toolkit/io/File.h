@@ -34,6 +34,9 @@ namespace TOOLKIT_NS { namespace io
 		int GetFileDescriptor() const override
 		{ return _fd; }
 
+		int GetFlags() const;
+		void SetFlags(int flags);
+
 		void Sync(SyncMode mode) override;
 		void Sync(off64_t offset, off64_t size, unsigned flags);
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override;
