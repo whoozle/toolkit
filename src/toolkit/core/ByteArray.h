@@ -28,6 +28,8 @@ namespace TOOLKIT_NS
 		ByteArray(ByteArray && data): ByteArray(std::move(data._data)) { }
 		template<typename U>
 		ByteArray(BasicBuffer<U> buffer): _data(buffer.begin(), buffer.end()) { }
+		ByteArray & operator = (const ByteArray && data)
+		{ _data = std::move(data._data); return *this; }
 
 		u8 * GetData()
 		{ return _data.data(); }
