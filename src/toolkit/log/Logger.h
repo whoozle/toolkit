@@ -14,20 +14,30 @@
 namespace TOOLKIT_NS { namespace log
 {
 
-	class LogDispatcher : public ILoggingSink
+	class LogDispatcher : public ILoggingSink, Noncopyable
 	{
 		std::list<std::pair<LogLevel, ILoggingSinkPtr>> _sinks;
-		ILoggingSinkPtr _defaultSink;
+		ILoggingSinkPtr 	_defaultSink;
+		LogLevel 			_level;
+		bool 				_enabled;
 
 	private:
 		ILoggingSinkPtr GetDefaultSink();
 
 	public:
+		LogDispatcher():
+		_sinks(), _defaultSink(),
+		_level(LogLevel::Trace), _enabled(true)
+		{ }
+
 		void RegisterSink(ILoggingSinkPtr sink, LogLevel level)
 		{ _sinks.push_back(std::make_pair(level, sink)); }
 
 		void Log(LogLevel level, const std::string & logger, const timespec &ts, const std::string &value) override
 		{
+			if (!_enabled || level < _level)
+				return;
+
 			if (!_sinks.empty())
 			{
 				for(auto &sl : _sinks)
@@ -39,6 +49,12 @@ namespace TOOLKIT_NS { namespace log
 			else
 				GetDefaultSink()->Log(level, logger, ts, value);
 		}
+
+		void SetLogLevel(LogLevel level)
+		{ _level = level; }
+
+		void Enable(bool enable)
+		{ _enabled = enable; }
 	};
 
 	class LogManager: public LogDispatcher
