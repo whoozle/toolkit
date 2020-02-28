@@ -49,13 +49,6 @@ namespace TOOLKIT_NS
 		BasicBuffer(Storage & storage): _ptr(storage.data()), _size(storage.size())
 		{ }
 
-		template<typename Storage>
-		BasicBuffer(Storage & storage, size_t size): _ptr(storage.data()), _size(size)
-		{
-			if (size > storage.size())
-				throw Exception("invalid size");
-		}
-
 		T & operator[] (size_t index)
 		{
 			if (index >= _size)
