@@ -24,11 +24,11 @@ namespace TOOLKIT_NS
 		{ }
 
 		template<typename U>
-		BasicBuffer(BasicBuffer<U> o): _ptr(o.data()), _size(o.size())
+		BasicBuffer(U && o): _ptr(o.data()), _size(o.size())
 		{ }
 
 		template<typename U>
-		BasicBuffer(BasicBuffer<U> o, size_t offset)
+		BasicBuffer(U && o, size_t offset)
 		{
 			size_t size = o.size();
 			if (offset > size)
@@ -38,16 +38,12 @@ namespace TOOLKIT_NS
 		}
 
 		template<typename U>
-		BasicBuffer(BasicBuffer<U> o, size_t offset, size_t size): BasicBuffer<U>(o, offset)
+		BasicBuffer(U && o, size_t offset, size_t size): BasicBuffer(o, offset)
 		{
 			if (size > _size)
 				throw Exception("requested size is bigger than actual size");
 			_size = size;
 		}
-
-		template<typename Storage>
-		BasicBuffer(Storage & storage): _ptr(storage.data()), _size(storage.size())
-		{ }
 
 		T & operator[] (size_t index)
 		{
@@ -79,13 +75,13 @@ namespace TOOLKIT_NS
 		T * begin()
 		{ return _ptr; }
 
-		const T * begin() const
+		T * begin() const
 		{ return _ptr; }
 
 		T * end()
 		{ return _ptr + _size; }
 
-		const T * end() const
+		T * end() const
 		{ return _ptr + _size; }
 
 		bool IsEmpty() const
