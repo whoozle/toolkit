@@ -2,6 +2,7 @@
 #define TOOLKIT_NET_UNIX_LOCALSOCKET_H
 
 #include <toolkit/net/BaseSocket.h>
+#include <sys/socket.h>
 
 namespace TOOLKIT_NS { namespace net { namespace unix
 {
@@ -14,7 +15,7 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 		struct ucred GetPeerCredentials() const
 		{
 			struct ucred creds = {};
-			socklen_t size = sizeof(struct ucred);
+			socklen_t size = sizeof(creds);
 			GetOption(SOL_SOCKET, SO_PEERCRED, &creds, &size);
 			return creds;
 		}
