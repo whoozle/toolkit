@@ -10,9 +10,10 @@ namespace TOOLKIT_NS { namespace net
 	}
 
 	ssize_t BaseSocket::Write(ConstBuffer data)
-	{
-		return bsd::Socket::Send(data.data(), data.size(), 0);
-	}
+	{ return bsd::Socket::Send(data, 0); }
+
+	ssize_t BaseSocket::Read(Buffer data)
+	{ return bsd::Socket::Recv(data, 0); }
 
 
 }}

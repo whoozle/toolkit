@@ -2,6 +2,7 @@
 #define TOOLKIT_NET_BSD_SOCKET_H
 
 #include <toolkit/core/core.h>
+#include <toolkit/core/Buffer.h>
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/net/ISocket.h>
 #include <sys/socket.h>
@@ -45,13 +46,13 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 		void Listen(int backlog);
 		int Accept(struct sockaddr *addr, socklen_t *addrlen);
 
-		ssize_t Send(const void *buf, size_t len, int flags);
-		ssize_t SendTo(const void *buf, size_t len, int flags,
+		ssize_t Send(ConstBuffer data, int flags);
+		ssize_t SendTo(ConstBuffer data, int flags,
                       const struct sockaddr *dest_addr, socklen_t addrlen);
 		ssize_t SendMsg(const struct msghdr *msg, int flags);
 
-		ssize_t Recv(void *buf, size_t len, int flags);
-		ssize_t RecvFrom(void *buf, size_t len, int flags,
+		ssize_t Recv(Buffer data, int flags);
+		ssize_t RecvFrom(Buffer data, int flags,
                         struct sockaddr *src_addr, socklen_t *addrlen);
 		ssize_t RecvMsg(struct msghdr *msg, int flags);
 

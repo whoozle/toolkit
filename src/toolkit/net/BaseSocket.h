@@ -29,6 +29,7 @@ namespace TOOLKIT_NS { namespace net
 		{ ep.Connect(*this); }
 
 		ssize_t Write(ConstBuffer data);
+		ssize_t Read(Buffer data);
 	};
 
 }}
