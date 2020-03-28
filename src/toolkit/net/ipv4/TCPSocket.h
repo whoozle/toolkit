@@ -10,7 +10,8 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 	class TCPSocket : public BaseSocket
 	{
 	public:
-		TCPSocket(int flags = ISocket::DefaultFlags): BaseSocket(AF_INET, SOCK_STREAM, 0, flags)
+		using BaseSocket::BaseSocket;
+		TCPSocket(): BaseSocket(AF_INET, SOCK_STREAM, 0)
 		{ }
 	};
 

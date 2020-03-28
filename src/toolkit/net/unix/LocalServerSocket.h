@@ -11,9 +11,9 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 		public BaseServerSocket<LocalSocket>
 	{
 		using super = BaseServerSocket<LocalSocket>;
+
 	public:
-		LocalServerSocket(int flags = ISocket::DefaultFlags):
-			super(AF_UNIX, SOCK_STREAM, 0, flags)
+		LocalServerSocket(): super(AF_UNIX, SOCK_STREAM, 0)
 		{ }
 	};
 

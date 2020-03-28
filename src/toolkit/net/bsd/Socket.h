@@ -18,6 +18,10 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 
 	public:
 		Socket(int family, int type, int proto);
+
+		Socket(int fd): _socket(fd), _nonBlocking(false)
+		{ }
+
 		Socket(Socket && socket) noexcept:
 			_socket(socket._socket),
 			_nonBlocking(socket._nonBlocking)

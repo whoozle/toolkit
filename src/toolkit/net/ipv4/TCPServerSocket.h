@@ -11,7 +11,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 		public BaseServerSocket<TCPSocket>
 	{
 	public:
-		TCPServerSocket(int flags = ISocket::DefaultFlags): BaseServerSocket(AF_INET, SOCK_STREAM, 0, flags)
+		TCPServerSocket(): BaseServerSocket(AF_INET, SOCK_STREAM, 0)
 		{ }
 	};
 

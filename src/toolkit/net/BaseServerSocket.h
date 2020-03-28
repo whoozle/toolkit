@@ -15,8 +15,8 @@ namespace TOOLKIT_NS { namespace net
 		public virtual IServerSocket
 	{
 	public:
-		BaseServerSocket(int family, int type, int proto, int flags = ISocket::DefaultFlags): bsd::Socket(family, type, proto)
-		{ SetNonBlocking(flags & ISocket::NonBlocking); }
+		BaseServerSocket(int family, int type, int proto): bsd::Socket(family, type, proto)
+		{ }
 
 		template<typename EndpointType>
 		void Listen(const EndpointType & ep, int backlogDepth = IServerSocket::DefaultBacklogDepth)
@@ -34,8 +34,8 @@ namespace TOOLKIT_NS { namespace net
 		{
 			struct sockaddr addr;
 			socklen_t addrlen = sizeof(addr);
-
-			return new SocketType(bsd::Socket::Accept(&addr, &addrlen));
+			int fd = bsd::Socket::Accept(&addr, &addrlen);
+			return new SocketType(fd);
 		}
 	};
 

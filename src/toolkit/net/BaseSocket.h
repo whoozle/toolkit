@@ -13,9 +13,8 @@ namespace TOOLKIT_NS { namespace net
 		public virtual ISocket
 	{
 	public:
-		BaseSocket(int family, int type, int proto, int flags = ISocket::DefaultFlags): bsd::Socket(family, type, proto)
-		{ SetNonBlocking(flags & ISocket::NonBlocking); }
-		BaseSocket(BaseSocket && socket) noexcept: bsd::Socket(std::move(socket))
+		using bsd::Socket::Socket;
+		BaseSocket(BaseSocket && o): bsd::Socket(std::move(o))
 		{ }
 		~BaseSocket();
 
