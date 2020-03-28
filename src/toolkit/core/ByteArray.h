@@ -65,6 +65,11 @@ public:
 		iterator end() 					{ return _data.end(); }
 		const_iterator begin() const	{ return _data.begin(); }
 		const_iterator end() const		{ return _data.end(); }
+
+		u8 & operator[] (size_t index)
+		{ return _data.at(index); }
+		u8 operator[] (size_t index) const
+		{ return _data.at(index); }
 	};
 	TOOLKIT_DECLARE_PTR(ByteArray);
 
