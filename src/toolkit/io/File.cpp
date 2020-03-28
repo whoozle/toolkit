@@ -38,6 +38,8 @@ namespace TOOLKIT_NS { namespace io
 				return O_RDONLY;
 			case FileOpenMode::ReadWrite:
 				return O_RDWR | O_CREAT;
+			case FileOpenMode::Overwrite:
+				return O_RDWR | O_CREAT | O_TRUNC;
 			default:
 				throw Exception("invalid open mode " + std::to_string((int)mode));
 		}

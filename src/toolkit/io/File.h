@@ -16,7 +16,8 @@ namespace TOOLKIT_NS { namespace io
 	enum struct FileOpenMode
 	{
 		Readonly,
-		ReadWrite
+		ReadWrite,
+		Overwrite
 	};
 
 	class File :
