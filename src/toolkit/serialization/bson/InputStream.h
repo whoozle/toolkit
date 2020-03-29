@@ -4,12 +4,7 @@
 #include <toolkit/core/types.h>
 #include <toolkit/core/Buffer.h>
 #include <toolkit/serialization/ISerializationStream.h>
-#include <toolkit/serialization/Grammar.h>
-#include <toolkit/serialization/bson/Tag.h>
-#include <toolkit/serialization/bson/Number.h>
 #include <string>
-#include <deque>
-#include <stack>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {

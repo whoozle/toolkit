@@ -1,4 +1,6 @@
 #include <toolkit/serialization/bson/InputStream.h>
+#include <toolkit/serialization/bson/Tag.h>
+#include <toolkit/serialization/bson/Number.h>
 #include <toolkit/text/Formatters.h>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson

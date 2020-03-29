@@ -2,6 +2,8 @@
 #define TOOLKIT_SERIALIZATION_OBJECTINPUTSTREAM_H
 
 #include <toolkit/serialization/bson/InputStream.h>
+#include <toolkit/serialization/Grammar.h>
+#include <stack>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
