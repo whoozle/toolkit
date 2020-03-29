@@ -47,6 +47,8 @@ namespace TOOLKIT_NS { namespace serialization
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(double, double);
 
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(std::string, const std::string &);
+	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(const char *, const std::string &);
+	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(char *, const std::string &);
 
 #undef TOOLKIT_SERIALIZATOR_FORWARD_TYPE
 

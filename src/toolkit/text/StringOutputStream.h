@@ -43,6 +43,8 @@ namespace TOOLKIT_NS { namespace text
 		TOOLKIT_IO_SS_DECLARE_WRITE(const std::string &);
 		TOOLKIT_IO_SS_DECLARE_WRITE(const void *);
 		TOOLKIT_IO_SS_DECLARE_WRITE(void *);
+		TOOLKIT_IO_SS_DECLARE_WRITE(const std::exception &);
+		TOOLKIT_IO_SS_DECLARE_WRITE(const std::type_info &);
 
 #undef TOOLKIT_IO_SS_DECLARE_WRITE
 

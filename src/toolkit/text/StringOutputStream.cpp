@@ -1,6 +1,7 @@
 #include <toolkit/text/StringOutputStream.h>
 #include <toolkit/io/SystemException.h>
 #include <stdio.h>
+#include <cxxabi.h>
 
 namespace TOOLKIT_NS { namespace text
 {
@@ -43,4 +44,20 @@ namespace TOOLKIT_NS { namespace text
 	size_t StringOutputStream::WriteImpl(const std::string & value)
 	{ return Write(value.data(), value.size()); }
 
+	size_t StringOutputStream::WriteImpl(const std::exception & ex)
+	{
+		size_t r = Write(typeid(ex));
+		r += Write(": \"", 3);
+		r += Write(ex.what());
+		r += Write('"');
+		return r;
+	}
+
+	size_t StringOutputStream::WriteImpl(const std::type_info & ti)
+	{
+		auto name = ti.name();
+		int status = -1;
+		std::unique_ptr<char, decltype(std::free) *> demangled(abi::__cxa_demangle(name, NULL, NULL, &status), &free);
+		return Write(demangled.get());
+	}
 }}
