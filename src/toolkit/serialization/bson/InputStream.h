@@ -13,14 +13,16 @@
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
-	class BaseInputStream : public IInputStreamParser
+	class Tokenizer : public IInputStreamParser
 	{
+	private:
+		IInputStreamParserPtr 				_current;
+
 	protected:
-		std::stack<IInputStreamParserPtr> 	_stack;
 		bool 								_finished;
 
 	protected:
-		BaseInputStream(): _finished(false)
+		Tokenizer(): _finished(false)
 		{ }
 
 		void Parse(ConstBuffer data, size_t & offset) override;
@@ -44,7 +46,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	};
 
 	template<typename Type>
-	class IntegralStreamParser : public BaseInputStream
+	class IntegralStreamParser : public Tokenizer
 	{
 	protected:
 		Type	_value;
@@ -74,7 +76,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		{ _finished = true; }
 	};
 
-	class StringStreamParser : public BaseInputStream
+	class StringStreamParser : public Tokenizer
 	{
 		IntegerStreamParser 	_lengthParser;
 		bool					_lengthParsed;
@@ -91,106 +93,6 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void Set(ISerializationStream & target) override
 		{ target.Write(_value); }
 	};
-
-
-	struct ObjectMetadataStreamParser : public BaseInputStream
-	{
-		std::string			Name;
-		uint				Version;
-
-		void Set(ISerializationStream & target) override;
-
-		void Write(const std::string & value) override
-		{ Name = value; }
-
-		void Write(s64 value) override
-		{ Version = value; }
-
-		void EndList() override
-		{ _finished = true; }
-	};
-
-	class BaseObjectInputStream : public BaseInputStream
-	{
-	protected:
-		bool _started;
-
-	public:
-		BaseObjectInputStream():
-			_started(false)
-		{ }
-
-		void BeginObject() override
-		{
-			if (_started)
-				throw Exception("nested object, fixme");
-		}
-
-		void EndObject() override
-		{ }
-
-		void Parse(ConstBuffer data, size_t & offset) override;
-	};
-
-	template<typename ClassType>
-	class ObjectRecordInputStream : public BaseInputStream
-	{
-		using Descriptor = const GrammarDescriptor<ClassType>;
-		Descriptor  & 	_descriptor;
-
-	public:
-		ObjectRecordInputStream(Descriptor & descriptor): _descriptor(descriptor)
-		{ }
-	};
-
-	class GenericObjectInputStream : public BaseObjectInputStream
-	{
-		friend class ObjectMetadataStreamParser;
-
-		std::string								_property;
-
-	protected:
-		void Write(const std::string & value) override
-		{ _property = value; }
-
-		void BeginList() override
-		{
-			if (_property == "m")
-			{
-				//loading metadata
-				_stack.push(std::make_shared<ObjectMetadataStreamParser>());
-			}
-			else
-				throw Exception("unknown object property " + _property);
-		}
-
-		void CreateObject(const TypeDescriptor & type)
-		{
-			printf("CREATE OBJECT %s:%u\n", type.Name.c_str(), type.Version);
-		}
-	};
-
-	// template<typename ClassType>
-	// class ObjectInputStream : public BaseObjectInputStream
-	// {
-	// 	const GrammarDescriptor<ClassType>  & 	_descriptor;
-
-	// public:
-	// 	ObjectInputStream():
-	// 		_descriptor(GrammarDescriptorHolder<ClassType>::Get())
-	// 	{ }
-
-
-	// 	void BeginList() override
-	// 	{
-	// 		else if (_property == "r")
-	// 		{
-	// 			_stack.push(std::make_shared<ObjectRecordInputStream<ClassType>>(_descriptor));
-	// 		}
-	// 		else
-	// 			throw Exception("unknown object property " + _property);
-	// 	}
-	// };
 
 }}}
 

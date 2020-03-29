@@ -52,6 +52,7 @@ set(TOOLKIT_SRC
 	src/toolkit/text/StringOutputStream.cpp
 
 	src/toolkit/serialization/bson/InputStream.cpp
+	src/toolkit/serialization/bson/ObjectInputStream.cpp
 )
 
 if (TOOLKIT_GL_VARIANT)

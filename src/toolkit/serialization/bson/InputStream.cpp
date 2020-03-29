@@ -3,6 +3,65 @@
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
+
+	void Tokenizer::ParseGeneric(ConstBuffer data, size_t & offset)
+	{
+		if (_finished)
+			return;
+
+		Tag tag = static_cast<Tag>(data[offset++]);
+		switch(tag)
+		{
+		case Tag::Undefined:
+			Write(Undefined());
+			break;
+		case Tag::BooleanTrue:
+			Write(true);
+			break;
+		case Tag::BooleanFalse:
+			Write(false);
+			break;
+		case Tag::Zero:
+			Write(s64(0));
+			break;
+		case Tag::PositiveInteger:
+			_current = std::make_shared<IntegerStreamParser>(false);
+			break;
+		case Tag::NegativeInteger:
+			_current = std::make_shared<IntegerStreamParser>(true);
+			break;
+		case Tag::PositiveNumber:
+			_current = std::make_shared<NumberStreamParser>(false);
+			break;
+		case Tag::NegativeNumber:
+			_current = std::make_shared<NumberStreamParser>(true);
+			break;
+		case Tag::String:
+			_current = std::make_shared<StringStreamParser>();
+			break;
+		case Tag::ListBegin:
+			BeginList();
+			break;
+		case Tag::ListEnd:
+			EndList();
+			break;
+		case Tag::Null:
+			Write(nullptr);
+			break;
+		case Tag::ObjectBegin:
+			BeginObject();
+			break;
+		case Tag::ObjectEnd:
+			EndObject();
+			break;
+		default:
+			throw Exception("unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
+		}
+	}
+
+
+
+
 	void IntegerStreamParser::Parse(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)
@@ -43,132 +102,62 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		_finished = _length == 0;
 	}
 
-	void BaseObjectInputStream::Parse(ConstBuffer data, size_t & offset)
-	{
-		size_t size = data.size();
-		while(!_finished && offset < size)
-		{
-			ParseGeneric(data, offset); //read property
-			BaseInputStream::Parse(data, offset);
-		}
-	}
-
-	void ObjectMetadataStreamParser::Set(ISerializationStream & target)
-	{
-		dynamic_cast<GenericObjectInputStream &>(target).CreateObject(TypeDescriptor(Name, Version));
-	}
-
-	void BaseInputStream::ParseGeneric(ConstBuffer data, size_t & offset)
-	{
-		if (_finished)
-			return;
-
-		Tag tag = static_cast<Tag>(data[offset++]);
-		switch(tag)
-		{
-		case Tag::Undefined:
-			Write(Undefined());
-			break;
-		case Tag::BooleanTrue:
-			Write(true);
-			break;
-		case Tag::BooleanFalse:
-			Write(false);
-			break;
-		case Tag::Zero:
-			Write(s64(0));
-			break;
-		case Tag::PositiveInteger:
-			_stack.push(std::make_shared<IntegerStreamParser>(false));
-			break;
-		case Tag::NegativeInteger:
-			_stack.push(std::make_shared<IntegerStreamParser>(true));
-			break;
-		case Tag::PositiveNumber:
-			_stack.push(std::make_shared<NumberStreamParser>(false));
-			break;
-		case Tag::NegativeNumber:
-			_stack.push(std::make_shared<NumberStreamParser>(true));
-			break;
-		case Tag::String:
-			_stack.push(std::make_shared<StringStreamParser>());
-			break;
-		case Tag::ListBegin:
-			BeginList();
-			break;
-		case Tag::ListEnd:
-			EndList();
-			break;
-		case Tag::Null:
-			Write(nullptr);
-			break;
-		case Tag::ObjectBegin:
-			BeginObject();
-			break;
-		case Tag::ObjectEnd:
-			EndObject();
-			break;
-		default:
-			throw Exception("unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
-		}
-	}
-
-	void BaseInputStream::Parse(ConstBuffer data, size_t & offset)
+	void Tokenizer::Parse(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)
 			return;
 
 		size_t size = data.size();
-		while (_stack.empty() && !_finished && offset < size)
+		while (!_current && !_finished && offset < size)
 			ParseGeneric(data, offset);
 
-		while (!_stack.empty())
+		while (_current)
 		{
 			if (offset >= size)
 				break;
 
-			auto current = _stack.top();
+			auto current = _current;
 			if (!current->Finished())
 				current->Parse(data, offset);
 			if (current->Finished())
 			{
-				if (_stack.top() == current)
-					_stack.pop();
+				if (_current == current)
+					_current.reset();
 				current->Set(*this);
 			}
 		}
 	}
 
-	void BaseInputStream::Write(const Undefined &)
+	void Tokenizer::Write(const Undefined &)
 	{ throw Exception("unexpected undefined"); }
 
-	void BaseInputStream::Write(std::nullptr_t)
+	void Tokenizer::Write(std::nullptr_t)
 	{ throw Exception("unexpected null"); }
 
-	void BaseInputStream::Write(bool value)
+	void Tokenizer::Write(bool value)
 	{ throw Exception("unexpected bool"); }
 
-	void BaseInputStream::Write(s64 value)
+	void Tokenizer::Write(s64 value)
 	{ throw Exception("unexpected integer"); }
 
-	void BaseInputStream::Write(double value)
+	void Tokenizer::Write(double value)
 	{ throw Exception("unexpected number"); }
 
-	void BaseInputStream::Write(const std::string & value)
+	void Tokenizer::Write(const std::string & value)
 	{ throw Exception("unexpected string"); }
 
-	void BaseInputStream::BeginList()
+	void Tokenizer::BeginList()
 	{ throw Exception("unexpected list begin"); }
 
-	void BaseInputStream::EndList()
+	void Tokenizer::EndList()
 	{ throw Exception("unexpected list end"); }
 
-	void BaseInputStream::BeginObject()
+	void Tokenizer::BeginObject()
 	{ throw Exception("unexpected object begin"); }
 
-	void BaseInputStream::EndObject()
+	void Tokenizer::EndObject()
 	{ throw Exception("unexpected object end"); }
 
-	void BaseInputStream::Set(ISerializationStream & target)
+	void Tokenizer::Set(ISerializationStream & target)
 	{ throw Exception("no set implemented"); }
 }}}

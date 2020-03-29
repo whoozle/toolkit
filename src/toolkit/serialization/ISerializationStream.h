@@ -29,13 +29,13 @@ namespace TOOLKIT_NS { namespace serialization
 	};
 	TOOLKIT_DECLARE_PTR(ISerializationStream);
 
-	struct IInputSerializationStream : public ISerializationStream
+	struct IInputSerializationStream : public virtual ISerializationStream
 	{
 		virtual void Parse(ConstBuffer data, size_t & offset) = 0;
 		virtual bool Finished() const = 0;
 	};
 
-	struct IInputStreamParser : public IInputSerializationStream
+	struct IInputStreamParser : public virtual IInputSerializationStream
 	{
 		virtual ~IInputStreamParser() = default;
 		virtual void Set(ISerializationStream & target) = 0;
