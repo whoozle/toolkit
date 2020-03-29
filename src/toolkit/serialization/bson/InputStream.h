@@ -21,11 +21,13 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	protected:
 		bool 								_finished;
 
-	protected:
+	public:
 		Tokenizer(): _finished(false)
 		{ }
 
 		void Parse(ConstBuffer data, size_t & offset) override;
+
+	protected:
 		void ParseGeneric(ConstBuffer data, size_t & offset);
 
 	public:
