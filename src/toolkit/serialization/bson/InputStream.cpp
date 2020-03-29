@@ -4,6 +4,59 @@
 namespace TOOLKIT_NS { namespace serialization { namespace bson
 {
 
+	namespace
+	{
+		template<typename Type>
+		class IntegralStreamParser : public Tokenizer
+		{
+		protected:
+			Type	_value;
+			bool	_negative;
+
+		public:
+			IntegralStreamParser(bool negative = false): _value(), _negative(negative) { }
+
+			void Set(ISerializationStream & target) override
+			{ target.Write(_value); }
+		};
+
+		class IntegerStreamParser : public IntegralStreamParser<s64>
+		{
+		public:
+			using IntegralStreamParser::IntegralStreamParser;
+
+			void Parse(ConstBuffer data, size_t & offset) override;
+		};
+
+		class NumberStreamParser : public IntegralStreamParser<double>
+		{
+		public:
+			using IntegralStreamParser::IntegralStreamParser;
+
+			void Parse(ConstBuffer data, size_t & offset) override
+			{ _finished = true; }
+		};
+
+		class StringStreamParser : public Tokenizer
+		{
+			IntegerStreamParser 	_lengthParser;
+			bool					_lengthParsed;
+			size_t					_length;
+			std::string 			_value;
+
+		public:
+			StringStreamParser(): _lengthParser(false), _lengthParsed(false), _length(0)
+			{ }
+
+			void Parse(ConstBuffer data, size_t & offset) override;
+			void Write(s64 value) override
+			{ _length = value; }
+			void Set(ISerializationStream & target) override
+			{ target.Write(_value); }
+		};
+	}
+
+
 	void Tokenizer::ParseGeneric(ConstBuffer data, size_t & offset)
 	{
 		if (_finished)
