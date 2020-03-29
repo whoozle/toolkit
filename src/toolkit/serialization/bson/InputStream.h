@@ -4,6 +4,7 @@
 #include <toolkit/core/types.h>
 #include <toolkit/core/Buffer.h>
 #include <toolkit/serialization/ISerializationStream.h>
+#include <toolkit/serialization/Serializator.h>
 #include <string>
 
 namespace TOOLKIT_NS { namespace serialization { namespace bson
@@ -45,11 +46,11 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	template<typename ValueType>
 	struct SingleValueParser : public Tokenizer
 	{
-		typename std::decay<ValueType>::type Value;
+		ValueType 	Value;
 
 		SingleValueParser(): Value() { }
 
-		void Write(ValueType value) override
+		void Write(typename MapToSerializationType<ValueType>::Type value) override
 		{
 			Value = value;
 			_finished = true;
@@ -58,7 +59,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	//helper function in case you have all data available and want to read just single value
 	template<typename ValueType>
-	typename std::decay<ValueType>::type ReadSingleValue(ConstBuffer data, size_t & offset)
+	ValueType ReadSingleValue(ConstBuffer data, size_t & offset)
 	{
 		SingleValueParser<ValueType> parser;
 		parser.Parse(data, offset);
