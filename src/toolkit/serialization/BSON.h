@@ -5,6 +5,7 @@
 #include <toolkit/serialization/Grammar.h>
 #include <toolkit/serialization/ISerializable.h>
 #include <toolkit/serialization/bson/InputStream.h>
+#include <toolkit/serialization/bson/ObjectInputStream.h>
 #include <toolkit/serialization/bson/OutputStream.h>
 #include <toolkit/core/ByteArray.h>
 #include <string>
