@@ -7,6 +7,12 @@
 
 namespace TOOLKIT_NS { namespace serialization
 {
+	template<typename SourceType>
+	struct MapToSerializationType
+	{
+		using Type = SourceType;
+	};
+
 	template<typename Type>
 	struct Serializator
 	{
@@ -18,7 +24,8 @@ namespace TOOLKIT_NS { namespace serialization
 	template<> \
 	struct Serializator< TYPE > \
 	{ static void Write(ISerializationStream & out, TYPE value) \
-	{ out.Write(static_cast<CTYPE>(value)); } }
+	{ out.Write(static_cast<CTYPE>(value)); } }; \
+	template <> struct MapToSerializationType<TYPE> { using Type = CTYPE; }
 
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(const Undefined &, const Undefined &);
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(std::nullptr_t, std::nullptr_t);
