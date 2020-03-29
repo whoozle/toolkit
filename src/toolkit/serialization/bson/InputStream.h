@@ -42,6 +42,20 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void Set(ISerializationStream & target) override;
 	};
 
+	template<typename ValueType>
+	struct SingleValueParser : public Tokenizer
+	{
+		ValueType Value;
+
+		SingleValueParser(): Value() { }
+
+		void Write(ValueType value) override
+		{
+			Value = value;
+			_finished = true;
+		}
+	};
+
 }}}
 
 #endif
