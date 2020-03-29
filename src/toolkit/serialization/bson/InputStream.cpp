@@ -108,14 +108,11 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			return;
 
 		size_t size = data.size();
-		while (!_current && !_finished && offset < size)
+		if (!_current && !_finished && offset < size)
 			ParseGeneric(data, offset);
 
-		while (_current)
+		while (_current && offset < size)
 		{
-			if (offset >= size)
-				break;
-
 			auto current = _current;
 			if (!current->Finished())
 				current->Parse(data, offset);
@@ -124,6 +121,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				if (_current == current)
 					_current.reset();
 				current->Set(*this);
+				break;
 			}
 		}
 	}
