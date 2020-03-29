@@ -45,7 +45,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	template<typename ValueType>
 	struct SingleValueParser : public Tokenizer
 	{
-		ValueType Value;
+		typename std::decay<ValueType>::type Value;
 
 		SingleValueParser(): Value() { }
 
@@ -55,6 +55,17 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			_finished = true;
 		}
 	};
+
+	//helper function in case you have all data available and want to read just single value
+	template<typename ValueType>
+	typename std::decay<ValueType>::type ReadSingleValue(ConstBuffer data, size_t & offset)
+	{
+		SingleValueParser<ValueType> parser;
+		parser.Parse(data, offset);
+		if (!parser.Finished())
+			throw Exception("could not read single value (not enough data)");
+		return parser.Value;
+	}
 
 }}}
 
