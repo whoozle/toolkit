@@ -27,7 +27,7 @@ namespace TOOLKIT_NS { namespace serialization
 	{ out.Write(static_cast<CTYPE>(value)); } }; \
 	template <> struct MapToSerializationType<TYPE> { using Type = CTYPE; }
 
-	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(const Undefined &, const Undefined &);
+	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(Undefined, Undefined);
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(std::nullptr_t, std::nullptr_t);
 	TOOLKIT_SERIALIZATOR_FORWARD_TYPE(bool, bool);
 
