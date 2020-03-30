@@ -21,7 +21,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	public:
 		OutputStream(IteratorType iter): super(iter) { }
 
-		void Write(const Undefined &) override
+		void Write(Undefined) override
 		{ WriteTag(Tag::Undefined); }
 
 		void Write(std::nullptr_t) override

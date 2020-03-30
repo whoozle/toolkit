@@ -181,7 +181,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		}
 	}
 
-	void Tokenizer::Write(const Undefined &)
+	void Tokenizer::Write(Undefined)
 	{ throw Exception("unexpected undefined"); }
 
 	void Tokenizer::Write(std::nullptr_t)

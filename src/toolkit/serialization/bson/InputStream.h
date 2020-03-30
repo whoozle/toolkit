@@ -27,7 +27,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 		void ParseGeneric(ConstBuffer data, size_t & offset);
 
 	public:
-		void Write(const Undefined &) override;
+		void Write(Undefined) override;
 		void Write(std::nullptr_t) override;
 		void Write(bool value) override;
 		void Write(s64 value) override;

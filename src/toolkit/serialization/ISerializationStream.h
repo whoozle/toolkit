@@ -13,7 +13,7 @@ namespace TOOLKIT_NS { namespace serialization
 	{
 		virtual ~ISerializationStream() = default;
 
-		virtual void Write(const Undefined &) = 0;
+		virtual void Write(Undefined) = 0;
 		virtual void Write(std::nullptr_t) = 0;
 
 		virtual void Write(bool value) = 0;
