@@ -52,12 +52,12 @@ namespace TOOLKIT_NS { namespace serialization
 
 #undef TOOLKIT_SERIALIZATOR_FORWARD_TYPE
 
+	namespace { template <typename ... Type> void DummyFunc(Type && ... args) { } }
 
 	template<typename ... Type>
 	void Serialize(ISerializationStream & out, const Type & ... value)
 	{
-		using expand_type = int[];
-		expand_type { (Serializator<Type>::Write(out, value), 0) ... };
+		DummyFunc((Serializator<Type>::Write(out, value), 0) ...);
 	}
 
 }}
