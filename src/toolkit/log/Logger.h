@@ -27,7 +27,8 @@ namespace TOOLKIT_NS { namespace log
 	public:
 		LogDispatcher():
 		_sinks(), _defaultSink(),
-		_level(LogLevel::Trace), _enabled(true)
+		_level(LogLevel::Debug),
+		_enabled(true)
 		{ }
 
 		void RegisterSink(ILoggingSinkPtr sink, LogLevel level)
@@ -116,7 +117,9 @@ namespace TOOLKIT_NS { namespace log
 		};
 
 		//compile-time no-op proxies
+#	ifdef NDEBUG
 		template<> class LogProxy<LogLevel::Trace> : public NullLogProxy { using NullLogProxy::NullLogProxy; };
+#	endif
 	}
 
 	class Logger : Noncopyable

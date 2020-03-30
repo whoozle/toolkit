@@ -8,7 +8,7 @@ namespace TOOLKIT_NS { namespace log
 	{
 		setlinebuf(stderr);
 	}
-	
+
 	const char * ConsoleLoggingSink::GetColor(LogLevel level)
 	{
 		switch(level)
