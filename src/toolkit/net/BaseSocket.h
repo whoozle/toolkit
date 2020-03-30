@@ -9,7 +9,7 @@ namespace TOOLKIT_NS { namespace net
 {
 
 	class BaseSocket :
-		protected bsd::Socket,
+		public bsd::Socket,
 		public virtual ISocket
 	{
 	public:
@@ -17,12 +17,6 @@ namespace TOOLKIT_NS { namespace net
 		BaseSocket(BaseSocket && o): bsd::Socket(std::move(o))
 		{ }
 		~BaseSocket();
-
-		using bsd::Socket::SetNonBlocking;
-		using bsd::Socket::GetNonBlocking;
-		using bsd::Socket::SetOption;
-		using bsd::Socket::GetOption;
-		using bsd::Socket::GetFileDescriptor;
 
 		template<typename EndpointType>
 		void Connect(const EndpointType & ep)

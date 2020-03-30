@@ -11,7 +11,7 @@ namespace TOOLKIT_NS { namespace net
 
 	template<typename SocketType>
 	class BaseServerSocket :
-		protected bsd::Socket,
+		public bsd::Socket,
 		public virtual IServerSocket
 	{
 	public:
@@ -24,11 +24,6 @@ namespace TOOLKIT_NS { namespace net
 			ep.Bind(*this);
 			bsd::Socket::Listen(backlogDepth);
 		}
-
-		using bsd::Socket::SetNonBlocking;
-		using bsd::Socket::GetNonBlocking;
-		using bsd::Socket::SetOption;
-		using bsd::Socket::GetOption;
 
 		SocketType * Accept()
 		{

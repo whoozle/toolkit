@@ -9,10 +9,12 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 	class LocalSocket : public BaseSocket
 	{
 	public:
+		using BaseSocket::BaseSocket;
+
 		LocalSocket(): BaseSocket(AF_UNIX, SOCK_STREAM, 0)
 		{ }
 
-		LocalSocket(BaseSocket && o): BaseSocket(std::move(o))
+		LocalSocket(LocalSocket && o): BaseSocket(std::move(o))
 		{ }
 
 		struct ucred GetPeerCredentials() const
