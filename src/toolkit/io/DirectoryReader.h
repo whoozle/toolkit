@@ -12,7 +12,6 @@ namespace TOOLKIT_NS { namespace io
 	{
 	private:
 		DIR * 			_dir;
-		struct dirent	_entry;
 
 	public:
 		struct Entry

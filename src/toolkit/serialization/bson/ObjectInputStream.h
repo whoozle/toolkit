@@ -61,8 +61,6 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	class GenericObjectInputStream : public BaseObjectInputStream
 	{
-		friend class ObjectMetadataStreamParser;
-
 		std::string								_property;
 
 	protected:
@@ -80,6 +78,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				throw Exception("unknown object property " + _property);
 		}
 
+	public:
 		void CreateObject(const TypeDescriptor & type)
 		{
 			printf("CREATE OBJECT %s:%u\n", type.Name.c_str(), type.Version);

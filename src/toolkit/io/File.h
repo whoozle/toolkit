@@ -50,7 +50,7 @@ namespace TOOLKIT_NS { namespace io
 		size_t Read(Buffer, off_t offset);
 
 		void Allocate(int mode, off_t offset, off_t len);
-		void Truncate(size_t size);
+		void Truncate(size_t size) override;
 		struct stat GetStatus();
 		struct statvfs GetVFSStatus();
 
