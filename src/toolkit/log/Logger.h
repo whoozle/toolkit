@@ -17,7 +17,6 @@ namespace TOOLKIT_NS { namespace log
 	class LogDispatcher : public ILoggingSink, Noncopyable
 	{
 		std::list<std::pair<LogLevel, ILoggingSinkPtr>> _sinks;
-		ILoggingSinkPtr 	_defaultSink;
 		LogLevel 			_level;
 		bool 				_enabled;
 
@@ -26,7 +25,6 @@ namespace TOOLKIT_NS { namespace log
 
 	public:
 		LogDispatcher():
-		_sinks(), _defaultSink(),
 		_level(LogLevel::Debug),
 		_enabled(true)
 		{ }

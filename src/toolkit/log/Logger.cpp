@@ -6,9 +6,8 @@ namespace TOOLKIT_NS { namespace log
 
 	ILoggingSinkPtr LogDispatcher::GetDefaultSink()
 	{
-		if (!_defaultSink)
-			_defaultSink = std::make_shared<ConsoleLoggingSink>();
-		return _defaultSink;
+		static ILoggingSinkPtr defaultSink(std::make_shared<ConsoleLoggingSink>());
+		return defaultSink;
 	}
 
 }}
