@@ -1,6 +1,7 @@
 #include <toolkit/io/File.h>
 #include <toolkit/io/SystemException.h>
 #include <toolkit/log/Logger.h>
+#include <linux/limits.h>
 #include <fcntl.h>
 #include <unistd.h>
 
@@ -119,6 +120,16 @@ namespace TOOLKIT_NS { namespace io
 	void File::Truncate(size_t size)
 	{
 		SYSTEM_CALL(ftruncate(_fd, size));
+	}
+
+	std::string File::ReadLink(const std::string & path)
+	{
+		char buf[PATH_MAX];
+		auto size = readlink(path.c_str(), buf, sizeof(buf));
+		if (size == -1)
+			throw io::SystemException("readlink");
+
+		return std::string(buf, buf + size);
 	}
 
 

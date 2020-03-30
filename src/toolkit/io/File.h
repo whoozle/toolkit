@@ -66,6 +66,8 @@ namespace TOOLKIT_NS { namespace io
 			return r;
 		}
 
+		static std::string ReadLink(const std::string & path);
+
 	private:
 		static int MapMode(FileOpenMode mode);
 		static int MapMode(SeekMode mode);
