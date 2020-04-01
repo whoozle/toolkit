@@ -17,7 +17,7 @@ message(STATUS "toolkit namespace: ${TOOLKIT_NS}")
 
 set(TOOLKIT_CONFIG_DIR ${CMAKE_CURRENT_BINARY_DIR}/toolkit/core)
 file(MAKE_DIRECTORY ${TOOLKIT_CONFIG_DIR})
-configure_file(src/toolkit/core/config.h.in ${CMAKE_CURRENT_BINARY_DIR}/toolkit/core/config.h)
+configure_file(src/toolkit/core/config.h.in ${TOOLKIT_CONFIG_DIR}/config.h)
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(TOOLKIT_SRC
