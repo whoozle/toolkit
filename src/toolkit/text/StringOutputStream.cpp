@@ -57,7 +57,7 @@ namespace TOOLKIT_NS { namespace text
 	{
 		auto name = ti.name();
 		int status = -1;
-		std::unique_ptr<char, decltype(std::free) *> demangled(abi::__cxa_demangle(name, NULL, NULL, &status), &free);
+		std::unique_ptr<char, decltype(std::free) *> demangled(abi::__cxa_demangle(name, NULL, NULL, &status), &std::free);
 		return Write(demangled.get());
 	}
 }}
