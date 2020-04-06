@@ -13,6 +13,6 @@ namespace TOOLKIT_NS { namespace gl
 	}
 
 	Texture::~Texture()
-	{ }
+	{ glDeleteTextures(_textures.size(), _textures.data()); }
 
 }}
