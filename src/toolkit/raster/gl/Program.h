@@ -30,6 +30,8 @@ namespace TOOLKIT_NS { namespace gl
 	private:
 		GLuint _program;
 	};
+	TOOLKIT_DECLARE_PTR(Program);
+
 }}
 
 #endif

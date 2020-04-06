@@ -23,6 +23,8 @@ namespace TOOLKIT_NS { namespace gl
 
 		~Shader();
 	};
+	TOOLKIT_DECLARE_PTR(Shader);
+
 }}
 
 #endif

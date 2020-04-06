@@ -29,6 +29,8 @@ namespace TOOLKIT_NS { namespace gl
 
 		static void BufferData(GLenum target, gl::BufferData data, GLenum usage);
 	};
+	TOOLKIT_DECLARE_PTR(Buffer);
+
 }}
 
 #endif

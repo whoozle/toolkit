@@ -17,6 +17,8 @@ namespace TOOLKIT_NS { namespace gl
 		void Bind(GLenum target);
 		static void Bind(GLenum target, GLuint fb);
 	};
+	TOOLKIT_DECLARE_PTR(FrameBuffer);
+
 }}
 
 #endif

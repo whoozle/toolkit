@@ -16,6 +16,8 @@ namespace TOOLKIT_NS { namespace gl
 
 		void Bind();
 	};
+	TOOLKIT_DECLARE_PTR(VertexArray);
+
 }}
 
 #endif
