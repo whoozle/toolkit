@@ -64,6 +64,7 @@ if (TOOLKIT_GL_VARIANT)
 		src/toolkit/raster/gl/Shader.cpp
 		src/toolkit/raster/gl/VertexArray.cpp
 		src/toolkit/raster/gl/FrameBuffer.cpp
+		src/toolkit/raster/gl/Texture.cpp
 	)
 endif()
 
