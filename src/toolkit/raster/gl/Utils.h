@@ -20,6 +20,8 @@
 #elif TOOLKIT_GL_VARIANT == TOOLKIT_GL_GL
 #	include <GL/gl.h>
 #	include <GL/glext.h>
+#else
+#	error unknown TOOLKIT_GL_VARIANT
 #endif
 
 #if TOOLKIT_GL_VARIANT == TOOLKIT_GL_GLES || TOOLKIT_GL_VARIANT == TOOLKIT_GL_GLES2
