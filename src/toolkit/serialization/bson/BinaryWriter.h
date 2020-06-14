@@ -2,13 +2,14 @@
 #define TOOLKIT_SERIALIZATION_BSON_BINARYWRITER_H
 
 #include <toolkit/core/ByteArray.h>
+#include <toolkit/core/Noncopyable.h>
 #include <string>
 
 namespace TOOLKIT_NS { namespace serialization
 {
 
 	template<typename IteratorType>
-	class BinaryWriter
+	class BinaryWriter : public Noncopyable
 	{
 	protected:
 		IteratorType _iter;
