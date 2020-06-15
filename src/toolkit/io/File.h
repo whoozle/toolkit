@@ -5,6 +5,8 @@
 #include <toolkit/io/IPollable.h>
 #include <toolkit/io/MemoryMapping.h>
 #include <toolkit/io/SystemException.h>
+#include <toolkit/core/Noncopyable.h>
+#include <memory>
 #include <string>
 #include <sys/stat.h>
 #include <sys/statvfs.h>
@@ -22,7 +24,8 @@ namespace TOOLKIT_NS { namespace io
 
 	class File :
 		public virtual IStorage,
-		public virtual IPollable
+		public virtual IPollable,
+		public Noncopyable
 	{
 	protected:
 		int _fd;
@@ -30,6 +33,9 @@ namespace TOOLKIT_NS { namespace io
 	public:
 		explicit File(int fd): _fd(fd) { }
 		File(const std::string &path, FileOpenMode mode = FileOpenMode::Readonly);
+		File(File && o) : _fd(o._fd)
+		{ o._fd = -1; }
+		File & operator = (File && o);
 		~File();
 
 		int GetFileDescriptor() const override
@@ -67,11 +73,14 @@ namespace TOOLKIT_NS { namespace io
 		}
 
 		static std::string ReadLink(const std::string & path);
+		static void CreatePipe(int & readFd, int & writeFd, int flags = 0);
 
 	private:
+		void Close();
 		static int MapMode(FileOpenMode mode);
 		static int MapMode(SeekMode mode);
 	};
+	TOOLKIT_DECLARE_PTR(File);
 
 }}
 

@@ -14,16 +14,32 @@ namespace TOOLKIT_NS { namespace io
 			throw SystemException("open(\"" + path + "\")");
 	}
 
-	File::~File()
+	void File::Close()
 	{
-		auto r = close(_fd); //fixme: add error checking here
+		if (_fd < 0)
+			return;
+
+		auto r = close(_fd);
 		if (r != 0)
 		{
 			auto error = SystemException::GetErrorMessage();
-			static log::Logger log("file");
+			static log::Logger log("File");
 			log.Error() << "close failed: " << error;
 		}
+		else
+			_fd = -1;
 	}
+
+	File & File::operator = (File && o)
+	{
+		Close();
+		_fd = o._fd;
+		o._fd = -1;
+		return *this;
+	}
+
+	File::~File()
+	{ Close(); }
 
 	int File::GetFlags() const
 	{ SYSTEM_CALL_RETURN(fcntl(_fd, F_GETFL, 0)); }
@@ -132,6 +148,13 @@ namespace TOOLKIT_NS { namespace io
 		return std::string(buf, buf + size);
 	}
 
+	void File::CreatePipe(int & readFd, int & writeFd, int flags)
+	{
+		int fd[2];
+		SYSTEM_CALL(pipe2(fd, flags));
+		readFd = fd[0];
+		writeFd = fd[1];
+	}
 
 }}
 
