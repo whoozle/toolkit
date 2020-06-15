@@ -57,7 +57,9 @@ namespace TOOLKIT_NS { namespace serialization
 	template<typename ... Type>
 	void Serialize(ISerializationStream & out, const Type & ... value)
 	{
-		DummyFunc((Serializator<Type>::Write(out, value), 0) ...);
+		using DummyType = int[];
+		DummyType dummy { (Serializator<Type>::Write(out, value), 0) ... };
+		DummyFunc(dummy);
 	}
 
 }}
