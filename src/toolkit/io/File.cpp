@@ -121,6 +121,13 @@ namespace TOOLKIT_NS { namespace io
 		return buf;
 	}
 
+	struct stat File::GetStatus(const std::string & path)
+	{
+		struct stat buf;
+		SYSTEM_CALL(stat(path.c_str(), &buf));
+		return buf;
+	}
+
 	struct statvfs File::GetVFSStatus()
 	{
 		struct statvfs buf;

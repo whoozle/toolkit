@@ -57,6 +57,8 @@ namespace TOOLKIT_NS { namespace io
 
 		void Allocate(int mode, off_t offset, off_t len);
 		void Truncate(size_t size) override;
+
+		static struct stat GetStatus(const std::string & path);
 		struct stat GetStatus();
 		struct statvfs GetVFSStatus();
 
