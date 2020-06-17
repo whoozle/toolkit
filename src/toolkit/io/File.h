@@ -38,6 +38,9 @@ namespace TOOLKIT_NS { namespace io
 		File & operator = (File && o);
 		~File();
 
+		static bool Access(const std::string & path, FileOpenMode mode = FileOpenMode::Readonly);
+		static void MakeDirectory(const std::string & path, mode_t mode = 0700);
+
 		int GetFileDescriptor() const override
 		{ return _fd; }
 
@@ -56,6 +59,7 @@ namespace TOOLKIT_NS { namespace io
 		size_t Read(Buffer, off_t offset);
 
 		void Allocate(int mode, off_t offset, off_t len);
+		static void Truncate(const std::string & path, off_t size);
 		void Truncate(size_t size) override;
 
 		static struct stat GetStatus(const std::string & path);

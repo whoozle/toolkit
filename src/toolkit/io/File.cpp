@@ -41,6 +41,15 @@ namespace TOOLKIT_NS { namespace io
 	File::~File()
 	{ Close(); }
 
+	bool File::Access(const std::string & path, FileOpenMode mode)
+	{
+		int r = access(path.c_str(), MapMode(mode));
+		return r == 0;
+	}
+
+	void File::MakeDirectory(const std::string & path, mode_t mode)
+	{ SYSTEM_CALL(mkdir(path.c_str(), mode)); }
+
 	int File::GetFlags() const
 	{ SYSTEM_CALL_RETURN(fcntl(_fd, F_GETFL, 0)); }
 
@@ -137,13 +146,13 @@ namespace TOOLKIT_NS { namespace io
 
 
 	void File::Allocate(int mode, off_t offset, off_t len)
-	{
-		SYSTEM_CALL(fallocate(_fd, mode, offset, len));
-	}
+	{ SYSTEM_CALL(fallocate(_fd, mode, offset, len)); }
+
 	void File::Truncate(size_t size)
-	{
-		SYSTEM_CALL(ftruncate(_fd, size));
-	}
+	{ SYSTEM_CALL(ftruncate(_fd, size)); }
+
+	void File::Truncate(const std::string & path, off_t size)
+	{ SYSTEM_CALL(truncate(path.c_str(), size)); }
 
 	std::string File::ReadLink(const std::string & path)
 	{
