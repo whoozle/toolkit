@@ -4,6 +4,7 @@
 #include <toolkit/core/MemberCheck.h>
 #include <toolkit/core/core.h>
 #include <toolkit/text/StringOutputStream.h>
+#include <functional>
 #include <string>
 
 namespace TOOLKIT_NS { namespace text
@@ -29,6 +30,19 @@ namespace TOOLKIT_NS { namespace text
 			return false;
 
 		return text.compare(text.size() - size, size, substr) == 0;
+	}
+
+	template<typename StringType>
+	void Split(const StringType & text, const StringType & splitstr, std::function<void (StringType &&)> func) {
+		std::string::size_type prev = 0;
+		auto pos = text.find(splitstr);
+		while(pos != text.npos)
+		{
+			func(text.substr(prev, pos - prev));
+			prev = pos + splitstr.size();
+			pos = text.find(splitstr, prev);
+		}
+		func(text.substr(prev));
 	}
 
 }}
