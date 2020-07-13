@@ -8,30 +8,30 @@
 namespace TOOLKIT_NS { namespace io
 {
 
-	struct IPeekableInputStream
+	struct IBufferedInputStream
 	{
-		virtual ~IPeekableInputStream() = default;
+		virtual ~IBufferedInputStream() = default;
 
         virtual ConstBuffer GetReadBuffer() const = 0;
         virtual void ReadComplete(size_t bytes) = 0;
 	};
-	TOOLKIT_DECLARE_PTR(IPeekableInputStream);
+	TOOLKIT_DECLARE_PTR(IBufferedInputStream);
 
-	struct IPeekableOutputStream
+	struct IBufferedOutputStream
 	{
-		virtual ~IPeekableOutputStream() = default;
+		virtual ~IBufferedOutputStream() = default;
 
         virtual Buffer GetWriteBuffer() const = 0;
         virtual void WriteComplete(size_t bytes) = 0;
         virtual void WriteSkip(size_t bytes) = 0;
 	};
-	TOOLKIT_DECLARE_PTR(IPeekableOutputStream);
+	TOOLKIT_DECLARE_PTR(IBufferedOutputStream);
 
-	struct IPeekableBidirectionalStream :
-        virtual IPeekableInputStream,
-        virtual IPeekableOutputStream
+	struct IBufferedBidirectionalStream :
+        virtual IBufferedInputStream,
+        virtual IBufferedOutputStream
 	{ };
-	TOOLKIT_DECLARE_PTR(IPeekableBidirectionalStream);
+	TOOLKIT_DECLARE_PTR(IBufferedBidirectionalStream);
 
 }}
 

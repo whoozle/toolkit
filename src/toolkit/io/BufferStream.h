@@ -3,7 +3,7 @@
 
 #include <toolkit/core/Buffer.h>
 #include <toolkit/io/IStream.h>
-#include <toolkit/io/IPeekableStream.h>
+#include <toolkit/io/IBufferedStream.h>
 #include <string.h>
 
 namespace TOOLKIT_NS { namespace io
@@ -11,7 +11,7 @@ namespace TOOLKIT_NS { namespace io
 
 	class BufferInputStream :
 		public virtual IInputStream,
-		public virtual IPeekableInputStream
+		public virtual IBufferedInputStream
 	{
 		ConstBuffer		_src;
 		size_t			_offset;
@@ -41,7 +41,7 @@ namespace TOOLKIT_NS { namespace io
 
 	class BufferOutputStream :
 		public virtual IOutputStream,
-		public virtual IPeekableOutputStream
+		public virtual IBufferedOutputStream
 	{
 		Buffer			_dst;
 		size_t			_offset;
@@ -76,7 +76,7 @@ namespace TOOLKIT_NS { namespace io
 		public BufferInputStream,
 		public BufferOutputStream,
 		public virtual IBidirectionalStream,
-		public virtual IPeekableBidirectionalStream
+		public virtual IBufferedBidirectionalStream
 	{
 	public:
 		BufferBidirectionalStream(Buffer buffer):
