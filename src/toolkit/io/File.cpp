@@ -14,6 +14,15 @@ namespace TOOLKIT_NS { namespace io
 			throw SystemException("open(\"" + path + "\")");
 	}
 
+	FilePtr File::Clone()
+	{
+		int fd = dup(_fd);
+		if (fd == -1)
+			throw SystemException("dup");
+		return std::make_shared<File>(fd);
+	}
+
+
 	void File::Close()
 	{
 		if (_fd < 0)

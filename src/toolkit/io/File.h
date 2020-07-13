@@ -22,6 +22,9 @@ namespace TOOLKIT_NS { namespace io
 		Overwrite
 	};
 
+	class File;
+	TOOLKIT_DECLARE_PTR(File);
+
 	class File :
 		public virtual IStorage,
 		public virtual IPollable,
@@ -32,11 +35,15 @@ namespace TOOLKIT_NS { namespace io
 
 	public:
 		explicit File(int fd): _fd(fd) { }
-		File(const std::string &path, FileOpenMode mode = FileOpenMode::Readonly);
 		File(File && o) : _fd(o._fd)
 		{ o._fd = -1; }
-		File & operator = (File && o);
+
+		File(const std::string &path, FileOpenMode mode = FileOpenMode::Readonly);
 		~File();
+
+		File & operator = (File && o);
+
+		FilePtr Clone();
 
 		static bool Access(const std::string & path, FileOpenMode mode = FileOpenMode::Readonly);
 		static void MakeDirectory(const std::string & path, mode_t mode = 0700);
