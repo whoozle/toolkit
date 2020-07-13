@@ -116,20 +116,20 @@ namespace TOOLKIT_NS { namespace io
 		{ }
 
 		template<typename T>
-		static void Write(u8 * data, T value)
-		{ impl::DataConverter<BigEndian>::Store(data, value); }
+		static u8 * Write(u8 * data, T value)
+		{ impl::DataConverter<BigEndian>::Store(data, value); return data + sizeof(value); }
 
-		static void WriteU8(u8 * data, u8 value)
-		{ Write<u8>(data, value); }
+		static u8 * WriteU8(u8 * data, u8 value)
+		{ return Write<u8>(data, value); }
 
-		static void WriteU16(u8 * data, u16 value)
-		{ Write<u16>(data, value); }
+		static u8 * WriteU16(u8 * data, u16 value)
+		{ return Write<u16>(data, value); }
 
-		static void WriteU32(u8 * data, u32 value)
-		{ Write<u32>(data, value); }
+		static u8 * WriteU32(u8 * data, u32 value)
+		{ return Write<u32>(data, value); }
 
-		static void WriteU64(u8 * data, u64 value)
-		{ Write<u64>(data, value); }
+		static u8 * WriteU64(u8 * data, u64 value)
+		{ return Write<u64>(data, value); }
 
 		template<typename T>
 		void Write(T value)
