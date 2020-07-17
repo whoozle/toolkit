@@ -34,6 +34,7 @@ namespace TOOLKIT_NS { namespace io
 				dst += readSize;
 				offset += readSize;
 			}
+			ReadComplete(size);
 			return size;
 		}
 	};
