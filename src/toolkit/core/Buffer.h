@@ -41,21 +41,21 @@ namespace TOOLKIT_NS
 		BasicBuffer(U && o, size_t offset, size_t size): BasicBuffer(o, offset)
 		{
 			if (size > _size)
-				throw Exception("requested size is bigger than actual size");
+				throw Exception("requested size (" + std::to_string(size) + ") is bigger than actual size (" + std::to_string(_size) + ")");
 			_size = size;
 		}
 
 		T & operator[] (size_t index)
 		{
 			if (index >= _size)
-				throw Exception("invalid index for operator[]");
+				throw Exception("invalid index (" + std::to_string(index) + ") for operator[]");
 			return _ptr[index];
 		}
 
 		T operator[] (size_t index) const
 		{
 			if (index >= _size)
-				throw Exception("invalid index for operator[]");
+				throw Exception("invalid index (" + std::to_string(index) + ") for operator[]");
 			return _ptr[index];
 		}
 
