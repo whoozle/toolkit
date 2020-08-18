@@ -28,7 +28,7 @@ namespace TOOLKIT_NS { namespace gl
 		GLint status;
 		glGetProgramiv(_program, GL_LINK_STATUS, &status);
 		if (!status)
-			throw std::runtime_error("link: " + GetLog());
+			throw Exception("link: " + GetLog());
 	}
 
 	std::string Program::GetLog() const
