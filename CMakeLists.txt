@@ -60,6 +60,7 @@ if (TOOLKIT_GL_VARIANT)
 	add_definitions(-DTOOLKIT_GL_VARIANT=${TOOLKIT_GL_VARIANT})
 	list(APPEND TOOLKIT_SRC
 		src/toolkit/raster/gl/Buffer.cpp
+		src/toolkit/raster/gl/CubeMap.cpp
 		src/toolkit/raster/gl/Program.cpp
 		src/toolkit/raster/gl/Shader.cpp
 		src/toolkit/raster/gl/VertexArray.cpp
