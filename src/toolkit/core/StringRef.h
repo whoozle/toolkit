@@ -4,7 +4,7 @@
 #include <toolkit/core/Buffer.h>
 #include <string>
 
-TOOLKIT_FORWARD_DECLARE_CLASS(text, StringOutputStream);
+TOOLKIT_FORWARD_DECLARE_CLASS(text, StringOutputStream)
 
 namespace TOOLKIT_NS
 {
