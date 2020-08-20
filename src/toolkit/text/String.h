@@ -45,6 +45,25 @@ namespace TOOLKIT_NS { namespace text
 		func(text.substr(prev));
 	}
 
+	inline std::string Replace(const std::string & text, const std::string & src, const std::string & dst, size_t limit = 0)
+	{
+		StringOutputStream os;
+		std::string::size_type pos = 0;
+		while(true)
+		{
+			auto nextPos = text.find(src, pos);
+			if (nextPos == text.npos)
+			{
+				os << text.substr(pos);
+				break;
+			}
+			os << text.substr(pos, nextPos - pos);
+			os << dst;
+			pos = nextPos + src.size();
+		}
+		return os.Get();
+	}
+
 }}
 
 
