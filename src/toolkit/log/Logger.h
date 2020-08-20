@@ -9,7 +9,7 @@
 #include <list>
 #include <string>
 
-#define ANONYMOUS_LOGGER(name) namespace { TOOLKIT_NS :: log :: Logger log(name); }
+#define TOOLKIT_ANONYMOUS_LOGGER(name) namespace { TOOLKIT_NS :: log :: Logger log(name); }
 
 namespace TOOLKIT_NS { namespace log
 {
