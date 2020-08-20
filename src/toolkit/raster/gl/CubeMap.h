@@ -18,6 +18,7 @@ namespace TOOLKIT_NS { namespace gl
 		CubeMap(raster::Size size);
 		~CubeMap();
 
+		static void Setup(GLint minFilter = GL_LINEAR, GLint magFilter = GL_LINEAR);
 		void Bind();
 		void Load(GLenum target, GLint level, GLint internalformat, GLenum format, GLenum type, ConstBuffer data);
 	};

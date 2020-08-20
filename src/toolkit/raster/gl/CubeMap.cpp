@@ -4,10 +4,21 @@ namespace TOOLKIT_NS { namespace gl
 {
 
 	CubeMap::CubeMap(raster::Size size): _size(size)
-	{ }
+	{
+	}
 
 	CubeMap::~CubeMap()
-	{ }
+	{}
+
+	void CubeMap::Setup(GLint minFilter, GLint magFilter)
+	{
+		glEnable(GL_TEXTURE_CUBE_MAP);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, minFilter);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, magFilter);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+	}
 
 	void CubeMap::Bind()
 	{ TOOLKIT_GL_CALL(glBindTexture(GL_TEXTURE_CUBE_MAP, _texture.Get())); }
