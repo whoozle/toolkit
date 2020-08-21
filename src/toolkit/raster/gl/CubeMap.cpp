@@ -13,6 +13,7 @@ namespace TOOLKIT_NS { namespace gl
 	void CubeMap::Setup(GLint minFilter, GLint magFilter)
 	{
 		glEnable(GL_TEXTURE_CUBE_MAP);
+		glEnable(GL_TEXTURE0);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, minFilter);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, magFilter);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
