@@ -11,10 +11,9 @@ namespace TOOLKIT_NS { namespace gl
 	{
 		const void *		Data;
 		size_t				Size;
-		GLenum				Type;
 
-		BufferData(): Data(), Size(), Type() { }
-		BufferData(const void *data, size_t size, GLenum type): Data(data), Size(size), Type(type) { }
+		BufferData(): Data(), Size() { }
+		BufferData(const void *data, size_t size): Data(data), Size(size) { }
 	};
 
 	class Buffer : public Noncopyable
