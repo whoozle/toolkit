@@ -6,37 +6,38 @@
 
 namespace TOOLKIT_NS { namespace raster
 {
-	struct Point
+	template <typename Type>
+	struct PointBase
 	{
-		int X, Y;
+		Type X, Y;
 
-		Point(): X(0), Y(0)
+		PointBase(): X(0), Y(0)
 		{ }
 
-		Point(int x, int y): X(x), Y(y)
+		PointBase(Type x, Type y): X(x), Y(y)
 		{ }
 
 		template<typename Size>
-		explicit Point(Size size): X(size.Width), Y(size.Height)
+		explicit PointBase(Size size): X(size.Width), Y(size.Height)
 		{ }
 
-		Point operator - (Point p) const
-		{ return Point(X - p.X, Y - p.Y); }
+		PointBase operator - (PointBase p) const
+		{ return PointBase(X - p.X, Y - p.Y); }
 
-		Point operator - () const
-		{ return Point(-X, -Y); }
+		PointBase operator - () const
+		{ return PointBase(-X, -Y); }
 
-		Point operator + (Point p) const
-		{ return Point(X + p.X, Y + p.Y); }
+		PointBase operator + (PointBase p) const
+		{ return PointBase(X + p.X, Y + p.Y); }
 
-		Point & operator -= (const Point & o)
+		PointBase & operator -= (const PointBase & o)
 		{
 			X -= o.X;
 			Y -= o.Y;
 			return *this;
 		}
 
-		Point & operator += (const Point & o)
+		PointBase & operator += (const PointBase & o)
 		{
 			X += o.X;
 			Y += o.Y;
@@ -51,6 +52,9 @@ namespace TOOLKIT_NS { namespace raster
 
 		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
+
+	using Point 	= PointBase<int>;
+	using PointF 	= PointBase<float>;
 }}
 
 

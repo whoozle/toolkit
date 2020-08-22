@@ -7,32 +7,33 @@
 
 namespace TOOLKIT_NS { namespace raster
 {
-	struct Size
+	template <typename Type>
+	struct SizeBase
 	{
-		int Width, Height;
+		Type Width, Height;
 
-		Size(): Width(0), Height(0)
+		SizeBase(): Width(0), Height(0)
 		{ }
 
-		Size(int w, int h): Width(w), Height(h)
+		SizeBase(Type w, Type h): Width(w), Height(h)
 		{ }
 
-		Size operator + (Size size) const
-		{ return Size(Width + size.Width, Height + size.Height); }
+		SizeBase operator + (SizeBase size) const
+		{ return SizeBase(Width + size.Width, Height + size.Height); }
 
-		Size operator - (Size size) const
-		{ return Size(Width - size.Width, Height - size.Height); }
+		SizeBase operator - (SizeBase size) const
+		{ return SizeBase(Width - size.Width, Height - size.Height); }
 
-		Size operator * (int m) const
-		{ return Size(Width * m, Height * m); }
+		SizeBase operator * (Type m) const
+		{ return SizeBase(Width * m, Height * m); }
 
-		Size operator / (int m) const
-		{ return Size(Width / m, Height / m); }
+		SizeBase operator / (Type m) const
+		{ return SizeBase(Width / m, Height / m); }
 
-		bool operator == (Size other) const
+		bool operator == (SizeBase other) const
 		{ return Width == other.Width && Height == other.Height; }
 
-		bool operator != (Size other) const
+		bool operator != (SizeBase other) const
 		{ return !(*this == other); }
 
 		bool Valid() const
@@ -43,6 +44,8 @@ namespace TOOLKIT_NS { namespace raster
 
 		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
+	using Size 	= SizeBase<int>;
+	using SizeF = SizeBase<float>;
 }}
 
 
