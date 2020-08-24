@@ -19,8 +19,10 @@ namespace TOOLKIT_NS { namespace gl
 
 		void BindAttributeLocation(int index, const std::string &name);
 		int GetAttributeLocation(const std::string &name) const;
+		int GetOptionalAttributeLocation(const std::string &name) const;
 
 		int GetUniformLocation(const std::string &name) const;
+		int GetOptionalUniformLocation(const std::string &name) const;
 
 		void Link();
 		std::string GetLog() const;

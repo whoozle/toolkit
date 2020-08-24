@@ -55,21 +55,33 @@ namespace TOOLKIT_NS { namespace gl
 		TOOLKIT_GL_CALL(glBindAttribLocation(_program, index, name.c_str()));
 	}
 
-	int Program::GetAttributeLocation(const std::string &name) const
+	int Program::GetOptionalAttributeLocation(const std::string &name) const
 	{
 		int loc;
 		TOOLKIT_GL_CALL(loc = glGetAttribLocation(_program, name.c_str()));
-		if (loc == -1)
-			throw std::runtime_error("glGetAttribLocation " + name + " failed");
+		return loc;
+	}
+
+	int Program::GetAttributeLocation(const std::string &name) const
+	{
+		auto loc = GetOptionalAttributeLocation(name);
+		if (loc < 0)
+			throw Exception("no attribute " + name);
+		return loc;
+	}
+
+	int Program::GetOptionalUniformLocation(const std::string &name) const
+	{
+		int loc;
+		TOOLKIT_GL_CALL(loc = glGetUniformLocation(_program, name.c_str()));
 		return loc;
 	}
 
 	int Program::GetUniformLocation(const std::string &name) const
 	{
-		int loc;
-		TOOLKIT_GL_CALL(loc = glGetUniformLocation(_program, name.c_str()));
-		if (loc == -1)
-			throw std::runtime_error("glGetUniformLocation " + name + " failed");
+		auto loc = GetOptionalUniformLocation(name);
+		if (loc < 0)
+			throw Exception("no uniform " + name);
 		return loc;
 	}
 
