@@ -24,9 +24,9 @@ namespace TOOLKIT_NS { namespace log
 		ILoggingSinkPtr GetDefaultSink();
 
 	public:
-		LogDispatcher():
-		_level(LogLevel::Debug),
-		_enabled(true)
+		LogDispatcher(LogLevel level = LogLevel::Debug):
+			_level(level),
+			_enabled(true)
 		{ }
 
 		void RegisterSink(ILoggingSinkPtr sink, LogLevel level)
@@ -59,11 +59,12 @@ namespace TOOLKIT_NS { namespace log
 	class LogManager: public LogDispatcher
 	{
 	public:
+		static LogLevel GetGlobalLogLevel();
 		static LogManager & Get()
-		{ static LogManager instance; return instance; }
+		{ static LogManager instance(GetGlobalLogLevel()); return instance; }
 
 	private:
-		LogManager() { }
+		using LogDispatcher::LogDispatcher;
 	};
 
 	namespace impl
@@ -87,7 +88,7 @@ namespace TOOLKIT_NS { namespace log
 		public:
 			LogProxy(const std::string & loggerName): _loggerName(loggerName)
 			{ clock_gettime(CLOCK_REALTIME, &_ts); }
-			LogProxy(const LogProxy &o): _loggerName(o._loggerName), _ts(o._ts)
+			LogProxy(LogProxy &&o): _loggerName(o._loggerName), _ts(o._ts)
 			{ }
 
 			template<typename ValueType>
