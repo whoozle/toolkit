@@ -8,7 +8,7 @@
 namespace TOOLKIT_NS { namespace net
 {
 
-	struct ISocket : public io::IPollable
+	struct ISocket : public virtual io::IPollable
 	{
 		virtual ~ISocket() = default;
 	};

@@ -25,7 +25,7 @@ namespace TOOLKIT_NS { namespace net
 			bsd::Socket::Listen(backlogDepth);
 		}
 
-		SocketType * Accept()
+		SocketType * Accept() override
 		{
 			struct sockaddr addr;
 			socklen_t addrlen = sizeof(addr);
