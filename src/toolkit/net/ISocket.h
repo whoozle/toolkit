@@ -11,6 +11,9 @@ namespace TOOLKIT_NS { namespace net
 	struct ISocket : public virtual io::IPollable
 	{
 		virtual ~ISocket() = default;
+
+		virtual ssize_t Send(ConstBuffer data, int flags) = 0;
+		virtual ssize_t Recv(Buffer data, int flags) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(ISocket);
 
