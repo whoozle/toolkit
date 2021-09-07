@@ -47,6 +47,12 @@ namespace TOOLKIT_NS
 		void clear()
 		{ _data.clear(); }
 
+		void Append(ConstBuffer data)
+		{
+			_data.reserve(_data.size() + data.size());
+			std::copy(data.begin(), data.end(), std::back_inserter(_data));
+		}
+
 		void Resize(size_t size)
 		{ return _data.resize(size); }
 		void Reserve(size_t size)
