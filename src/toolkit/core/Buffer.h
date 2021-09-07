@@ -45,6 +45,13 @@ namespace TOOLKIT_NS
 			_size = size;
 		}
 
+		BasicBuffer(T * ptr, size_t offset, size_t size): _ptr(ptr + offset)
+		{
+			if (offset > size)
+				throw Exception("requested offset (" + std::to_string(offset) + ") is bigger than buffer size (" + std::to_string(_size) + ")");
+			_size = size - offset;
+		}
+
 		T & operator[] (size_t index)
 		{
 			if (index >= _size)
