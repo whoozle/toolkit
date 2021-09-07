@@ -131,6 +131,9 @@ namespace TOOLKIT_NS { namespace io
 		static u8 * WriteU64(u8 * data, u64 value)
 		{ return Write<u64>(data, value); }
 
+		void Write(ConstBuffer buffer)
+		{ _stream.Write(buffer); }
+
 		template<typename T>
 		void Write(T value)
 		{
