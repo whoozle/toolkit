@@ -59,6 +59,9 @@ namespace TOOLKIT_NS { namespace io
 	void File::MakeDirectory(const std::string & path, mode_t mode)
 	{ SYSTEM_CALL(mkdir(path.c_str(), mode)); }
 
+	void File::Unlink(const std::string & path)
+	{ SYSTEM_CALL(unlink(path.c_str())); }
+
 	int File::GetFlags() const
 	{ SYSTEM_CALL_RETURN(fcntl(_fd, F_GETFL, 0)); }
 

@@ -47,6 +47,7 @@ namespace TOOLKIT_NS { namespace io
 
 		static bool Access(const std::string & path, FileOpenMode mode = FileOpenMode::Readonly);
 		static void MakeDirectory(const std::string & path, mode_t mode = 0700);
+		static void Unlink(const std::string & path);
 
 		int GetFileDescriptor() const override
 		{ return _fd; }
