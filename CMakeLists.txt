@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.3)
 include(CheckCXXCompilerFlag)
 
-set (CMAKE_CXX_STANDARD 14)
+if(NOT DEFINED CMAKE_CXX_STANDARD)
+	set(CMAKE_CXX_STANDARD 14)
+endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 find_package( Threads )
 
