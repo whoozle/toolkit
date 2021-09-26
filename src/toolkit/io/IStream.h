@@ -74,11 +74,11 @@ namespace TOOLKIT_NS { namespace io
 	};
 	TOOLKIT_DECLARE_PTR(IStorage);
 
-	struct IBufferedStream : public IStorage
+	struct IFlushable
 	{
+		virtual ~IFlushable() = default;
 		virtual void Flush() = 0;
 	};
-	TOOLKIT_DECLARE_PTR(IBufferedStream);
 
 }}
 
