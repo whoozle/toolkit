@@ -79,8 +79,8 @@ namespace TOOLKIT_NS { namespace io
 		{
 			bool sameOffset = (mode == SeekMode::Begin && offset == Tell()) ||
 				(mode == SeekMode::Current && offset == 0);
-			if (!sameOffset)
-				this->Flush();
+			if (sameOffset)
+				return Tell();
 			return this->_stream->Seek(offset, mode);
 		}
 
@@ -151,13 +151,13 @@ namespace TOOLKIT_NS { namespace io
 		{
 			bool sameOffset = (mode == SeekMode::Begin && offset == Tell()) ||
 				(mode == SeekMode::Current && offset == 0);
-			if (!sameOffset)
-				this->Flush();
+			if (sameOffset)
+				return Tell();
 			return this->_stream->Seek(offset, mode);
 		}
 
 		off_t Tell() override
-		{ return this->_stream->Tell() + this->_offset; }
+		{ return this->_stream->Tell() + this->_offset - this->_bufferSize; }
 	};
 	using BufferedSeekableInputStream = BufferedSeekableInputStreamBase<ISeekableInputStream>;
 	TOOLKIT_DECLARE_PTR(BufferedSeekableInputStream);
