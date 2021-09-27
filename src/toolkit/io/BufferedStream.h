@@ -16,6 +16,8 @@ namespace TOOLKIT_NS { namespace io
 	public:
 		BufferedStreamBase(size_t bufferSize): _buffer(bufferSize), _offset(0)
 		{ }
+		size_t GetOffset() const
+		{ return _offset; }
 	};
 
 	class BufferedOutputStream :
@@ -51,7 +53,7 @@ namespace TOOLKIT_NS { namespace io
 		{
 			if (_offset)
 			{
-				if (_stream->Write(ConstBuffer(_buffer.data(), 0, _offset)) != _offset)
+				if (_stream->Write(ConstBuffer(_buffer, 0, _offset)) != _offset)
 					throw Exception("short write");
 				_offset = 0;
 			}
@@ -60,6 +62,7 @@ namespace TOOLKIT_NS { namespace io
 		~BufferedOutputStream()
 		{ BufferedOutputStream::Flush(); }
 	};
+	TOOLKIT_DECLARE_PTR(BufferedOutputStream);
 
 	class BufferedSeekableStream :
 		public virtual ISeekable
@@ -125,6 +128,7 @@ namespace TOOLKIT_NS { namespace io
 			_bufferSize = 0;
 		}
 	};
+	TOOLKIT_DECLARE_PTR(BufferedInputStream);
 
 	class BufferedStream:
 		public BufferedInputStream,
