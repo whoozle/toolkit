@@ -67,22 +67,28 @@ namespace TOOLKIT_NS { namespace io
 	using BufferedOutputStream = BufferedOutputStreamBase<IOutputStream>;
 	TOOLKIT_DECLARE_PTR(BufferedOutputStream);
 
-	class BufferedSeekableOutputStream : public BufferedOutputStreamBase<ISeekableOutputStream>
+	template<typename StreamType>
+	class BufferedSeekableOutputStreamBase : public BufferedOutputStreamBase<StreamType>
 	{
-		using super = BufferedOutputStreamBase<ISeekableOutputStream>;
+		using super = BufferedOutputStreamBase<StreamType>;
 
 	public:
 		using super::super;
 
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
 		{
-			Flush();
-			return _stream->Seek(offset, mode);
+			bool sameOffset = (mode == SeekMode::Begin && offset == Tell()) ||
+				(mode == SeekMode::Current && offset == 0);
+
+			if (!sameOffset)
+				this->Flush();
+			return this->_stream->Seek(offset, mode);
 		}
 
 		off_t Tell() override
-		{ return _stream->Tell() + _offset; }
+		{ return this->_stream->Tell() + this->_offset; }
 	};
+	using BufferedSeekableOutputStream = BufferedSeekableOutputStreamBase<ISeekableOutputStream>;
 	TOOLKIT_DECLARE_PTR(BufferedSeekableOutputStream);
 
 
@@ -134,48 +140,25 @@ namespace TOOLKIT_NS { namespace io
 	using BufferedInputStream = BufferedInputStreamBase<IInputStream>;
 	TOOLKIT_DECLARE_PTR(BufferedInputStream);
 
-	class BufferedSeekableInputStream : public BufferedInputStreamBase<ISeekableInputStream>
+	template<typename StreamType>
+	class BufferedSeekableInputStreamBase : public BufferedInputStreamBase<StreamType>
 	{
-		using super = BufferedInputStreamBase<ISeekableInputStream>;
+		using super = BufferedInputStreamBase<StreamType>;
 
 	public:
 		using super::super;
 
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
 		{
-			Flush();
-			return _stream->Seek(offset, mode);
+			this->Flush();
+			return this->_stream->Seek(offset, mode);
 		}
 
 		off_t Tell() override
-		{ return _stream->Tell() + _offset; }
+		{ return this->_stream->Tell() + this->_offset; }
 	};
+	using BufferedSeekableInputStream = BufferedSeekableInputStreamBase<ISeekableInputStream>;
 	TOOLKIT_DECLARE_PTR(BufferedSeekableInputStream);
-
-	class BufferedStream:
-		public BufferedSeekableInputStream,
-		public BufferedSeekableOutputStream
-	{
-	public:
-		BufferedStream(const IStoragePtr & stream, size_t bufferSize):
-			BufferedSeekableInputStream(std::static_pointer_cast<ISeekableInputStream>(stream), bufferSize),
-			BufferedSeekableOutputStream(std::static_pointer_cast<ISeekableOutputStream>(stream), bufferSize)
-		{ }
-
-		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
-		{
-			BufferedSeekableInputStream::Seek(offset, mode);
-			return BufferedSeekableOutputStream::Seek(offset, mode);
-		}
-
-		off_t Tell() override
-		{ return BufferedSeekableOutputStream::Tell(); }
-
-		void Flush() override
-		{
-			BufferedSeekableOutputStream::Flush();
-		}
-	};
 
 }}
 
