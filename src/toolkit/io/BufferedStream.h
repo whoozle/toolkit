@@ -79,7 +79,6 @@ namespace TOOLKIT_NS { namespace io
 		{
 			bool sameOffset = (mode == SeekMode::Begin && offset == Tell()) ||
 				(mode == SeekMode::Current && offset == 0);
-
 			if (!sameOffset)
 				this->Flush();
 			return this->_stream->Seek(offset, mode);
@@ -150,7 +149,10 @@ namespace TOOLKIT_NS { namespace io
 
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
 		{
-			this->Flush();
+			bool sameOffset = (mode == SeekMode::Begin && offset == Tell()) ||
+				(mode == SeekMode::Current && offset == 0);
+			if (!sameOffset)
+				this->Flush();
 			return this->_stream->Seek(offset, mode);
 		}
 
