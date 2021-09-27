@@ -7,7 +7,7 @@
 
 namespace TOOLKIT_NS { namespace io
 {
-	class BufferedStreamBase : public virtual IFlushable
+	class BufferedStreamBase
 	{
 	protected:
 		ByteArray 	_buffer;
@@ -16,19 +16,20 @@ namespace TOOLKIT_NS { namespace io
 	public:
 		BufferedStreamBase(size_t bufferSize): _buffer(bufferSize), _offset(0)
 		{ }
-		size_t GetOffset() const
-		{ return _offset; }
 	};
 
-	class BufferedOutputStream :
-		public virtual BufferedStreamBase,
-		public virtual IOutputStream
+	template<typename StreamType>
+	class BufferedOutputStreamBase :
+		public BufferedStreamBase,
+		public virtual IFlushable,
+		public virtual StreamType
 	{
 	protected:
-		IOutputStreamPtr	_stream;
+		using StreamPtr = std::shared_ptr<StreamType>;
+		StreamPtr	_stream;
 
 	public:
-		BufferedOutputStream(IOutputStreamPtr stream, size_t bufferSize):
+		BufferedOutputStreamBase(const StreamPtr & stream, size_t bufferSize):
 			BufferedStreamBase(bufferSize), _stream(stream)
 		{ }
 
@@ -59,44 +60,45 @@ namespace TOOLKIT_NS { namespace io
 			}
 		}
 
-		~BufferedOutputStream()
-		{ BufferedOutputStream::Flush(); }
+		~BufferedOutputStreamBase()
+		{ BufferedOutputStreamBase::Flush(); }
 	};
+
+	using BufferedOutputStream = BufferedOutputStreamBase<IOutputStream>;
 	TOOLKIT_DECLARE_PTR(BufferedOutputStream);
 
-	class BufferedSeekableStream :
-		public virtual ISeekable
+	class BufferedSeekableOutputStream : public BufferedOutputStreamBase<ISeekableOutputStream>
 	{
-		ISeekablePtr _stream;
+		using super = BufferedOutputStreamBase<ISeekableOutputStream>;
 
 	public:
-		BufferedSeekableStream(const ISeekablePtr & stream):
-			_stream(stream)
-		{ }
+		using super::super;
 
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
 		{
-			auto flushable = std::dynamic_pointer_cast<IFlushable>(_stream);
-			if (flushable)
-				flushable->Flush();
-			//FIXME: relative seek does not work
+			Flush();
 			return _stream->Seek(offset, mode);
 		}
 
 		off_t Tell() override
-		{ return _stream->Tell(); }
+		{ return _stream->Tell() + _offset; }
 	};
+	TOOLKIT_DECLARE_PTR(BufferedSeekableOutputStream);
 
-	class BufferedInputStream :
-		public virtual BufferedStreamBase,
-		public virtual IInputStream
+
+	template<typename StreamType>
+	class BufferedInputStreamBase :
+		public BufferedStreamBase,
+		public virtual IFlushable,
+		public virtual StreamType
 	{
 	protected:
-		IInputStreamPtr		_stream;
+		using StreamPtr = std::shared_ptr<StreamType>;
+		StreamPtr			_stream;
 		size_t				_bufferSize;
 
 	public:
-		BufferedInputStream(IInputStreamPtr stream, size_t bufferSize):
+		BufferedInputStreamBase(const StreamPtr & stream, size_t bufferSize):
 			BufferedStreamBase(bufferSize), _stream(stream)
 		{ _bufferSize = 0; }
 
@@ -128,33 +130,51 @@ namespace TOOLKIT_NS { namespace io
 			_bufferSize = 0;
 		}
 	};
+
+	using BufferedInputStream = BufferedInputStreamBase<IInputStream>;
 	TOOLKIT_DECLARE_PTR(BufferedInputStream);
 
-	class BufferedStream:
-		public BufferedInputStream,
-		public BufferedOutputStream,
-		public BufferedSeekableStream,
-		public virtual IStorage
+	class BufferedSeekableInputStream : public BufferedInputStreamBase<ISeekableInputStream>
 	{
-		IStoragePtr _storage;
+		using super = BufferedInputStreamBase<ISeekableInputStream>;
 
 	public:
-		BufferedStream(const IStoragePtr & storage, size_t bufferSize):
-			BufferedStreamBase(bufferSize),
-			BufferedInputStream(std::static_pointer_cast<IInputStream>(storage), bufferSize),
-			BufferedOutputStream(std::static_pointer_cast<IOutputStream>(storage), bufferSize),
-			BufferedSeekableStream(std::static_pointer_cast<ISeekable>(storage)),
-			_storage(storage)
+		using super::super;
+
+		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
+		{
+			Flush();
+			return _stream->Seek(offset, mode);
+		}
+
+		off_t Tell() override
+		{ return _stream->Tell() + _offset; }
+	};
+	TOOLKIT_DECLARE_PTR(BufferedSeekableInputStream);
+
+	class BufferedStream:
+		public BufferedSeekableInputStream,
+		public BufferedSeekableOutputStream
+	{
+	public:
+		BufferedStream(const IStoragePtr & stream, size_t bufferSize):
+			BufferedSeekableInputStream(std::static_pointer_cast<ISeekableInputStream>(stream), bufferSize),
+			BufferedSeekableOutputStream(std::static_pointer_cast<ISeekableOutputStream>(stream), bufferSize)
 		{ }
 
-		void Sync(io::SyncMode mode) override
-		{ _storage->Sync(mode); }
+		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
+		{
+			BufferedSeekableInputStream::Seek(offset, mode);
+			return BufferedSeekableOutputStream::Seek(offset, mode);
+		}
 
-		void Truncate(size_t size) override
-		{ _storage->Truncate(size); }
+		off_t Tell() override
+		{ return BufferedSeekableOutputStream::Tell(); }
 
 		void Flush() override
-		{ BufferedOutputStream::Flush(); }
+		{
+			BufferedSeekableOutputStream::Flush();
+		}
 	};
 
 }}
