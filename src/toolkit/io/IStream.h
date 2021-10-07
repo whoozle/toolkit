@@ -22,6 +22,14 @@ namespace TOOLKIT_NS { namespace io
 		End
 	};
 
+	struct ISkippable
+	{
+		virtual ~ISkippable() = default;
+
+		virtual void Skip(size_t bytes) = 0;
+	};
+	TOOLKIT_DECLARE_PTR(ISkippable);
+
 	struct ISeekable
 	{
 		virtual ~ISeekable() = default;
@@ -53,10 +61,19 @@ namespace TOOLKIT_NS { namespace io
 	{ };
 	TOOLKIT_DECLARE_PTR(IBidirectionalStream);
 
-	struct ISeekableInputStream :
+	struct ISkippableInputStream :
 			public virtual IInputStream,
-			public virtual ISeekable
+			public virtual ISkippable
 	{ };
+	TOOLKIT_DECLARE_PTR(ISkippableInputStream);
+
+	struct ISeekableInputStream :
+			public virtual ISkippableInputStream,
+			public virtual ISeekable
+	{
+		void Skip(size_t bytes) override
+		{ Seek(bytes, io::SeekMode::Current); }
+	};
 	TOOLKIT_DECLARE_PTR(ISeekableInputStream);
 
 	struct ISeekableOutputStream :
