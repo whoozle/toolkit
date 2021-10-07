@@ -116,6 +116,8 @@ namespace TOOLKIT_NS { namespace io
 				if (_offset == _bufferSize)
 				{
 					_bufferSize = _stream->Read(_buffer);
+					if (_bufferSize == 0)
+						throw Exception("zero sized read");
 					_offset = 0;
 				}
 
@@ -149,11 +151,39 @@ namespace TOOLKIT_NS { namespace io
 
 		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
 		{
-			bool sameOffset = (mode == SeekMode::Begin && offset == Tell()) ||
+			auto streamOffset = Tell();
+			bool sameOffset = (mode == SeekMode::Begin && offset == streamOffset) ||
 				(mode == SeekMode::Current && offset == 0);
 			if (sameOffset)
-				return Tell();
-			return this->_stream->Seek(offset, mode);
+				return streamOffset;
+
+			off_t delta;
+			off_t dstOffset;
+			switch (mode)
+			{
+				case SeekMode::Begin:
+					delta = offset - streamOffset;
+					dstOffset = offset;
+					break;
+				case SeekMode::Current:
+					delta = offset;
+					dstOffset = streamOffset + offset;
+					break;
+				case SeekMode::End:
+					this->Flush();
+					return this->_stream->Seek(offset, mode);
+				default:
+					throw Exception("invalid seek mode");
+			}
+
+			if (delta < 0 || this->_offset + delta >= this->_bufferSize)
+			{
+				this->_stream->Seek(dstOffset);
+				this->Flush();
+			}
+			else
+				this->_offset += delta;
+			return dstOffset;
 		}
 
 		off_t Tell() override
