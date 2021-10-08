@@ -33,7 +33,7 @@ namespace TOOLKIT_NS { namespace io
 			BufferedStreamBase(bufferSize), _stream(stream)
 		{ }
 
-		size_t Write(ConstBuffer data) override
+		size_t Write(ConstBuffer data) final override
 		{
 			auto srcData = data.GetPointer();
 			auto remainingSrcData = data.GetSize();
@@ -50,7 +50,7 @@ namespace TOOLKIT_NS { namespace io
 			return data.GetSize();
 		}
 
-		void Flush() override
+		void Flush() final override
 		{
 			if (_offset)
 			{
@@ -68,14 +68,14 @@ namespace TOOLKIT_NS { namespace io
 	TOOLKIT_DECLARE_PTR(BufferedOutputStream);
 
 	template<typename StreamType>
-	class BufferedSeekableOutputStreamBase : public BufferedOutputStreamBase<StreamType>
+	class BufferedSeekableOutputStreamBase final : public BufferedOutputStreamBase<StreamType>
 	{
 		using super = BufferedOutputStreamBase<StreamType>;
 
 	public:
 		using super::super;
 
-		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) override
+		off_t Seek(off_t offset, SeekMode mode = SeekMode::Begin) final override
 		{
 			bool sameOffset = (mode == SeekMode::Begin && offset == Tell()) ||
 				(mode == SeekMode::Current && offset == 0);
@@ -142,7 +142,7 @@ namespace TOOLKIT_NS { namespace io
 	TOOLKIT_DECLARE_PTR(BufferedInputStream);
 
 	template<typename StreamType>
-	class BufferedSeekableInputStreamBase : public BufferedInputStreamBase<StreamType>
+	class BufferedSeekableInputStreamBase final : public BufferedInputStreamBase<StreamType>
 	{
 		using super = BufferedInputStreamBase<StreamType>;
 
