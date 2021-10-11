@@ -32,7 +32,7 @@ namespace TOOLKIT_NS
 			if (it != _cache.end())
 			{
 				ptr = it->second;
-				_list.Append(ptr.get()); //move node to the end
+				Touch(ptr);
 				return true;
 			}
 			else
@@ -43,13 +43,13 @@ namespace TOOLKIT_NS
 		{
 			NodePtr ptr(new Node(std::move(value)), true);
 			_cache[key] = ptr;
-			_list.Append(ptr.get());
+			Touch(ptr);
 			return ptr;
 		}
 
 		void Touch(const NodePtr & ptr)
 		{
-			_list.Append(ptr.get());
+			_list.Append(ptr.get()); //move node to the end
 		}
 	};
 
