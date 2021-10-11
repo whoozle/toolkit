@@ -29,6 +29,9 @@ namespace TOOLKIT_NS
 		CounterPtr() : _ptr()
 		{ }
 
+		CounterPtr(std::nullptr_t) : CounterPtr()
+		{ }
+
 		explicit CounterPtr(Type * ptr, bool addRef = false) : _ptr(ptr)
 		{
 			if (ptr && addRef)
