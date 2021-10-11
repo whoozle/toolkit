@@ -8,17 +8,24 @@
 namespace TOOLKIT_NS
 {
 
-	template<typename ValueType>
-	struct LRUCacheNode : public ValueType, Counter<ValueType>, IntrusiveListNode<LRUCacheNode<ValueType>>
+	template<typename KeyType, typename ValueType>
+	struct LRUCacheNode :
+		Counter<ValueType>,
+		IntrusiveListNode<LRUCacheNode<KeyType, ValueType>>
 	{
-		LRUCacheNode(ValueType && value): ValueType(std::move(value)) { }
+		KeyType 		Key;
+		ValueType		Value;
+
+		LRUCacheNode(const KeyType & key, ValueType && value):
+			Key(std::move(key)), Value(std::move(value))
+		{ }
 	};
 
 	template<typename KeyType, typename ValueType, typename Hash = std::hash<KeyType>, typename Equal = std::equal_to<KeyType>>
 	class LRUCache
 	{
 	public:
-		using Node = LRUCacheNode<ValueType>;
+		using Node = LRUCacheNode<KeyType, ValueType>;
 		using NodePtr = CounterPtr<Node>;
 
 	private:
@@ -41,10 +48,22 @@ namespace TOOLKIT_NS
 
 		NodePtr Insert(const KeyType & key, ValueType && value)
 		{
-			NodePtr ptr(new Node(std::move(value)), true);
+			NodePtr ptr(new Node(key, std::move(value)));
 			_cache[key] = ptr;
 			Touch(ptr);
 			return ptr;
+		}
+
+		bool IsEmpty() const
+		{ return _list.IsEmpty(); }
+
+		void RemoveOldest()
+		{
+			if (IsEmpty())
+				return;
+
+			auto& oldest = _list.GetFirstValue();
+			_cache.erase(oldest.Key);
 		}
 
 		void Touch(const NodePtr & ptr)
