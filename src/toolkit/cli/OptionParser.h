@@ -9,6 +9,7 @@
 #include <set>
 #include <string>
 #include <optional>
+#include <unordered_set>
 
 namespace TOOLKIT_NS { namespace cli
 {
@@ -94,6 +95,7 @@ namespace TOOLKIT_NS { namespace cli
 		std::string 							_help;
 		std::map<std::string, IOptionParserPtr>	_opts;
 		std::list<IOptionParserPtr>				_args;
+		std::unordered_set<IOptionParser*>		_required;
 
 	private:
 		void Error(int argc, char ** argv, const char *msg, const char *arg);
@@ -108,7 +110,7 @@ namespace TOOLKIT_NS { namespace cli
 		void Parse(int argc, char ** argv);
 		void ShowHelp(int argc, char ** argv);
 
-		void AddOption(const std::string & opt, const IOptionParserPtr & parser);
+		void AddOption(const std::string & opt, const IOptionParserPtr & parser, bool required);
 	};
 
 	class Option final

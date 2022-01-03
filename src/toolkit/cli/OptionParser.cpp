@@ -20,13 +20,16 @@ void Option::AddTo(OptionParser & parser)
 	}
 
 	for(auto & alias : _aliases)
-		parser.AddOption(alias, _parser);
+		parser.AddOption(alias, _parser, _required);
 }
 
-void OptionParser::AddOption(const std::string & opt, const IOptionParserPtr & parser) {
+void OptionParser::AddOption(const std::string & opt, const IOptionParserPtr & parser, bool required)
+{
 	if (_opts.find(opt) != _opts.end())
 		throw Exception("Duplicate option " + opt);
 	_opts[opt] = parser;
+	if (required)
+		_required.insert(parser.get());
 }
 
 std::string OptionParser::GetProgramName(int argc, char ** argv)
@@ -62,6 +65,7 @@ void OptionParser::HandleOptions(int argc, char ** argv, IOptionParser & parser,
 	while(n--)
 		values.push_back(argv[1 + i++]);
 	parser.FromString(values);
+	_required.erase(&parser);
 }
 
 void OptionParser::Parse(int argc, char ** argv)
@@ -93,6 +97,7 @@ void OptionParser::Parse(int argc, char ** argv)
 
 					std::string value(nameEnd + 1);
 					parser->FromString({ value });
+					_required.erase(parser.get());
 				}
 				else
 				{
@@ -122,6 +127,8 @@ void OptionParser::Parse(int argc, char ** argv)
 			return Error(argc, argv, "invalid argument", arg);
 		}
 	}
+	if (!_required.empty())
+		return Error(argc, argv, "required options are missing", "");
 }
 
 }}
