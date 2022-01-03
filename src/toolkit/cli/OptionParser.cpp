@@ -61,7 +61,12 @@ void OptionParser::HandleOptions(int argc, char ** argv, IOptionParser & parser,
 	if (n == IOptionParser::AnyArgumentCount)
 		n = argc - i - 1;
 	if (i + 1 + n > argc)
-		return Error(argc, argv, "option requires additional argument(s)", argv[i] + 2);
+	{
+		const char *opt = argv[i];
+		while(*opt == '-')
+			++opt;
+		return Error(argc, argv, "option requires additional argument(s)", opt);
+	}
 	while(n--)
 		values.push_back(argv[1 + i++]);
 	parser.FromString(values);
