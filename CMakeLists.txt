@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.3)
 include(CheckCXXCompilerFlag)
 
 if(NOT DEFINED CMAKE_CXX_STANDARD)
-	set(CMAKE_CXX_STANDARD 14)
+	set(CMAKE_CXX_STANDARD 17)
 endif()
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 find_package( Threads )
@@ -52,6 +52,8 @@ set(TOOLKIT_SRC
 	src/toolkit/text/String.cpp
 	src/toolkit/text/Formatters.cpp
 	src/toolkit/text/StringOutputStream.cpp
+
+	src/toolkit/cli/OptionParser.cpp
 
 	src/toolkit/serialization/bson/InputStream.cpp
 	src/toolkit/serialization/bson/ObjectInputStream.cpp
