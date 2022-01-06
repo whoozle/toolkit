@@ -2,10 +2,11 @@
 #define TOOLKIT_LOG_LOGGER_H
 
 #include <toolkit/log/ILoggingSink.h>
-#include <toolkit/core/Noncopyable.h>
-#include <toolkit/core/types.h>
 #include <toolkit/text/String.h>
 #include <toolkit/text/StringOutputStream.h>
+#include <toolkit/text/ToString.h>
+#include <toolkit/core/Noncopyable.h>
+#include <toolkit/core/types.h>
 #include <list>
 #include <string>
 
@@ -88,26 +89,14 @@ namespace TOOLKIT_NS { namespace log
 		public:
 			LogProxy(const std::string & loggerName): _loggerName(loggerName)
 			{ clock_gettime(CLOCK_REALTIME, &_ts); }
+
 			LogProxy(LogProxy &&o): _loggerName(o._loggerName), _ts(o._ts)
 			{ }
 
 			template<typename ValueType>
-			typename std::enable_if<!text::HasMethod_ToString<ValueType>::Value, LogProxy &>::type operator << (const ValueType &value)
+			LogProxy & operator << (ValueType && value)
 			{
-				_ss << value;
-				return *this;
-			}
-
-			template<typename ValueType>
-			typename std::enable_if<text::HasMethod_ToString<ValueType>::Value, LogProxy &>::type operator << (const ValueType &value)
-			{
-				value.ToString(_ss);
-				return *this;
-			}
-
-			LogProxy & operator << (const std::wstring &value)
-			{
-				_ss << text::ToUtf8(value);
+				ToString(_ss, value);
 				return *this;
 			}
 
