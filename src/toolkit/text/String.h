@@ -42,6 +42,28 @@ namespace TOOLKIT_NS { namespace text
 		func(text.substr(prev));
 	}
 
+	template<typename StreamType, typename ContainerType, typename StringType>
+	void Join(StreamType & stream, const ContainerType & container, const StringType & delimiter)
+	{
+		bool addDelimiter = false;
+		for(auto & value : container)
+		{
+			if (addDelimiter)
+				stream << delimiter;
+			else
+				addDelimiter = true;
+			stream << value;
+		}
+	}
+
+	template<typename ContainerType, typename StringType>
+	std::string Join(const ContainerType & container, const StringType & delimiter)
+	{
+		text::StringOutputStream sos;
+		Join(sos, container, delimiter);
+		return sos.Get();
+	}
+
 	inline std::string Replace(const std::string & text, const std::string & src, const std::string & dst, size_t limit = 0)
 	{
 		StringOutputStream os;

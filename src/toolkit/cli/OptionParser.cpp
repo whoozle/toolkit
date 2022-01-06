@@ -14,8 +14,7 @@ void Option::AddTo(OptionParser & parser)
 	{
 		std::stringstream ss;
 		ss << "No storage specified for option(s): ";
-		for(auto & alias : _aliases)
-			ss << alias << " ";
+		text::Join(ss, _aliases, ", ");
 		throw Exception(ss.str());
 	}
 
