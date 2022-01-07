@@ -2,28 +2,25 @@
 #define TOOLKIT_IO_STRINGOUTPUTSTREAM_H
 
 #include <toolkit/core/Buffer.h>
+#include <toolkit/core/MemberCheck.h>
 #include <toolkit/io/MemoryOutputStream.h>
 #include <type_traits>
 
 namespace TOOLKIT_NS { namespace text
 {
+	DECLARE_METHOD_CHECK(ToString);
+
+	template <typename Stream, typename Type>
+	typename std::enable_if<HasMethod_ToString<Type>::Value, Stream &>::type operator << (Stream & stream, const Type & value)
+	{ value.ToString(stream); return stream; }
+
 	class StringOutputStream
 	{
 		io::MemoryOutputStream	_stream;
 
-		template<typename ValueType>
-		typename std::enable_if<
-			std::is_class<ValueType>::value || std::is_union<ValueType>::value,
-			size_t
-		>::type WriteImpl(ValueType value)
-		{
-			size_t before = _stream.GetSize();
-			value.ToString(*this);
-			return _stream.GetSize() - before;
-		}
-
 #define TOOLKIT_IO_SS_DECLARE_WRITE(TYPE) \
-		size_t WriteImpl( TYPE value )
+		public: StringOutputStream & operator << ( TYPE value) { Write(value); return *this; } \
+		private: size_t Write( TYPE value )
 
 		TOOLKIT_IO_SS_DECLARE_WRITE(char);
 		TOOLKIT_IO_SS_DECLARE_WRITE(unsigned char);
@@ -58,17 +55,6 @@ namespace TOOLKIT_NS { namespace text
 		{ return _stream.Write(buffer); }
 
 		size_t Write(const char *value, size_t size);
-
-		template<typename ValueType>
-		size_t Write(ValueType && value)
-		{ return WriteImpl(std::forward<ValueType>(value)); }
-
-		template<typename ValueType>
-		StringOutputStream & operator << (ValueType && value)
-		{
-			WriteImpl(std::forward<ValueType>(value));
-			return *this;
-		}
 
 		std::string Get() const
 		{

@@ -6,7 +6,7 @@
 namespace TOOLKIT_NS { namespace text
 {
 #define TOOLKIT_IO_SS_DECLARE_WRITE(FMT, TYPE) \
-	size_t StringOutputStream::WriteImpl( TYPE value ) \
+	size_t StringOutputStream::Write( TYPE value ) \
 	{ \
 		char buf[3 * sizeof(TYPE) + 1]; \
 		auto r = snprintf(buf, sizeof(buf), FMT , value); \
@@ -35,16 +35,16 @@ namespace TOOLKIT_NS { namespace text
 	size_t StringOutputStream::Write(const char *value, size_t size)
 	{ return _stream.Write(ConstBuffer(static_cast<const u8 *>(static_cast<const void *>(value)), size)); }
 
-	size_t StringOutputStream::WriteImpl(const char * value)
+	size_t StringOutputStream::Write(const char * value)
 	{ return Write(value, strlen(value)); }
 
-	size_t StringOutputStream::WriteImpl(char * value)
+	size_t StringOutputStream::Write(char * value)
 	{ return Write(value, strlen(value)); }
 
-	size_t StringOutputStream::WriteImpl(const std::string & value)
+	size_t StringOutputStream::Write(const std::string & value)
 	{ return Write(value.data(), value.size()); }
 
-	size_t StringOutputStream::WriteImpl(const std::exception & ex)
+	size_t StringOutputStream::Write(const std::exception & ex)
 	{
 		size_t r = Write(typeid(ex));
 		r += Write(": \"", 3);
@@ -53,7 +53,7 @@ namespace TOOLKIT_NS { namespace text
 		return r;
 	}
 
-	size_t StringOutputStream::WriteImpl(const std::type_info & ti)
+	size_t StringOutputStream::Write(const std::type_info & ti)
 	{
 		auto name = ti.name();
 		int status = -1;

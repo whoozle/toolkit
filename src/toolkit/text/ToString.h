@@ -2,27 +2,31 @@
 #define TOOLKIT_TEXT_TOSTRING_H
 
 #include <toolkit/text/StringOutputStream.h>
-#include <toolkit/core/MemberCheck.h>
-
+#include <optional>
 
 namespace TOOLKIT_NS { namespace text
 {
-	DECLARE_METHOD_CHECK(ToString);
-
-	template <typename Stream, typename Type>
-	typename std::enable_if<!HasMethod_ToString<Type>::Value, void>::type ToString(Stream & stream, Type && value)
-	{ stream << value; }
-
-	template <typename Stream, typename Type>
-	typename std::enable_if<HasMethod_ToString<Type>::Value, void>::type ToString(Stream & stream, Type && value)
-	{ value.ToString(stream); }
 
 	template <typename Type>
-	std::string ToString(Type && value)
+	std::string ToString(const Type & value)
 	{
 		StringOutputStream ss;
-		ToString(ss, value);
+		ss << value;
 		return ss.Get();
+	}
+
+	template <typename Stream>
+	Stream & operator << (Stream & stream, const std::type_info & ti)
+	{ stream << "type_info { " << ti.name() << " }"; return stream; }
+
+	template <typename Stream, typename Type>
+	Stream & operator << (Stream & stream, const std::optional<Type> & opt)
+	{
+		stream << "optional { ";
+		if (opt)
+			stream << *opt << " ";
+		stream << "} ";
+		return stream;
 	}
 
 }}

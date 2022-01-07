@@ -96,7 +96,7 @@ namespace TOOLKIT_NS { namespace log
 			template<typename ValueType>
 			LogProxy & operator << (ValueType && value)
 			{
-				ToString(_ss, value);
+				_ss << value;
 				return *this;
 			}
 
