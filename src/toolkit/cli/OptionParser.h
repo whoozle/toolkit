@@ -22,10 +22,25 @@ namespace TOOLKIT_NS { namespace cli
 		virtual ~IOptionParser() = default;
 		virtual size_t GetArgumentCount() const = 0;
 		virtual void FromString(const OptionList & values) = 0;
+
+		virtual void SetName(const std::string & name) = 0;
+		virtual void WriteName(text::StringOutputStream & ss) const = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IOptionParser);
 
-	class SimpleOptionParser : public IOptionParser
+	class OptionParserBase : public IOptionParser
+	{
+		std::string _name;
+
+	public:
+		void SetName(const std::string & name) override
+		{ _name = name; }
+
+		void WriteName(text::StringOutputStream & ss) const override
+		{ ss << _name; }
+	};
+
+	class SimpleOptionParser : public OptionParserBase
 	{
 	private:
 		bool & _value;
@@ -42,7 +57,7 @@ namespace TOOLKIT_NS { namespace cli
 	};
 
 	template<typename T>
-	class SingleOptionParser : public IOptionParser
+	class SingleOptionParser : public OptionParserBase
 	{
 	private:
 		T & _value;
@@ -59,7 +74,7 @@ namespace TOOLKIT_NS { namespace cli
 	};
 
 	template<typename T>
-	class IncrementOptionParser : public IOptionParser
+	class IncrementOptionParser : public OptionParserBase
 	{
 	private:
 		T & _value;
@@ -75,7 +90,7 @@ namespace TOOLKIT_NS { namespace cli
 		{ ++_value; }
 	};
 
-	class SimpleOption : public IOptionParser
+	class SimpleOption : public OptionParserBase
 	{
 		bool & _value;
 
@@ -152,6 +167,7 @@ namespace TOOLKIT_NS { namespace cli
 		Option & Store(Type & value)
 		{
 			_parser = std::make_shared<SingleOptionParser<Type>>(value);
+			_parser->SetName(text::Join(_aliases, "/"));
 			return *this;
 		}
 

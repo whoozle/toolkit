@@ -14,7 +14,7 @@ namespace TOOLKIT_NS { namespace text
 	typename std::enable_if<HasMethod_ToString<Type>::Value, Stream &>::type operator << (Stream & stream, const Type & value)
 	{ value.ToString(stream); return stream; }
 
-	class StringOutputStream
+	class StringOutputStream : public Noncopyable
 	{
 		io::MemoryOutputStream	_stream;
 

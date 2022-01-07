@@ -1,5 +1,6 @@
 #include <toolkit/cli/OptionParser.h>
 #include <toolkit/core/Exception.h>
+#include <toolkit/text/String.h>
 #include <sstream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -132,7 +133,12 @@ void OptionParser::Parse(int argc, char ** argv)
 		}
 	}
 	if (!_required.empty())
-		return Error(argc, argv, "required options are missing", "");
+	{
+		auto str = text::Join(_required, ", ", [](text::StringOutputStream & sos, const IOptionParser *opt) {
+			opt->WriteName(sos);
+		});
+		return Error(argc, argv, "required options are missing", str.c_str());
+	}
 }
 
 }}
