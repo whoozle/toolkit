@@ -42,8 +42,8 @@ namespace TOOLKIT_NS { namespace text
 		func(text.substr(prev));
 	}
 
-	template<typename StreamType, typename ContainerType, typename StringType>
-	void Join(StreamType & stream, const ContainerType & container, const StringType & delimiter)
+	template<typename StreamType, typename ContainerType, typename StringType, typename MapFunc = std::function<void (StreamType &, const typename ContainerType::value_type &)> >
+	void Join(StreamType & stream, const ContainerType & container, const StringType & delimiter, const MapFunc & mapFunc = MapFunc())
 	{
 		bool addDelimiter = false;
 		for(auto & value : container)
@@ -52,15 +52,18 @@ namespace TOOLKIT_NS { namespace text
 				stream << delimiter;
 			else
 				addDelimiter = true;
-			stream << value;
+			if (mapFunc)
+				mapFunc(stream, value);
+			else
+				stream << value;
 		}
 	}
 
-	template<typename ContainerType, typename StringType>
-	std::string Join(const ContainerType & container, const StringType & delimiter)
+	template<typename ContainerType, typename StringType, typename MapFunc = std::function<void (text::StringOutputStream &, const typename ContainerType::value_type &)> >
+	std::string Join(const ContainerType & container, const StringType & delimiter, MapFunc mapFunc = MapFunc())
 	{
 		text::StringOutputStream sos;
-		Join(sos, container, delimiter);
+		Join(sos, container, delimiter, mapFunc);
 		return sos.Get();
 	}
 
