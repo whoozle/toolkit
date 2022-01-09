@@ -2,7 +2,11 @@
 #define TOOLKIT_TEXT_TOSTRING_H
 
 #include <toolkit/text/StringOutputStream.h>
-#include <optional>
+#include <typeinfo>
+
+#if __cplusplus >= 201703L
+#	include <optional>
+#endif
 
 namespace TOOLKIT_NS { namespace text
 {
@@ -19,6 +23,7 @@ namespace TOOLKIT_NS { namespace text
 	Stream & operator << (Stream & stream, const std::type_info & ti)
 	{ stream << "type_info { " << ti.name() << " }"; return stream; }
 
+#if __cplusplus >= 201703L
 	template <typename Stream, typename Type>
 	Stream & operator << (Stream & stream, const std::optional<Type> & opt)
 	{
@@ -28,6 +33,7 @@ namespace TOOLKIT_NS { namespace text
 		stream << "} ";
 		return stream;
 	}
+#endif
 
 }}
 
