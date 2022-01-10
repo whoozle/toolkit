@@ -4,7 +4,9 @@
 #include <toolkit/text/String.h>
 #include <toolkit/core/Exception.h>
 #include <string>
-#include <optional>
+#if __cplusplus >= 201703L
+#	include <optional>
+#endif
 
 namespace TOOLKIT_NS { namespace text
 {
@@ -13,12 +15,14 @@ namespace TOOLKIT_NS { namespace text
 		template<typename T>
 		struct FromString;
 
+#if __cplusplus >= 201703L
 		template<typename Type>
 		struct FromString<std::optional<Type>>
 		{
 			static std::optional<Type> Parse(const std::string & str)
 			{ return FromString<Type>::Parse(str); }
 		};
+#endif
 
 		template<> struct FromString<int>
 		{
