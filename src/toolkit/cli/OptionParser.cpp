@@ -57,7 +57,7 @@ void OptionParser::Error(int argc, char ** argv, const char *msg, const char *ar
 void OptionParser::HandleOptions(int argc, char ** argv, IOptionParser & parser, int & i)
 {
 	OptionList values;
-	size_t n = parser.GetArgumentCount();
+	int n = parser.GetArgumentCount();
 	if (n == IOptionParser::AnyArgumentCount)
 		n = argc - i - 1;
 	if (i + 1 + n > argc)

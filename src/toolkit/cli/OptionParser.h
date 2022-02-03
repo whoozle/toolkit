@@ -17,10 +17,10 @@ namespace TOOLKIT_NS { namespace cli
 
 	struct IOptionParser
 	{
-		static constexpr size_t AnyArgumentCount = ~size_t(0);
+		static constexpr int AnyArgumentCount = -1;
 
 		virtual ~IOptionParser() = default;
-		virtual size_t GetArgumentCount() const = 0;
+		virtual int GetArgumentCount() const = 0;
 		virtual void FromString(const OptionList & values) = 0;
 
 		virtual void SetName(const std::string & name) = 0;
@@ -49,7 +49,7 @@ namespace TOOLKIT_NS { namespace cli
 		SimpleOptionParser(bool & value): _value(value)
 		{ }
 
-		size_t GetArgumentCount() const override
+		int GetArgumentCount() const override
 		{ return 0; }
 
 		void FromString(const OptionList & values) override
@@ -66,7 +66,7 @@ namespace TOOLKIT_NS { namespace cli
 		SingleOptionParser(T & value): _value(value)
 		{ }
 
-		size_t GetArgumentCount() const override
+		int GetArgumentCount() const override
 		{ return 1; }
 
 		void FromString(const OptionList & values) override
@@ -83,7 +83,7 @@ namespace TOOLKIT_NS { namespace cli
 		IncrementOptionParser(T & value): _value(value)
 		{ }
 
-		size_t GetArgumentCount() const override
+		int GetArgumentCount() const override
 		{ return 0; }
 
 		void FromString(const OptionList & values) override
@@ -98,7 +98,7 @@ namespace TOOLKIT_NS { namespace cli
 		SimpleOption(bool & value): _value(value)
 		{ }
 
-		size_t GetArgumentCount() const override
+		int GetArgumentCount() const override
 		{ return 0; }
 
 		void FromString(const OptionList & values) override
