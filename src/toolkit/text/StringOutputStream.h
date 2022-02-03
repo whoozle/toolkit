@@ -10,10 +10,6 @@ namespace TOOLKIT_NS { namespace text
 {
 	DECLARE_METHOD_CHECK(ToString);
 
-	template <typename Stream, typename Type>
-	typename std::enable_if<HasMethod_ToString<Type>::Value, Stream &>::type operator << (Stream & stream, const Type & value)
-	{ value.ToString(stream); return stream; }
-
 	class StringOutputStream : public Noncopyable
 	{
 		io::MemoryOutputStream	_stream;
@@ -64,6 +60,10 @@ namespace TOOLKIT_NS { namespace text
 
 		size_t GetSize() const
 		{ return _stream.GetSize(); }
+
+		template <typename Type>
+		typename std::enable_if<HasMethod_ToString<Type>::Value, StringOutputStream &>::type operator << (const Type & value)
+		{ value.ToString(*this); return *this; }
 	};
 
 #define TOOLKIT_DECLARE_SIMPLE_TOSTRING() \
