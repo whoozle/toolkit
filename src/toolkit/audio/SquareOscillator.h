@@ -24,7 +24,7 @@ namespace TOOLKIT_NS { namespace audio
 		{ return Func(BaseOscillator::Next(sampleRate, 1)); }
 
 		void Generate(SampleFormat format, uint sampleRate, Buffer buffer)
-		{ GenerateImpl<SquareOscillator>(format, sampleRate, buffer); }
+		{ GenerateBuffer(*this, format, sampleRate, buffer); }
 	};
 
 }}

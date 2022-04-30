@@ -47,7 +47,7 @@ namespace TOOLKIT_NS { namespace audio
 			case SampleFormat::U8:	return std::numeric_limits<u8>::min();
 			case SampleFormat::S16:	return std::numeric_limits<s16>::min();
 			case SampleFormat::U16:	return std::numeric_limits<u16>::min();
-			//FIXME: add 24/float types
+			case SampleFormat::Float32:	return -1;
 			default: throw Exception("Min: Invalid audio format type");
 			}
 		}
@@ -60,7 +60,7 @@ namespace TOOLKIT_NS { namespace audio
 			case SampleFormat::U8:	return std::numeric_limits<u8>::max();
 			case SampleFormat::S16:	return std::numeric_limits<s16>::max();
 			case SampleFormat::U16:	return std::numeric_limits<u16>::max();
-			//FIXME: add 24/float types
+			case SampleFormat::Float32:	return 1;
 			default: throw Exception("Min: Invalid audio format type");
 			}
 		}
@@ -78,6 +78,17 @@ namespace TOOLKIT_NS { namespace audio
 			static auto Zero() { return ZeroValue; }
 			static auto Range() { return Max() - Zero(); }
 		};
+
+		template<typename T, typename D>
+		struct FloatFormat
+		{
+			using Type = T;
+			using DoubleType = D;
+			static Type Max() { return 1; }
+			static Type Min() { return -1; }
+			static Type Zero() { return 0; }
+			static Type Range() { return Max() - Zero(); }
+		};
 	}
 
 	template<SampleFormat>
@@ -88,6 +99,8 @@ namespace TOOLKIT_NS { namespace audio
 
 	template<> struct Format<SampleFormat::U8>	: impl::Format<u8, 1 << 7> {};
 	template<> struct Format<SampleFormat::U16>	: impl::Format<u16, 1 << 15> {};
+
+	template<> struct Format<SampleFormat::Float32>	: impl::FloatFormat<float, double> {};
 
 }}
 

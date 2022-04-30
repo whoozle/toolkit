@@ -1,5 +1,5 @@
-#ifndef TOOLKIT_AUDIO_SINE_OSCILLATOR_H
-#define TOOLKIT_AUDIO_SINE_OSCILLATOR_H
+#ifndef TOOLKIT_AUDIO_SAWTOOTH_OSCILLATOR_H
+#define TOOLKIT_AUDIO_SAWTOOTH_OSCILLATOR_H
 
 #include <toolkit/audio/BaseOscillator.h>
 #include <math.h>
@@ -7,7 +7,7 @@
 namespace TOOLKIT_NS { namespace audio
 {
 
-	class SineOscillator : public BaseOscillator
+	class SawtoothOscillator : public BaseOscillator
 	{
 	protected:
 		float	_freq;
@@ -18,7 +18,11 @@ namespace TOOLKIT_NS { namespace audio
 		using BaseOscillator::BaseOscillator;
 
 		static float Func(float t)
-		{ return sin(t * M_PI * 2); }
+		{
+			auto x = fmodf(t, 1.0f);
+			x = 2 * (x - floorf(x + 0.5f));
+			return x;
+		}
 
 		float Next(uint sampleRate)
 		{ return Func(BaseOscillator::Next(sampleRate, 1)); }

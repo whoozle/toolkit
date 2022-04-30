@@ -1,14 +1,12 @@
 #ifndef TOOLKIT_AUDIO_IOSCILLATOR_H
 #define TOOLKIT_AUDIO_IOSCILLATOR_H
 
-#include <toolkit/audio/AudioFormat.h>
-#include <toolkit/core/Buffer.h>
-#include <math.h>
+#include <toolkit/audio/ISource.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
 
-	struct IOscillator
+	struct IOscillator : public ISource
 	{
 		virtual ~IOscillator() = default;
 
@@ -17,9 +15,8 @@ namespace TOOLKIT_NS { namespace audio
 
 		virtual void SetVolume(float volume) = 0;
 		virtual float GetVolume() const = 0;
-
-		virtual void Generate(SampleFormat format, uint sampleRate, Buffer buffer) = 0;
 	};
+	TOOLKIT_DECLARE_PTR(IOscillator);
 
 }}
 

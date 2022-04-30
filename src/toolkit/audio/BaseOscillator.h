@@ -34,7 +34,6 @@ namespace TOOLKIT_NS { namespace audio
 		float GetVolume() const override
 		{ return _volume; }
 
-	protected:
 		float Next(uint sampleRate)
 		{
 			auto t = _t;
@@ -57,22 +56,6 @@ namespace TOOLKIT_NS { namespace audio
 			auto range = FormatType::Range();
 			while(sampleCount--)
 				*buffer++ = static_cast<OscillatorType *>(this)->Next(sampleRate) * _volume * range + zero;
-		}
-
-		template<typename OscillatorType>
-		void GenerateImpl(SampleFormat format, uint sampleRate, Buffer buffer)
-		{
-			switch(format)
-			{
-				case SampleFormat::S8:
-					GenerateImpl<OscillatorType, Format<SampleFormat::S8>>(sampleRate, reinterpret_cast<s8*>(buffer.data()), buffer.size());
-					break;
-				case SampleFormat::S16:
-					GenerateImpl<OscillatorType, Format<SampleFormat::S16>>(sampleRate, reinterpret_cast<s16*>(buffer.data()), buffer.size() / 2);
-					break;
-				default:
-					throw Exception("unsupported sample format");
-			}
 		}
 	};
 
