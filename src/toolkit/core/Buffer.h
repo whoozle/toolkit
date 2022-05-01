@@ -105,6 +105,15 @@ namespace TOOLKIT_NS
 
 		size_t size() const
 		{ return _size; }
+
+		template<typename U>
+		BasicBuffer<U> Reinterpret() const
+		{
+			size_t byteSize = size() * sizeof(T);
+			if (byteSize % sizeof(U))
+				throw Exception("unaligned sizes");
+			return BasicBuffer<U>(reinterpret_cast<U*>(_ptr), byteSize / sizeof(U));
+		}
 	};
 
 	using Buffer		= BasicBuffer<u8>;
