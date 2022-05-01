@@ -68,11 +68,7 @@ namespace TOOLKIT_NS { namespace audio
 			auto * dst = dstBuffer.data();
 			auto * src = srcBuffer.data();
 			while(n--)
-			{
-				*dst = Next(dt) * *src++;
-				printf("%g\n", *dst);
-				++dst;
-			}
+				*dst++ = Next(dt) * *src++;
 		}
 	};
 
