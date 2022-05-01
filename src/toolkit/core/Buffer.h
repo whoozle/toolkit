@@ -45,6 +45,9 @@ namespace TOOLKIT_NS
 			_size = size;
 		}
 
+		BasicBuffer(T * ptr, size_t size): _ptr(ptr), _size(size)
+		{ }
+
 		BasicBuffer(T * ptr, size_t offset, size_t size): _ptr(ptr + offset)
 		{
 			if (offset > size)
