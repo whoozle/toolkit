@@ -1,13 +1,14 @@
 #ifndef TOOLKIT_AUDIO_ADSR_ENVELOPE_H
 #define TOOLKIT_AUDIO_ADSR_ENVELOPE_H
 
-#include <toolkit/audio/ISource.h>
+#include <toolkit/audio/IFilter.h>
 #include <math.h>
+#include <assert.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
 
-	class ADSREnvelope : public ISource
+	class ADSREnvelope : public IFilter
 	{
 		float		_attack;
 		float		_decay;
@@ -34,12 +35,12 @@ namespace TOOLKIT_NS { namespace audio
 			_active = true;
 		}
 
-		float Next(uint sampleRate)
+		float Next(float dt)
 		{
 			if (!_active)
 				return 0;
 
-			_t += 1.0f / sampleRate;
+			_t += dt;
 			auto t = _t;
 			if (t < _attack)
 				return t / _attack;
@@ -60,15 +61,19 @@ namespace TOOLKIT_NS { namespace audio
 			return 0;
 		}
 
-		template<typename OscillatorType, typename FormatType>
-		void GenerateImpl(uint sampleRate, typename FormatType::Type * buffer, size_t sampleCount)
+		void Process(float dt, FloatBuffer dstBuffer, ConstFloatBuffer srcBuffer) override
 		{
-			while(sampleCount--)
-				*buffer++ *= static_cast<OscillatorType *>(this)->Next(sampleRate);
+			assert(dstBuffer.size() == srcBuffer.size());
+			size_t n = srcBuffer.size();
+			auto * dst = dstBuffer.data();
+			auto * src = srcBuffer.data();
+			while(n--)
+			{
+				*dst = Next(dt) * *src++;
+				printf("%g\n", *dst);
+				++dst;
+			}
 		}
-
-		void Generate(SampleFormat format, uint sampleRate, Buffer buffer) override
-		{ GenerateBuffer(*this, format, sampleRate, buffer); }
 	};
 
 }}

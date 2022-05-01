@@ -34,28 +34,29 @@ namespace TOOLKIT_NS { namespace audio
 		float GetVolume() const override
 		{ return _volume; }
 
-		float Next(uint sampleRate)
+		float Tick(float dt)
 		{
 			auto t = _t;
-			_t += _freq / sampleRate;
+			_t += _freq * dt;
 			return t;
 		}
 
-		float Next(uint sampleRate, float period)
+		float Tick(float dt, float period)
 		{
 			auto t = _t;
-			_t += _freq / sampleRate;
+			_t += _freq * dt;
 			_t = fmod(_t, period);
 			return t;
 		}
 
-		template<typename OscillatorType, typename FormatType>
-		void GenerateImpl(uint sampleRate, typename FormatType::Type * buffer, size_t sampleCount)
+		virtual float Next(float dt) = 0;
+
+		void Get(float dt, FloatBuffer buffer) override
 		{
-			auto zero = FormatType::Zero();
-			auto range = FormatType::Range();
-			while(sampleCount--)
-				*buffer++ = static_cast<OscillatorType *>(this)->Next(sampleRate) * _volume * range + zero;
+			auto n = buffer.size();
+			auto* dst = buffer.data();
+			while(n--)
+				*dst++ = Next(dt) * _volume;
 		}
 	};
 

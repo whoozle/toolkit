@@ -7,13 +7,8 @@
 namespace TOOLKIT_NS { namespace audio
 {
 
-	class TriangleOscillator : public BaseOscillator
+	class TriangleOscillator final : public BaseOscillator
 	{
-	protected:
-		float	_freq;
-		float	_volume;
-		float	_t;
-
 	public:
 		using BaseOscillator::BaseOscillator;
 
@@ -24,11 +19,8 @@ namespace TOOLKIT_NS { namespace audio
 			return a - 1;
 		}
 
-		float Next(uint sampleRate)
-		{ return Func(BaseOscillator::Next(sampleRate, 1)); }
-
-		void Generate(SampleFormat format, uint sampleRate, Buffer buffer)
-		{ GenerateBuffer(*this, format, sampleRate, buffer); }
+		float Next(float dt) override
+		{ return Func(Tick(dt, 1)); }
 	};
 
 }}

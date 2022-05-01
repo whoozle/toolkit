@@ -3,8 +3,10 @@
 
 #include <toolkit/core/types.h>
 #include <toolkit/core/type_traits.h>
+#include <toolkit/core/Buffer.h>
 #include <toolkit/core/Exception.h>
 #include <limits>
+#include <assert.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
@@ -101,6 +103,24 @@ namespace TOOLKIT_NS { namespace audio
 	template<> struct Format<SampleFormat::U16>	: impl::Format<u16, 1 << 15> {};
 
 	template<> struct Format<SampleFormat::Float32>	: impl::FloatFormat<float, double> {};
+
+	template<typename DestinationFormat, typename SourceFormat>
+	void Convert(Buffer dstBuffer, ConstBuffer srcBuffer)
+	{
+		using DstSampleType = typename DestinationFormat::Type;
+		using SrcSampleType = typename SourceFormat::Type;
+
+		size_t dstSize = dstBuffer.GetSize() / sizeof(DstSampleType);
+		size_t srcSize = srcBuffer.GetSize() / sizeof(SrcSampleType);
+		assert(dstSize == srcSize);
+		DstSampleType * dst = reinterpret_cast<DstSampleType *>(dstBuffer.data());
+		const SrcSampleType * src = reinterpret_cast<const SrcSampleType *>(srcBuffer.data());
+		while(dstSize--)
+		{
+			float sample = (*src++ - SourceFormat::Zero()) / float(SourceFormat::Max());
+			*dst++ = (sample * DestinationFormat::Max()) + DestinationFormat::Zero();
+		}
+	}
 
 }}
 
