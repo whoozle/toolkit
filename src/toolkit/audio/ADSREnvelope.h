@@ -28,12 +28,8 @@ namespace TOOLKIT_NS { namespace audio
 			_active(false)
 		{}
 
-		float Func(float t) const
+		void start()
 		{
-			return 0;
-		}
-
-		void start() {
 			_t = 0;
 			_active = true;
 		}
