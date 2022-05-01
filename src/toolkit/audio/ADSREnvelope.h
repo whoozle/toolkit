@@ -8,7 +8,7 @@
 namespace TOOLKIT_NS { namespace audio
 {
 
-	class ADSREnvelope : public IFilter
+	class ADSREnvelope final : public IFilter
 	{
 		float		_attack;
 		float		_decay;
