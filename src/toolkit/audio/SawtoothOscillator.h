@@ -14,7 +14,7 @@ namespace TOOLKIT_NS { namespace audio
 
 		static float Func(float t)
 		{
-			auto x = fmodf(t, 1.0f);
+			auto x = t / 2;
 			x = 2 * (x - floorf(x + 0.5f));
 			return x;
 		}
