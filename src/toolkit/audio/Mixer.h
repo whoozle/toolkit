@@ -37,10 +37,6 @@ namespace TOOLKIT_NS { namespace audio
 				else
 					_sources[i]->Get(dt, dst);
 			}
-
-			float norm = 1.0f / (_sources.size());
-			for(auto & sample : dst)
-				sample *= norm;
 		}
 	};
 	TOOLKIT_DECLARE_PTR(Mixer);
