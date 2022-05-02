@@ -12,7 +12,7 @@ namespace TOOLKIT_NS { namespace audio
 		bool _inverted;
 
 	public:
-		SawtoothOscillator(float freq, bool inverted, float volume = BaseOscillator::DefaultVolume):
+		SawtoothOscillator(float freq, float volume = BaseOscillator::DefaultVolume, bool inverted = false):
 			BaseOscillator(freq, volume), _inverted(inverted)
 		{ }
 
