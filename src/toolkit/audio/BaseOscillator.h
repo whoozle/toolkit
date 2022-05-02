@@ -36,6 +36,12 @@ namespace TOOLKIT_NS { namespace audio
 		float GetVolume() const override
 		{ return _volume; }
 
+		float GetPhase() const override
+		{ return _t; }
+
+		void SetPhase(float phase) override
+		{ _t = 0; }
+
 		float Tick(float dt)
 		{
 			auto t = _t;
