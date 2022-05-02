@@ -5,6 +5,7 @@
 #include <toolkit/core/type_traits.h>
 #include <toolkit/core/Buffer.h>
 #include <toolkit/core/Exception.h>
+#include <algorithm>
 #include <limits>
 #include <assert.h>
 
@@ -118,6 +119,7 @@ namespace TOOLKIT_NS { namespace audio
 		while(dstSize--)
 		{
 			float sample = (*src++ - SourceFormat::Zero()) / float(SourceFormat::Max());
+			std::clamp(sample, -1.0f, 1.0f);
 			*dst++ = (sample * DestinationFormat::Max()) + DestinationFormat::Zero();
 		}
 	}
