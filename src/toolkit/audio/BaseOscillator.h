@@ -16,7 +16,9 @@ namespace TOOLKIT_NS { namespace audio
 		float	_t;
 
 	public:
-		BaseOscillator(float freq, float volume = 0.75f): _freq(freq), _volume(volume), _t(0)
+		static constexpr float DefaultVolume = 0.5f;
+
+		BaseOscillator(float freq, float volume = DefaultVolume): _freq(freq), _volume(volume), _t(0)
 		{ }
 
 		void SetFrequency(float freq) override

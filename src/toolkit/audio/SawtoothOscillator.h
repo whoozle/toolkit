@@ -9,14 +9,18 @@ namespace TOOLKIT_NS { namespace audio
 
 	class SawtoothOscillator final : public BaseOscillator
 	{
-	public:
-		using BaseOscillator::BaseOscillator;
+		bool _inverted;
 
-		static float Func(float t)
+	public:
+		SawtoothOscillator(float freq, bool inverted, float volume = BaseOscillator::DefaultVolume):
+			BaseOscillator(freq, volume), _inverted(inverted)
+		{ }
+
+		float Func(float t)
 		{
 			auto x = t / 2;
 			x = 2 * (x - floorf(x + 0.5f));
-			return x;
+			return _inverted? 1 - x: x;
 		}
 
 		float Next(float dt) override
