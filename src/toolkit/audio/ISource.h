@@ -15,6 +15,13 @@ namespace TOOLKIT_NS { namespace audio
 	};
 	TOOLKIT_DECLARE_PTR(ISource);
 
+	struct ISourceWithBaseFrequency : public ISource
+	{
+		virtual void SetFrequency(float freq) = 0;
+		virtual float GetFrequency() const = 0;
+	};
+	TOOLKIT_DECLARE_PTR(ISourceWithBaseFrequency);
+
 }}
 
 #endif
