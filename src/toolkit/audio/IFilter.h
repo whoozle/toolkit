@@ -32,6 +32,11 @@ namespace TOOLKIT_NS { namespace audio
 			_filter->Process(dt, buffer, buffer);
 		}
 	};
+	TOOLKIT_DECLARE_PTR(Filter);
+
+	template<typename FilterType, typename ... FilterArgs>
+	FilterPtr MakeFilter(const ISourcePtr & src, FilterArgs ... args)
+	{ return std::make_shared<Filter>(std::make_shared<FilterType>(std::forward<FilterArgs>(args)...), src); }
 
 }}
 
