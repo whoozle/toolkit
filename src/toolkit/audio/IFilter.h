@@ -15,6 +15,13 @@ namespace TOOLKIT_NS { namespace audio
 	};
 	TOOLKIT_DECLARE_PTR(IFilter);
 
+	struct IFilterWithCutoffFrequency : public IFilter
+	{
+		virtual void SetCutoff(float cutoff) = 0;
+		virtual float GetCutoff() const = 0;
+	};
+	TOOLKIT_DECLARE_PTR(IFilter);
+
 	class Filter : public ISource
 	{
 	private:
