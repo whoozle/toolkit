@@ -10,8 +10,10 @@ namespace TOOLKIT_NS { namespace audio
 
 	class BaseOscillator : public IOscillator
 	{
-	protected:
+	private:
 		float	_freq;
+
+	protected:
 		float	_volume;
 		float	_t;
 
