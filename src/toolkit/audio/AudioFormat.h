@@ -112,8 +112,7 @@ namespace TOOLKIT_NS { namespace audio
 		using SrcSampleType = typename SourceFormat::Type;
 
 		size_t dstSize = dstBuffer.GetSize() / sizeof(DstSampleType);
-		size_t srcSize = srcBuffer.GetSize() / sizeof(SrcSampleType);
-		assert(dstSize == srcSize);
+		assert(dstSize == srcBuffer.GetSize() / sizeof(SrcSampleType));
 		DstSampleType * dst = reinterpret_cast<DstSampleType *>(dstBuffer.data());
 		const SrcSampleType * src = reinterpret_cast<const SrcSampleType *>(srcBuffer.data());
 		while(dstSize--)
