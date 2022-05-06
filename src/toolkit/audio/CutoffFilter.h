@@ -47,7 +47,8 @@ namespace TOOLKIT_NS { namespace audio
 			auto * dst = dstBuffer.data();
 			while(n--)
 			{
-				*dst++ = _prev = (a * *src++ + (1 - a) * _prev);
+				_prev += a * (*src++ - _prev);
+				*dst++ = _prev;
 			}
 		}
 	};
