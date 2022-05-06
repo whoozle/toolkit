@@ -53,6 +53,31 @@ namespace TOOLKIT_NS { namespace audio
 		}
 	};
 
+	class HighPassFilter final : public CutoffFilter
+	{
+	private:
+		float _prevOutput = 0;
+		float _prevInput = 0;
+
+	public:
+		using CutoffFilter::CutoffFilter;
+
+		void Process(float dt, FloatBuffer dstBuffer, ConstFloatBuffer srcBuffer) override
+		{
+			float a = _rc / (_rc + dt);
+			size_t n = dstBuffer.size();
+			assert(n == srcBuffer.size());
+			auto * src = srcBuffer.data();
+			auto * dst = dstBuffer.data();
+			while(n--)
+			{
+				auto input = *src++;
+				*dst++ = _prevOutput = a * (_prevOutput + input - _prevInput);
+				_prevInput = input;
+			}
+		}
+	};
+
 }}
 
 #endif
