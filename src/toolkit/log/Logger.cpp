@@ -1,6 +1,7 @@
 #include <toolkit/log/Logger.h>
 #include <toolkit/log/ConsoleLoggingSink.h>
 #include <toolkit/core/Macros.h>
+#include <toolkit/core/Singleton.h>
 #include <algorithm>
 #include <stdlib.h>
 #include <ctype.h>
@@ -24,11 +25,14 @@ namespace TOOLKIT_NS { namespace log
 		return level;
 	}
 
-	ILoggingSinkPtr LogDispatcher::GetDefaultSink()
+	ILoggingSink & LogDispatcher::GetDefaultSink()
 	{
-		static ILoggingSinkPtr defaultSink(std::make_shared<ConsoleLoggingSink>());
-		return defaultSink;
+		static Singleton<ConsoleLoggingSink> defaultSink;
+		return defaultSink.Get();
 	}
+
+	LogManager & LogManager::Get()
+	{ static Singleton<LogManager> instance; return instance.Get(); }
 
 }}
 

@@ -22,7 +22,7 @@ namespace TOOLKIT_NS { namespace log
 		bool 				_enabled;
 
 	private:
-		ILoggingSinkPtr GetDefaultSink();
+		ILoggingSink & GetDefaultSink();
 
 	public:
 		LogDispatcher(LogLevel level = LogLevel::Debug):
@@ -47,7 +47,7 @@ namespace TOOLKIT_NS { namespace log
 				}
 			}
 			else
-				GetDefaultSink()->Log(level, logger, ts, value);
+				GetDefaultSink().Log(level, logger, ts, value);
 		}
 
 		void SetLogLevel(LogLevel level)
@@ -61,11 +61,11 @@ namespace TOOLKIT_NS { namespace log
 	{
 	public:
 		static LogLevel GetGlobalLogLevel();
-		static LogManager & Get()
-		{ static LogManager instance(GetGlobalLogLevel()); return instance; }
 
-	private:
-		using LogDispatcher::LogDispatcher;
+		LogManager(): LogDispatcher(GetGlobalLogLevel())
+		{ }
+
+		static LogManager & Get();
 	};
 
 	namespace impl
