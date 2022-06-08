@@ -6,7 +6,7 @@
 namespace TOOLKIT_NS { namespace log
 {
 
-	class ConsoleLoggingSink : public ILoggingSink
+	class ConsoleLoggingSink final : public ILoggingSink
 	{
 		bool _console;
 
