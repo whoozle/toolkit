@@ -60,7 +60,6 @@ namespace TOOLKIT_NS
 		void Clear()
 		{ _data.clear(); }
 
-public:
 		Storage & GetStorage()
 		{ return _data; }
 		public:
@@ -76,6 +75,31 @@ public:
 		{ return _data.at(index); }
 		u8 operator[] (size_t index) const
 		{ return _data.at(index); }
+
+		static ByteArray FromHex(const std::string & hex)
+		{
+			if (hex.size() & 1)
+				throw Exception("Invalid hex string");
+
+			ByteArray data(hex.size() >> 1);
+			u8 * dst = data.data();
+			for(size_t i = 0; i != hex.size(); i += 2)
+				*dst++ = (FromChar(hex[i]) << 4) | FromChar(hex[i + 1]);
+			return data;
+		}
+
+	private:
+		static u8 FromChar(char ch)
+		{
+			if (ch >= '0' && ch <= '9')
+				return ch - '0';
+			else if (ch >= 'a' && ch <= 'f')
+				return 10u + ch - 'a';
+			else if (ch >= 'A' && ch <= 'F')
+				return 10u + ch - 'A';
+			else
+				throw Exception(std::string("invalid hex char ") + ch);
+		}
 	};
 	TOOLKIT_DECLARE_PTR(ByteArray);
 
