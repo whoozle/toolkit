@@ -21,11 +21,17 @@ namespace TOOLKIT_NS { namespace io
 
 		size_t Write(ConstBuffer src) override
 		{
-			size_t offset = _data.size();
-			size_t size = src.size();
-			_data.resize(offset + size);
-			memcpy(_data.data() + offset, src.data(), size);
+			auto size = src.size();
+			auto dst = Append(size);
+			memcpy(dst.data(), src.data(), size);
 			return size;
+		}
+
+		Buffer Append(size_t size)
+		{
+			size_t offset = _data.size();
+			_data.resize(offset + size);
+			return Buffer(_data.data() + offset, size);
 		}
 
 		size_t GetSize() const
