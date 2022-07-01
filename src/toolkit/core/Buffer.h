@@ -55,6 +55,9 @@ namespace TOOLKIT_NS
 			_size = size - offset;
 		}
 
+		BasicBuffer(T * begin, T * end): _ptr(begin), _size(end - begin)
+		{ }
+
 		T & operator[] (size_t index)
 		{
 			if (index >= _size)
