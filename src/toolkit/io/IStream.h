@@ -5,6 +5,7 @@
 #include <toolkit/core/Buffer.h>
 #include <sys/types.h>
 #include <memory>
+#include <vector>
 
 namespace TOOLKIT_NS { namespace io
 {
@@ -39,14 +40,6 @@ namespace TOOLKIT_NS { namespace io
 	};
 	TOOLKIT_DECLARE_PTR(ISeekable);
 
-	struct IOutputStream
-	{
-		virtual ~IOutputStream() = default;
-
-		virtual size_t Write(ConstBuffer data) = 0;
-	};
-	TOOLKIT_DECLARE_PTR(IOutputStream);
-
 	struct IInputStream
 	{
 		virtual ~IInputStream() = default;
@@ -54,6 +47,26 @@ namespace TOOLKIT_NS { namespace io
 		virtual size_t Read(Buffer) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IInputStream);
+
+	struct IOutputStream
+	{
+		virtual ~IOutputStream() = default;
+
+		virtual size_t Write(ConstBuffer data) = 0;
+
+		void CopyFrom(IInputStream & input, size_t bufferSize = 4096)
+		{
+			std::vector<u8> buffer(bufferSize);
+			size_t r;
+			do
+			{
+				r = input.Read(buffer);
+				Write(ConstBuffer(buffer, 0, r));
+			}
+			while (r == bufferSize);
+		}
+	};
+	TOOLKIT_DECLARE_PTR(IOutputStream);
 
 	struct IBidirectionalStream :
 		public virtual IInputStream,
