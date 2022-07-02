@@ -42,17 +42,16 @@ namespace TOOLKIT_NS
 #ifdef __EXCEPTIONS
 #	define TOOLKIT_EXCEPTIONS_ENABLED
 #	define THROW(EXCEPTION, ...) throw EXCEPTION(__VA_ARGS__)
-#	define ASSERT(EXPR, EXCEPTION, ...) if (!(EXPR)) THROW(EXCEPTIONS, __VA_ARGS__)
 #	define TRY try
 #	define CATCH(SPEC, ...) catch ( SPEC ) __VA_ARGS__
 #else
 #	include <assert.h>
 #	include <stdlib.h>
 #	define THROW(EXCEPTION, ...) abort()
-#	define ASSERT(EXPR, EXCEPTION, ...) assert((EXPR))
 #	define TRY /**/
 #	define CATCH(SPEC, ...) /**/
 #endif
+#define ASSERT(EXPR, EXCEPTION, ...) if (!(EXPR)) THROW(EXCEPTIONS, __VA_ARGS__)
 
 #ifdef __GXX_RTTI
 #	define TOOLKIT_RTTI_ENABLED
