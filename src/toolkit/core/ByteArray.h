@@ -78,8 +78,7 @@ namespace TOOLKIT_NS
 
 		static ByteArray FromHex(const std::string & hex)
 		{
-			if (hex.size() & 1)
-				throw Exception("Invalid hex string");
+			ASSERT((hex.size() & 1) == 0, Exception, "Invalid hex string");
 
 			ByteArray data(hex.size() >> 1);
 			u8 * dst = data.data();
@@ -98,7 +97,7 @@ namespace TOOLKIT_NS
 			else if (ch >= 'A' && ch <= 'F')
 				return 10u + ch - 'A';
 			else
-				throw Exception(std::string("invalid hex char ") + ch);
+				ASSERT(false, Exception, std::string("invalid hex char ") + ch);
 		}
 	};
 	TOOLKIT_DECLARE_PTR(ByteArray);

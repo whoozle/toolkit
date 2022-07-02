@@ -31,8 +31,7 @@ namespace TOOLKIT_NS
 		BasicBuffer(U && o, size_t offset)
 		{
 			size_t size = o.size();
-			if (offset > size)
-				throw Exception("offset is bigger than size");
+			ASSERT(offset <= size, Exception, "offset is bigger than size");
 			_ptr = o.data() + offset;
 			_size = size - offset;
 		}
@@ -40,8 +39,7 @@ namespace TOOLKIT_NS
 		template<typename U>
 		BasicBuffer(U && o, size_t offset, size_t size): BasicBuffer(o, offset)
 		{
-			if (size > _size)
-				throw Exception("requested size (" + std::to_string(size) + ") is bigger than actual size (" + std::to_string(_size) + ")");
+			ASSERT(size <= _size, Exception, "requested size (" + std::to_string(size) + ") is bigger than actual size (" + std::to_string(_size) + ")");
 			_size = size;
 		}
 
@@ -50,8 +48,7 @@ namespace TOOLKIT_NS
 
 		BasicBuffer(T * ptr, size_t offset, size_t size): _ptr(ptr + offset)
 		{
-			if (offset > size)
-				throw Exception("requested offset (" + std::to_string(offset) + ") is bigger than buffer size (" + std::to_string(_size) + ")");
+			ASSERT(offset <= size, Exception, "requested offset (" + std::to_string(offset) + ") is bigger than buffer size (" + std::to_string(_size) + ")");
 			_size = size - offset;
 		}
 
@@ -60,15 +57,13 @@ namespace TOOLKIT_NS
 
 		T & operator[] (size_t index)
 		{
-			if (index >= _size)
-				throw Exception("invalid index (" + std::to_string(index) + ") for operator[]");
+			ASSERT(index < _size, Exception, "invalid index (" + std::to_string(index) + ") for operator[]");
 			return _ptr[index];
 		}
 
 		T operator[] (size_t index) const
 		{
-			if (index >= _size)
-				throw Exception("invalid index (" + std::to_string(index) + ") for operator[]");
+			ASSERT(index < _size, Exception, "invalid index (" + std::to_string(index) + ") for operator[]");
 			return _ptr[index];
 		}
 
@@ -113,8 +108,7 @@ namespace TOOLKIT_NS
 		BasicBuffer<U> Reinterpret() const
 		{
 			size_t byteSize = size() * sizeof(T);
-			if (byteSize % sizeof(U))
-				throw Exception("unaligned sizes");
+			ASSERT((byteSize % sizeof(U)) == 0, Exception, "unaligned sizes");
 			return BasicBuffer<U>(reinterpret_cast<U*>(_ptr), byteSize / sizeof(U));
 		}
 	};
