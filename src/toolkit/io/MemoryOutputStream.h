@@ -11,13 +11,14 @@ namespace TOOLKIT_NS { namespace io
 
 	class MemoryOutputStream : public IOutputStream
 	{
-		using Storage = std::vector<u8>;
+		using Storage = ByteArray;
 		Storage _data;
 
 	public:
 		static constexpr size_t InitialCapacity = 4096;
 
-		MemoryOutputStream(size_t initialCapacity = InitialCapacity): _data() { _data.reserve(initialCapacity); }
+		MemoryOutputStream(size_t initialCapacity = InitialCapacity): _data()
+		{ _data.Reserve(initialCapacity); }
 
 		size_t Write(ConstBuffer src) override
 		{
@@ -30,7 +31,7 @@ namespace TOOLKIT_NS { namespace io
 		Buffer Append(size_t size)
 		{
 			size_t offset = _data.size();
-			_data.resize(offset + size);
+			_data.Resize(offset + size);
 			return Buffer(_data.data() + offset, size);
 		}
 
@@ -42,6 +43,9 @@ namespace TOOLKIT_NS { namespace io
 
 		Storage & GetStorage()
 		{ return _data; }
+
+		ByteArray Extract()
+		{ return std::move(_data); }
 	};
 
 }}
