@@ -10,7 +10,7 @@ namespace TOOLKIT_NS { namespace text
 	{ \
 		char buf[3 * sizeof(TYPE) + 1]; \
 		auto r = snprintf(buf, sizeof(buf), FMT , value); \
-		if (r < 0) throw io::SystemException("snprintf(" #FMT ", value)"); \
+		ASSERT(r >= 0, io::SystemException, "snprintf(" #FMT ", value)"); \
 		return Write(buf, r); \
 	}
 
@@ -44,6 +44,7 @@ namespace TOOLKIT_NS { namespace text
 	size_t StringOutputStream::Write(const std::string & value)
 	{ return Write(value.data(), value.size()); }
 
+#ifdef TOOLKIT_EXCEPTIONS_ENABLED
 	size_t StringOutputStream::Write(const std::exception & ex)
 	{
 		size_t r = Write(typeid(ex));
@@ -52,7 +53,9 @@ namespace TOOLKIT_NS { namespace text
 		r += Write('"');
 		return r;
 	}
+#endif
 
+#ifdef TOOLKIT_RTTI_ENABLED
 	size_t StringOutputStream::Write(const std::type_info & ti)
 	{
 		auto name = ti.name();
@@ -60,4 +63,5 @@ namespace TOOLKIT_NS { namespace text
 		std::unique_ptr<char, decltype(std::free) *> demangled(abi::__cxa_demangle(name, NULL, NULL, &status), &std::free);
 		return Write(demangled.get());
 	}
+#endif
 }}

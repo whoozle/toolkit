@@ -19,8 +19,10 @@ namespace TOOLKIT_NS
 				if (!_pool->_tasks.empty())
 					_pool->_condition.notify_all();
 				l.unlock();
+#ifdef __EXCEPTIONS
 				try { task(); } catch(const std::exception &ex)
 				{ _log.Warning() << "error in thread pool task: " << ex.what(); }
+#endif
 				l.lock();
 			}
 		}

@@ -4,6 +4,7 @@
 #include <toolkit/core/Buffer.h>
 #include <toolkit/core/MemberCheck.h>
 #include <toolkit/io/MemoryOutputStream.h>
+#include <toolkit/core/types.h>
 #include <type_traits>
 
 namespace TOOLKIT_NS { namespace text
@@ -36,8 +37,12 @@ namespace TOOLKIT_NS { namespace text
 		TOOLKIT_IO_SS_DECLARE_WRITE(const std::string &);
 		TOOLKIT_IO_SS_DECLARE_WRITE(const void *);
 		TOOLKIT_IO_SS_DECLARE_WRITE(void *);
+#ifdef TOOLKIT_EXCEPTIONS_ENABLED
 		TOOLKIT_IO_SS_DECLARE_WRITE(const std::exception &);
+#endif
+#ifdef TOOLKIT_RTTI_ENABLED
 		TOOLKIT_IO_SS_DECLARE_WRITE(const std::type_info &);
+#endif
 
 #undef TOOLKIT_IO_SS_DECLARE_WRITE
 

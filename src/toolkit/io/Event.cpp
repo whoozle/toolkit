@@ -10,8 +10,7 @@ namespace TOOLKIT_NS { namespace io
 	Event::Event(): _active(false)
 	{
 		int fd[2];
-		if (pipe(fd) == -1)
-			throw SystemException("pipe");
+		ASSERT(pipe(fd) != -1, SystemException("pipe"));
 		_rd = fd[0];
 		_wd = fd[1];
 	}
@@ -29,8 +28,7 @@ namespace TOOLKIT_NS { namespace io
 			return;
 
 		u8 value = 0;
-		if (write(_wd, &value, 1) != 1)
-			throw SystemException("write");
+		ASSERT(write(_wd, &value, 1) == 1, SystemException, "write");
 		_active = true;
 	}
 
@@ -47,10 +45,8 @@ namespace TOOLKIT_NS { namespace io
 			return;
 		u8 buf[PIPE_BUF];
 		ssize_t r = read(_rd, buf, sizeof(buf));
-		if (r == -1)
-			throw SystemException("read");
-		if (r != 1)
-			throw std::logic_error("more than one byte in pipe");
+		ASSERT(r != -1, SystemException("read"));
+		ASSERT(r == 1, std::logic_error, "more than one byte in pipe");
 		_active = false;
 	}
 }}

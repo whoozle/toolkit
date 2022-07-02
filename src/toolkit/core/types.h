@@ -40,10 +40,22 @@ namespace TOOLKIT_NS
 #define TOOLKIT_FORWARD_DECLARE_INTERFACE_CONST_PTR(NS, NAME) TOOLKIT_FORWARD_DECLARE(NS, struct, NAME, TOOLKIT_DECLARE_PTR(NAME) ; TOOLKIT_DECLARE_CONST_PTR(NAME) ; )
 
 #ifdef __EXCEPTIONS
-#	define ASSERT(EXPR, EXCEPTION, ...) if (!(EXPR)) throw EXCEPTION ( __VA_ARGS__ )
+#	define TOOLKIT_EXCEPTIONS_ENABLED
+#	define THROW(EXCEPTION, ...) throw EXCEPTION(__VA_ARGS__)
+#	define ASSERT(EXPR, EXCEPTION, ...) if (!(EXPR)) THROW(EXCEPTIONS, __VA_ARGS__)
+#	define TRY try
+#	define CATCH(SPEC, ...) catch ( SPEC ) __VA_ARGS__
 #else
 #	include <assert.h>
+#	include <stdlib.h>
+#	define THROW(EXCEPTION, ...) abort()
 #	define ASSERT(EXPR, EXCEPTION, ...) assert((EXPR))
+#	define TRY /**/
+#	define CATCH(SPEC, ...) /**/
+#endif
+
+#ifdef __GXX_RTTI
+#	define TOOLKIT_RTTI_ENABLED
 #endif
 
 #endif

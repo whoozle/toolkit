@@ -110,7 +110,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 			EndObject();
 			break;
 		default:
-			throw Exception("unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
+			THROW(Exception, "unknown tag 0x" + text::Hex(static_cast<u8>(tag)).ToString() + ", corrupted stream");
 		}
 	}
 
@@ -182,35 +182,35 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	}
 
 	void Tokenizer::Write(Undefined)
-	{ throw Exception("unexpected undefined"); }
+	{ THROW(Exception, "unexpected undefined"); }
 
 	void Tokenizer::Write(std::nullptr_t)
-	{ throw Exception("unexpected null"); }
+	{ THROW(Exception, "unexpected null"); }
 
 	void Tokenizer::Write(bool value)
-	{ throw Exception("unexpected bool"); }
+	{ THROW(Exception, "unexpected bool"); }
 
 	void Tokenizer::Write(s64 value)
-	{ throw Exception("unexpected integer"); }
+	{ THROW(Exception, "unexpected integer"); }
 
 	void Tokenizer::Write(double value)
-	{ throw Exception("unexpected number"); }
+	{ THROW(Exception, "unexpected number"); }
 
 	void Tokenizer::Write(const std::string & value)
-	{ throw Exception("unexpected string"); }
+	{ THROW(Exception, "unexpected string"); }
 
 	void Tokenizer::BeginList()
-	{ throw Exception("unexpected list begin"); }
+	{ THROW(Exception, "unexpected list begin"); }
 
 	void Tokenizer::EndList()
-	{ throw Exception("unexpected list end"); }
+	{ THROW(Exception, "unexpected list end"); }
 
 	void Tokenizer::BeginObject()
-	{ throw Exception("unexpected object begin"); }
+	{ THROW(Exception, "unexpected object begin"); }
 
 	void Tokenizer::EndObject()
-	{ throw Exception("unexpected object end"); }
+	{ THROW(Exception, "unexpected object end"); }
 
 	void Tokenizer::Set(ISerializationStream & target)
-	{ throw Exception("no set implemented"); }
+	{ THROW(Exception, "no set implemented"); }
 }}}

@@ -22,8 +22,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 	Address Address::FromString(const std::string &addr)
 	{
 		struct in_addr inp;
-		if (inet_aton(addr.c_str(), &inp) != 1)
-			throw io::SystemException("Address::FromString");
+		ASSERT(inet_aton(addr.c_str(), &inp) == 1, io::SystemException, "Address::FromString");
 		return Address(inp.s_addr);
 	}
 

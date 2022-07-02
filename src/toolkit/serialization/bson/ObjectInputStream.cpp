@@ -17,7 +17,11 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 	void ObjectMetadataStreamParser::Set(ISerializationStream & target)
 	{
+#ifdef TOOLKIT_RTTI_ENABLED
 		dynamic_cast<GenericObjectInputStream &>(target).CreateObject(TypeDescriptor(Name, Version));
+#else
+		THROW(Exception, "Not supported without RTTI");
+#endif
 	}
 
 }}}

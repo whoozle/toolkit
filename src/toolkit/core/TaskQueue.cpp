@@ -13,14 +13,12 @@ namespace TOOLKIT_NS
 			_queue.pop();
 			l.unlock();
 
-			try
+			TRY
 			{
 				task();
 			}
-			catch(const std::exception & ex)
-			{
-				_log.Warning() << "task queue failure: " << ex.what();
-			}
+			CATCH(const std::exception & ex,
+			{ _log.Warning() << "task queue failure: " << ex.what(); })
 
 			l.lock();
 		}

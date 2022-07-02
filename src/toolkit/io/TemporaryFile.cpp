@@ -10,8 +10,7 @@ namespace TOOLKIT_NS { namespace io
 	{
 		snprintf(_storagePath, PATH_MAX, "%s", filenameTemplate.c_str());
 		int fd = mkstemp(_storagePath);
-		if (fd < 0)
-			throw io::SystemException("mkstemp failed");	
+		ASSERT(fd >= 0, io::SystemException, "mkstemp failed");
 		return fd;
 	}
 

@@ -47,8 +47,7 @@ namespace TOOLKIT_NS { namespace io
 
 	Poll::Poll(): _fd(epoll_create1(0))
 	{
-		if (_fd == -1)
-			throw io::SystemException("epoll_create1(0)");
+		ASSERT(_fd != -1, io::SystemException, "epoll_create1(0)");
 	}
 
 	Poll::~Poll()
@@ -81,7 +80,7 @@ namespace TOOLKIT_NS { namespace io
 			if (errno == EINTR) //interrupted system call is normal
 				return 0;
 			else
-				throw io::SystemException("epoll_wait");
+				THROW(io::SystemException, "epoll_wait");
 		}
 
 		epoll_event *src = pollEvents;
@@ -89,9 +88,9 @@ namespace TOOLKIT_NS { namespace io
 		for(int n = r; n--; ++src)
 		{
 			IPollEventHandler *handler = static_cast<IPollEventHandler *>(src->data.ptr);
-			try { handler->HandleSocketEvent(Unmap(src->events)); }
-			catch(const std::exception & ex)
-			{ Log.Error() << "HandleSocketEvent failed: " << ex.what(); }
+			TRY { handler->HandleSocketEvent(Unmap(src->events)); }
+			CATCH(const std::exception & ex,
+			{ Log.Error() << "HandleSocketEvent failed: " << ex.what(); })
 		}
 		return r;
 	}

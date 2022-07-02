@@ -10,15 +10,13 @@ namespace TOOLKIT_NS { namespace io
 
 	File::File(const std::string &path, FileOpenMode mode): _fd(::open(path.c_str(), MapMode(mode), 0600))
 	{
-		if (_fd < 0)
-			throw SystemException("open(\"" + path + "\")");
+		ASSERT(_fd != -1, SystemException, "open(\"" + path + "\")");
 	}
 
 	FilePtr File::Clone()
 	{
 		int fd = dup(_fd);
-		if (fd == -1)
-			throw SystemException("dup");
+		ASSERT(fd != -1, SystemException, "dup");
 		return std::make_shared<File>(fd);
 	}
 
@@ -79,7 +77,7 @@ namespace TOOLKIT_NS { namespace io
 			case FileOpenMode::Overwrite:
 				return O_RDWR | O_CREAT | O_TRUNC;
 			default:
-				throw Exception("invalid open mode " + std::to_string((int)mode));
+				THROW(Exception, "invalid open mode " + std::to_string((int)mode));
 		}
 	}
 
@@ -94,7 +92,7 @@ namespace TOOLKIT_NS { namespace io
 			case SeekMode::End:
 				return SEEK_END;
 			default:
-				throw Exception("invalid seek mode " + std::to_string((int)mode));
+				THROW(Exception, "invalid seek mode " + std::to_string((int)mode));
 		}
 	}
 
@@ -103,11 +101,9 @@ namespace TOOLKIT_NS { namespace io
 		switch(mode)
 		{
 			case SyncMode::Data:
-				if (::fdatasync(_fd) != 0)
-					throw SystemException("fdatasync failed");
+				ASSERT(::fdatasync(_fd) == 0, SystemException, "fdatasync failed");
 			case SyncMode::Everything:
-				if (::fsync(_fd) != 0)
-					throw SystemException("fsync failed");
+				ASSERT(::fsync(_fd) == 0, SystemException, "fsync failed");
 		}
 	}
 
@@ -115,7 +111,6 @@ namespace TOOLKIT_NS { namespace io
 	{
 		SYSTEM_CALL(sync_file_range(_fd, offset, size, flags));
 	}
-
 
 	off_t File::Seek(off_t offset, SeekMode mode)
 	{ SYSTEM_CALL_RETURN(lseek(_fd, offset, MapMode(mode))); }
@@ -170,8 +165,7 @@ namespace TOOLKIT_NS { namespace io
 	{
 		char buf[PATH_MAX];
 		auto size = readlink(path.c_str(), buf, sizeof(buf));
-		if (size == -1)
-			throw io::SystemException("readlink");
+		ASSERT(size == -1, io::SystemException, "readlink");
 
 		return std::string(buf, buf + size);
 	}

@@ -2,6 +2,7 @@
 #define TOOLKIT_IO_EXCEPTION_H
 
 #include <toolkit/core/Exception.h>
+#include <toolkit/core/types.h>
 
 namespace TOOLKIT_NS { namespace io
 {
@@ -16,10 +17,10 @@ namespace TOOLKIT_NS { namespace io
 	};
 
 #define SYSTEM_CALL(...) \
-	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) throw TOOLKIT_NS ::io::SystemException( #__VA_ARGS__ ); } while (false)
+	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) THROW( TOOLKIT_NS ::io::SystemException, #__VA_ARGS__ ); } while (false)
 
 #define SYSTEM_CALL_RETURN(...) \
-	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) throw TOOLKIT_NS ::io::SystemException( #__VA_ARGS__ ); return _retVal; } while (false)
+	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) THROW( TOOLKIT_NS ::io::SystemException, #__VA_ARGS__ ); return _retVal; } while (false)
 
 }}
 

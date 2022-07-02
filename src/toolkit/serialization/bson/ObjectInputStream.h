@@ -38,8 +38,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void BeginObject() override
 		{
-			if (_started)
-				throw Exception("nested object, fixme");
+			ASSERT(!_started, Exception, "nested object, fixme");
 		}
 
 		void EndObject() override
@@ -75,7 +74,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 				_stack.push(std::make_shared<ObjectMetadataStreamParser>());
 			}
 			else
-				throw Exception("unknown object property " + _property);
+				THROW(Exception, "unknown object property " + _property);
 		}
 
 	public:

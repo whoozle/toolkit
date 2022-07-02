@@ -119,7 +119,7 @@ namespace TOOLKIT_NS { namespace serialization
 			if (i != _registry.end())
 				return *i->second;
 
-			throw Exception("no type " + descriptor.Name + " registered");
+			THROW(Exception, "no type " + descriptor.Name + " registered");
 		}
 
 		void Register(const TypeDescriptor & type, const IClassDescriptor & descriptor)
@@ -127,7 +127,7 @@ namespace TOOLKIT_NS { namespace serialization
 			std::lock_guard<decltype(_mutex)> l(_mutex);
 			auto i = _registry.find(type);
 			if (i != _registry.end() && i->second != &descriptor)
-				throw Exception("double-registration of type " + type.Name);
+				THROW(Exception, "double-registration of type " + type.Name);
 
 			_registry[type] = &descriptor;
 		}

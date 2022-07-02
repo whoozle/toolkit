@@ -63,7 +63,7 @@ namespace TOOLKIT_NS { namespace text
 				else if (str == "no" || str == "false")
 					return false;
 				else
-				 	throw Exception("invalid boolean value " + str);
+				 	THROW(Exception, "invalid boolean value " + str);
 			}
 		};
 	}

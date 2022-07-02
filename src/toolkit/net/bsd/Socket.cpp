@@ -11,8 +11,7 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 
 	Socket::Socket(int family, int type, int proto): _socket(socket(family, type, proto)), _nonBlocking(false)
 	{
-		if (_socket == -1)
-			throw io::SystemException("socket");
+		ASSERT(_socket != -1, io::SystemException, "socket");
 	}
 
 	Socket::~Socket()
@@ -30,8 +29,7 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 	int Socket::GetFlags() const
 	{
 		int flags = fcntl(_socket, F_GETFL, 0);
-		if (flags == -1)
-			throw io::SystemException("fcntl(socketfd, F_GETFL, 0)");
+		ASSERT(flags != -1, io::SystemException, "fcntl(socketfd, F_GETFL, 0)");
 		return flags;
 	}
 

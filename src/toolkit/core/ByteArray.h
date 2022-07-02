@@ -97,7 +97,7 @@ namespace TOOLKIT_NS
 			else if (ch >= 'A' && ch <= 'F')
 				return 10u + ch - 'A';
 			else
-				ASSERT(false, Exception, std::string("invalid hex char ") + ch);
+				THROW(Exception, std::string("invalid hex char ") + ch);
 		}
 	};
 	TOOLKIT_DECLARE_PTR(ByteArray);

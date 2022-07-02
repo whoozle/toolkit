@@ -16,7 +16,7 @@ void Option::AddTo(OptionParser & parser)
 		std::stringstream ss;
 		ss << "No storage specified for option(s): ";
 		text::Join(ss, _aliases, ", ");
-		throw Exception(ss.str());
+		THROW(Exception, ss.str());
 	}
 
 	for(auto & alias : _aliases)
@@ -26,7 +26,7 @@ void Option::AddTo(OptionParser & parser)
 void OptionParser::AddOption(const std::string & opt, const IOptionParserPtr & parser, bool required)
 {
 	if (_opts.find(opt) != _opts.end())
-		throw Exception("Duplicate option " + opt);
+		THROW(Exception, "Duplicate option " + opt);
 	_opts[opt] = parser;
 	if (required)
 		_required.insert(parser.get());
