@@ -68,9 +68,7 @@ namespace TOOLKIT_NS { namespace io
 
         void ReadComplete(size_t bytes) override
 		{
-			if (bytes + _offset > _src.size())
-				throw Exception("ReadComplete: input buffer overflow");
-
+			ASSERT(bytes + _offset <= _src.size(), Exception, "ReadComplete: input buffer overflow");
 			_offset += bytes;
 		}
 	};
@@ -103,8 +101,7 @@ namespace TOOLKIT_NS { namespace io
 
         void WriteComplete(size_t bytes) override
 		{
-			if (bytes + _offset > _dst.size())
-				throw Exception("WriteComplete: input buffer overflow");
+			ASSERT(bytes + _offset <= _dst.size(), Exception, "WriteComplete: input buffer overflow");
 			_offset += bytes;
 		}
 

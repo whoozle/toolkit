@@ -87,8 +87,7 @@ namespace TOOLKIT_NS { namespace io
 		T Read()
 		{
 			std::array<u8, sizeof(T)> data;
-			if (_stream.Read(data) != data.size())
-				throw Exception("short read");
+			ASSERT(_stream.Read(data) == data.size(), Exception, "short read");
 			return Read<T>(data.data());
 		}
 
@@ -139,8 +138,7 @@ namespace TOOLKIT_NS { namespace io
 		{
 			std::array<u8, sizeof(T)> data;
 			Write(data.data(), value);
-			if (_stream.Write(data) != data.size())
-				throw Exception("short write");
+			ASSERT(_stream.Write(data) == data.size(), Exception, "short write");
 		}
 
 		void WriteU8(u8 value)

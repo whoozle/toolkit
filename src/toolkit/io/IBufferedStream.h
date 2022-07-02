@@ -26,8 +26,7 @@ namespace TOOLKIT_NS { namespace io
 			while(offset < size)
 			{
 				auto src = GetReadBuffer();
-				if (src.empty())
-					throw Exception("GetReadBuffer: returned empty buffer");
+				ASSERT(!src.empty(), Exception, "GetReadBuffer: returned empty buffer");
 				auto tailSize = size - offset;
 				auto readSize = std::min(tailSize, src.size());
 				memcpy(dst, src.data(), readSize);
@@ -57,8 +56,7 @@ namespace TOOLKIT_NS { namespace io
 			while(offset < size)
 			{
 				auto dst = GetWriteBuffer();
-				if (dst.empty())
-					throw Exception("GetWriteBuffer: returned empty buffer");
+				ASSERT(!dst.empty(), Exception, "GetWriteBuffer: returned empty buffer");
 				auto tailSize = size - offset;
 				auto writeSize = std::min(dst.size(), tailSize);
 				memcpy(dst.data(), src, writeSize);

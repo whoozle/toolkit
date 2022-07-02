@@ -81,8 +81,7 @@ namespace TOOLKIT_NS { namespace io
 		int Ioctl(Args && ... args)
 		{
 			int r = ioctl(_fd, args ... );
-			if (r < 0)
-				throw SystemException("ioctl");
+			ASSERT(r >= 0, SystemException, "ioctl");
 			return r;
 		}
 
