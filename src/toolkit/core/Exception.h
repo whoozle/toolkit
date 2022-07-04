@@ -18,8 +18,7 @@ namespace TOOLKIT_NS
 	template<typename T>
 	T RequireNotNull(T value)
 	{
-		if (!value)
-			throw NullPointerException();
+		ASSERT(value, NullPointerException, /**/);
 		return value;
 	}
 

@@ -2,7 +2,6 @@
 #define TOOLKIT_IO_EXCEPTION_H
 
 #include <toolkit/core/Exception.h>
-#include <toolkit/core/types.h>
 
 namespace TOOLKIT_NS { namespace io
 {

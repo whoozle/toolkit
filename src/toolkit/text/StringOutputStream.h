@@ -4,7 +4,6 @@
 #include <toolkit/core/Buffer.h>
 #include <toolkit/core/MemberCheck.h>
 #include <toolkit/io/MemoryOutputStream.h>
-#include <toolkit/core/types.h>
 #include <type_traits>
 
 namespace TOOLKIT_NS { namespace text

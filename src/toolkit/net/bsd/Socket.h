@@ -46,12 +46,12 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 		void Listen(int backlog);
 		int Accept(struct sockaddr *addr, socklen_t *addrlen);
 
-		ssize_t Send(ConstBuffer data, int flags);
+		ssize_t Send(ConstBuffer data, int flags) override;
 		ssize_t SendTo(ConstBuffer data, int flags,
                       const struct sockaddr *dest_addr, socklen_t addrlen);
 		ssize_t SendMsg(const struct msghdr *msg, int flags);
 
-		ssize_t Recv(Buffer data, int flags);
+		ssize_t Recv(Buffer data, int flags) override;
 		ssize_t RecvFrom(Buffer data, int flags,
                         struct sockaddr *src_addr, socklen_t *addrlen);
 		ssize_t RecvMsg(struct msghdr *msg, int flags);

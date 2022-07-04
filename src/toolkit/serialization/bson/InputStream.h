@@ -63,8 +63,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 	{
 		SingleValueParser<ValueType> parser;
 		parser.Parse(data, offset);
-		if (!parser.Finished())
-			throw Exception("could not read single value (not enough data)");
+		ASSERT(parser.Finished(), Exception, "could not read single value (not enough data)");
 		return parser.Value;
 	}
 
