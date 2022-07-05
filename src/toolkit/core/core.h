@@ -15,7 +15,7 @@
 #	define TRY /**/
 #	define CATCH(SPEC, ...) /**/
 #endif
-#define ASSERT(EXPR, EXCEPTION, ...) if (!(EXPR)) THROW(EXCEPTIONS, __VA_ARGS__)
+#define ASSERT(EXPR, EXCEPTION, ...) if (!(EXPR)) THROW(EXCEPTION, __VA_ARGS__)
 
 #ifdef __GXX_RTTI
 #	define TOOLKIT_RTTI_ENABLED

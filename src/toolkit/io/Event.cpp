@@ -10,7 +10,7 @@ namespace TOOLKIT_NS { namespace io
 	Event::Event(): _active(false)
 	{
 		int fd[2];
-		ASSERT(pipe(fd) != -1, SystemException("pipe"));
+		ASSERT(pipe(fd) != -1, SystemException, "pipe");
 		_rd = fd[0];
 		_wd = fd[1];
 	}
@@ -45,7 +45,7 @@ namespace TOOLKIT_NS { namespace io
 			return;
 		u8 buf[PIPE_BUF];
 		ssize_t r = read(_rd, buf, sizeof(buf));
-		ASSERT(r != -1, SystemException("read"));
+		ASSERT(r != -1, SystemException, "read");
 		ASSERT(r == 1, std::logic_error, "more than one byte in pipe");
 		_active = false;
 	}
