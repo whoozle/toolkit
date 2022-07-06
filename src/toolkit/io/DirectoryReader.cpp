@@ -6,7 +6,7 @@ namespace TOOLKIT_NS { namespace io
 
 	DirectoryReader::DirectoryReader(const std::string & path): _dir(opendir(path.c_str()))
 	{
-		ASSERT(!_dir, SystemException, "opendir");
+		ASSERT(_dir, SystemException, "opendir");
 	}
 
 	DirectoryReader::~DirectoryReader()
