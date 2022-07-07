@@ -105,9 +105,17 @@ namespace TOOLKIT_NS { namespace log
 		};
 
 		//compile-time no-op proxies
+#ifdef TOOLKIT_LOGGER_DISABLE
+		template<> class LogProxy<LogLevel::Trace> : public NullLogProxy { using NullLogProxy::NullLogProxy; };
+		template<> class LogProxy<LogLevel::Debug> : public NullLogProxy { using NullLogProxy::NullLogProxy; };
+		template<> class LogProxy<LogLevel::Info> : public NullLogProxy { using NullLogProxy::NullLogProxy; };
+		template<> class LogProxy<LogLevel::Warning> : public NullLogProxy { using NullLogProxy::NullLogProxy; };
+		template<> class LogProxy<LogLevel::Error> : public NullLogProxy { using NullLogProxy::NullLogProxy; };
+#else
 #	ifdef NDEBUG
 		template<> class LogProxy<LogLevel::Trace> : public NullLogProxy { using NullLogProxy::NullLogProxy; };
 #	endif
+#endif
 	}
 
 	class Logger : Noncopyable
