@@ -9,11 +9,13 @@
 #	define THROW(EXCEPTION, ...) throw EXCEPTION(__VA_ARGS__)
 #	define TRY try
 #	define CATCH(SPEC, ...) catch ( SPEC ) __VA_ARGS__
+#	define THROW_ON_FAILURE(EXPR, EXCEPTION, ...) ASSERT(EXPR, EXCEPTION, __VA_ARGS__)
 #else
 #	include <stdlib.h>
-#	define THROW(EXCEPTION, ...) abort()
+#	define THROW(EXCEPTION, ...) { printf("%s\n", #__VA_ARGS__); abort(); }
 #	define TRY /**/
 #	define CATCH(SPEC, ...) /**/
+#	define THROW_ON_FAILURE(EXPR, EXCEPTION, ...) (void)(EXPR)
 #endif
 #define ASSERT(EXPR, EXCEPTION, ...) if (!(EXPR)) THROW(EXCEPTION, __VA_ARGS__)
 
