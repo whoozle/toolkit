@@ -165,7 +165,7 @@ namespace TOOLKIT_NS { namespace io
 	{
 		char buf[PATH_MAX];
 		auto size = readlink(path.c_str(), buf, sizeof(buf));
-		ASSERT(size == -1, io::SystemException, "readlink");
+		ASSERT(size >= 0, io::SystemException, "readlink");
 
 		return std::string(buf, buf + size);
 	}
