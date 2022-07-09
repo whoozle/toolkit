@@ -88,6 +88,8 @@ namespace TOOLKIT_NS { namespace io
 		static std::string ReadLink(const std::string & path);
 		static void CreatePipe(int & readFd, int & writeFd, int flags = 0);
 
+		static std::string MakeTempDirectory(const std::string &pattern);
+
 	private:
 		void Close();
 		static int MapMode(FileOpenMode mode);

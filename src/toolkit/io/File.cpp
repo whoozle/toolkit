@@ -178,5 +178,13 @@ namespace TOOLKIT_NS { namespace io
 		writeFd = fd[1];
 	}
 
+	std::string File::MakeTempDirectory(const std::string &pattern)
+	{
+		std::vector<char> tempName(pattern.size() + 1);
+		strcpy(tempName.data(), pattern.c_str());
+		ASSERT(mkdtemp(tempName.data()), io::SystemException, "mkdtemp");
+		return std::string(tempName.data());
+	}
+
 }}
 
