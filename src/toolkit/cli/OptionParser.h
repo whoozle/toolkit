@@ -8,7 +8,6 @@
 #include <memory>
 #include <set>
 #include <string>
-#include <optional>
 #include <unordered_set>
 
 namespace TOOLKIT_NS { namespace cli
