@@ -102,8 +102,10 @@ namespace TOOLKIT_NS { namespace io
 		{
 			case SyncMode::Data:
 				ASSERT(::fdatasync(_fd) == 0, SystemException, "fdatasync failed");
+				break;
 			case SyncMode::Everything:
 				ASSERT(::fsync(_fd) == 0, SystemException, "fsync failed");
+				break;
 		}
 	}
 
