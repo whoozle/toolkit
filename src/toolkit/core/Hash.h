@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include <functional>
+#include <array>
 
 namespace TOOLKIT_NS
 {
