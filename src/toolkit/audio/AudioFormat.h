@@ -106,15 +106,15 @@ namespace TOOLKIT_NS { namespace audio
 	template<> struct Format<SampleFormat::Float32>	: impl::FloatFormat<float, double> {};
 
 	template<typename DestinationFormat, typename SourceFormat>
-	void Convert(Buffer dstBuffer, ConstBuffer srcBuffer)
+	void Convert(BasicBuffer<typename DestinationFormat::Type> dstBuffer, BasicBuffer<const typename SourceFormat::Type> srcBuffer, int dummy = 0)
 	{
 		using DstSampleType = typename DestinationFormat::Type;
 		using SrcSampleType = typename SourceFormat::Type;
 
-		size_t dstSize = dstBuffer.GetSize() / sizeof(DstSampleType);
-		assert(dstSize == srcBuffer.GetSize() / sizeof(SrcSampleType));
-		DstSampleType * dst = reinterpret_cast<DstSampleType *>(dstBuffer.data());
-		const SrcSampleType * src = reinterpret_cast<const SrcSampleType *>(srcBuffer.data());
+		size_t dstSize = dstBuffer.GetSize();
+		assert(dstSize == srcBuffer.GetSize());
+		DstSampleType * dst = dstBuffer.data();
+		const SrcSampleType * src = srcBuffer.data();
 		while(dstSize--)
 		{
 			float sample = (*src++ - SourceFormat::Zero()) / float(SourceFormat::Max());
