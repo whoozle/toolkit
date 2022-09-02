@@ -115,7 +115,7 @@ namespace TOOLKIT_NS { namespace io
 		{ }
 
 		template<typename T>
-		static u8 * Write(u8 * data, T value)
+		static u8 * Write(u8 * data, const T & value)
 		{ impl::DataConverter<BigEndian>::Store(data, value); return data + sizeof(value); }
 
 		static u8 * WriteU8(u8 * data, u8 value)
@@ -134,7 +134,7 @@ namespace TOOLKIT_NS { namespace io
 		{ _stream.Write(buffer); }
 
 		template<typename T>
-		void Write(T value)
+		void Write(const T & value)
 		{
 			std::array<u8, sizeof(T)> data;
 			Write(data.data(), value);
