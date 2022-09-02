@@ -27,6 +27,8 @@ set(TOOLKIT_SRC
 	src/toolkit/core/TaskQueue.cpp
 	src/toolkit/core/StringRef.cpp
 
+	src/toolkit/audio/WaveFile.cpp
+
 	src/toolkit/log/Logger.cpp
 	src/toolkit/log/ConsoleLoggingSink.cpp
 
