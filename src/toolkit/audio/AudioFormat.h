@@ -21,9 +21,9 @@ namespace TOOLKIT_NS { namespace audio
 
 	struct Specification
 	{
-		SampleFormat	Format;
-		uint			Channels;
-		uint			SampleRate;
+		SampleFormat	Format = SampleFormat::S16;
+		uint			Channels = 1;
+		uint			SampleRate = 44100;
 
 		uint SampleSize() const
 		{
