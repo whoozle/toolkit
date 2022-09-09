@@ -6,6 +6,7 @@
 #include <toolkit/core/Noncopyable.h>
 #include <toolkit/net/ISocket.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 
 namespace TOOLKIT_NS { namespace net { namespace bsd
 {

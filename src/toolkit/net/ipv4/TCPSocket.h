@@ -12,7 +12,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 	public:
 		using BaseSocket::BaseSocket;
 
-		TCPSocket(): BaseSocket(AF_INET, SOCK_STREAM, 0)
+		TCPSocket(): BaseSocket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
 		{ }
 
 		TCPSocket(TCPSocket && o): BaseSocket(std::move(o))

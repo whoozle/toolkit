@@ -11,7 +11,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 		public BaseServerSocket<UDPSocket>
 	{
 	public:
-		UDPServerSocket(): BaseServerSocket(AF_INET, SOCK_DGRAM, 0)
+		UDPServerSocket(): BaseServerSocket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
 		{ }
 	};
 

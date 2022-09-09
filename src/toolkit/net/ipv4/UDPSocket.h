@@ -12,7 +12,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 	public:
 		using BaseSocket::BaseSocket;
 
-		UDPSocket(): BaseSocket(AF_INET, SOCK_DGRAM, 0)
+		UDPSocket(): BaseSocket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
 		{ }
 
 		UDPSocket(UDPSocket && o): BaseSocket(std::move(o))
