@@ -44,6 +44,8 @@ namespace TOOLKIT_NS
 		{ return _data.data(); }
 		size_t size() const
 		{ return _data.size(); }
+		bool empty() const
+		{ return _data.empty(); }
 		void clear()
 		{ _data.clear(); }
 
@@ -51,6 +53,13 @@ namespace TOOLKIT_NS
 		{
 			_data.reserve(_data.size() + data.size());
 			std::copy(data.begin(), data.end(), std::back_inserter(_data));
+		}
+
+		void Pop(size_t n)
+		{
+			ASSERT(n <= _data.size(), Exception, "popped more elements that ByteArray had");
+			auto first = _data.begin();
+			_data.erase(first, first + n);
 		}
 
 		void Resize(size_t size)
