@@ -2,6 +2,7 @@
 #define TOOLKIT_NET_ISOCKET_H
 
 #include <toolkit/io/IPollable.h>
+#include <toolkit/core/Buffer.h>
 #include <toolkit/core/types.h>
 #include <memory>
 
