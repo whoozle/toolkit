@@ -25,7 +25,7 @@ namespace TOOLKIT_NS { namespace io
 			auto read = _pollableStream.Read(_readBuffer);
 			for(size_t offset = 0; offset < read; )
 			{
-				offset += _recvStream.Write(ConstBuffer(_readBuffer, offset));
+				offset += _recvStream.Write(ConstBuffer(_readBuffer, offset, read - offset));
 			}
 		}
 
