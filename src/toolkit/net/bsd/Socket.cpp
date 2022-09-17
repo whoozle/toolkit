@@ -64,33 +64,33 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 	int Socket::Accept(struct sockaddr *addr, socklen_t *addrlen)
 	{ SYSTEM_CALL_RETURN(accept(_socket, addr, addrlen)); }
 
-	ssize_t Socket::Send(ConstBuffer data, int flags)
+	size_t Socket::Send(ConstBuffer data, int flags)
 	{ SYSTEM_CALL_RETURN(send(_socket, data.data(), data.size(), flags)); }
 
-	ssize_t Socket::SendTo(ConstBuffer data, int flags,
+	size_t Socket::SendTo(ConstBuffer data, int flags,
                       const struct sockaddr *dest_addr, socklen_t addrlen)
 	{ SYSTEM_CALL_RETURN(sendto(_socket, data.data(), data.size(), flags, dest_addr, addrlen)); }
 
-	ssize_t Socket::SendMsg(const struct msghdr *msg, int flags)
+	size_t Socket::SendMsg(const struct msghdr *msg, int flags)
 	{ SYSTEM_CALL_RETURN(sendmsg(_socket, msg, flags)); }
 
-	ssize_t Socket::Recv(Buffer data, int flags)
+	size_t Socket::Recv(Buffer data, int flags)
 	{ SYSTEM_CALL_RETURN(recv(_socket, data.data(), data.size(), flags)); }
 
-	ssize_t Socket::RecvFrom(Buffer data, int flags,
+	size_t Socket::RecvFrom(Buffer data, int flags,
                         struct sockaddr *src_addr, socklen_t *addrlen)
 	{ SYSTEM_CALL_RETURN(recvfrom(_socket, data.data(), data.size(), flags, src_addr, addrlen)); }
 
-	ssize_t Socket::RecvMsg(struct msghdr *msg, int flags)
+	size_t Socket::RecvMsg(struct msghdr *msg, int flags)
 	{ SYSTEM_CALL_RETURN(recvmsg(_socket, msg, flags)); }
 
-	ssize_t Socket::SendFile(int in_fd, off_t *offset, size_t count)
+	size_t Socket::SendFile(int in_fd, off_t *offset, size_t count)
 	{ SYSTEM_CALL_RETURN(sendfile(_socket, in_fd, offset, count)); }
 
 	void Socket::Shutdown(int how)
 	{
 		if (_socket >= 0)
-			shutdown(_socket, how);
+			SYSTEM_CALL(shutdown(_socket, how));
 	}
 
 }}}

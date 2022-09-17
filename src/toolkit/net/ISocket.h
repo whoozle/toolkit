@@ -14,8 +14,8 @@ namespace TOOLKIT_NS { namespace net
 	{
 		virtual ~ISocket() = default;
 
-		virtual ssize_t Send(ConstBuffer data, int flags) = 0;
-		virtual ssize_t Recv(Buffer data, int flags) = 0;
+		virtual size_t Send(ConstBuffer data, int flags) = 0;
+		virtual size_t Recv(Buffer data, int flags) = 0;
 	};
 	TOOLKIT_DECLARE_PTR(ISocket);
 

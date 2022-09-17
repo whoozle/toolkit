@@ -21,9 +21,6 @@ namespace TOOLKIT_NS { namespace net
 		template<typename EndpointType>
 		void Connect(const EndpointType & ep)
 		{ ep.Connect(*this); }
-
-		ssize_t Write(ConstBuffer data);
-		ssize_t Read(Buffer data);
 	};
 
 }}
