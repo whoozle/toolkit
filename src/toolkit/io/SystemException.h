@@ -16,10 +16,10 @@ namespace TOOLKIT_NS { namespace io
 	};
 
 #define SYSTEM_CALL(...) \
-	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) THROW( TOOLKIT_NS ::io::SystemException, #__VA_ARGS__ ); } while (false)
+	do { auto _retVal = __VA_ARGS__ ; if (_retVal < 0) THROW( TOOLKIT_NS ::io::SystemException, #__VA_ARGS__ ); } while (false)
 
 #define SYSTEM_CALL_RETURN(...) \
-	do { auto _retVal = __VA_ARGS__ ; if (_retVal == -1) THROW( TOOLKIT_NS ::io::SystemException, #__VA_ARGS__ ); return _retVal; } while (false)
+	do { auto _retVal = __VA_ARGS__ ; if (_retVal < 0) THROW( TOOLKIT_NS ::io::SystemException, #__VA_ARGS__ ); return _retVal; } while (false)
 
 }}
 
