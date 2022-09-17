@@ -10,7 +10,7 @@ namespace TOOLKIT_NS { namespace net
 
 	class BaseSocket :
 		public bsd::Socket,
-		public virtual ISocket
+		public virtual ISocketStream
 	{
 	public:
 		using bsd::Socket::Socket;
