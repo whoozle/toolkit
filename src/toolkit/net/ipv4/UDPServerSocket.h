@@ -8,7 +8,8 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 {
 
 	class UDPServerSocket :
-		public BaseServerSocket<UDPSocket>
+		public BaseServerSocket<UDPSocket>,
+		virtual public ISocketStream
 	{
 	public:
 		UDPServerSocket(): BaseServerSocket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)
