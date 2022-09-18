@@ -16,17 +16,13 @@ namespace TOOLKIT_NS { namespace io
 		{
 			_failed = true;
 			_poll.Remove(_pollable);
-			_recvStream.Write(ConstBuffer());
+			_errorCallback();
 			return;
 		}
 
 		if (event & io::Poll::EventInput)
 		{
-			auto read = _pollableStream.Read(_readBuffer);
-			for(size_t offset = 0; offset < read; )
-			{
-				offset += _recvStream.Write(ConstBuffer(_readBuffer, offset, read - offset));
-			}
+			_inputCallback();
 		}
 
 		if (event & io::Poll::EventOutput)
@@ -34,7 +30,7 @@ namespace TOOLKIT_NS { namespace io
 			auto toWrite = std::min<size_t>(_writeQueue.size(), PIPE_BUF);
 			if (toWrite != 0)
 			{
-				auto written = _pollableStream.Write(ConstBuffer(_writeQueue, 0, toWrite));
+				auto written = _outputCallback(ConstBuffer(_writeQueue, 0, toWrite));
 				_writeQueue.Pop(written);
 			}
 			if (_writeQueue.empty())
@@ -42,9 +38,12 @@ namespace TOOLKIT_NS { namespace io
 		}
 	}
 
-	NonBlockingStream::NonBlockingStream(Poll & poll, IPollable & pollable, IBidirectionalStream & pollableStream, IOutputStream & recvStream):
-		_poll(poll), _pollable(pollable), _pollableStream(pollableStream), _recvStream(recvStream),
-		_readBuffer(PIPE_BUF), _failed(false)
+	NonBlockingStream::NonBlockingStream(Poll & poll, IPollable & pollable, InputCallback inputCallback, OutputCallback outputCallback, ErrorCallback errorCallback):
+		_poll(poll), _pollable(pollable),
+		_inputCallback(std::move(inputCallback)),
+		_outputCallback(std::move(outputCallback)),
+		_errorCallback(std::move(errorCallback)),
+		_failed(false)
 	{ _poll.Add(_pollable, *this, DefaultEvent); }
 
 	NonBlockingStream::~NonBlockingStream()

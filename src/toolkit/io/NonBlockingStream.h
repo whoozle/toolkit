@@ -5,6 +5,7 @@
 #include <toolkit/core/ByteArray.h>
 #include <toolkit/io/IPollEventHandler.h>
 #include <toolkit/io/IStream.h>
+#include <functional>
 #include <mutex>
 
 namespace TOOLKIT_NS { namespace io
@@ -15,20 +16,24 @@ namespace TOOLKIT_NS { namespace io
 	class NonBlockingStream : public io::IOutputStream, private IPollEventHandler
 	{
 	public:
+		using InputCallback = std::function<void()>;
+		using OutputCallback = std::function<size_t (ConstBuffer)>;
+		using ErrorCallback = std::function<void()>;
 
 	private:
 		mutable std::recursive_mutex	_lock;
 		Poll & 							_poll;
 		IPollable & 					_pollable;
-		IBidirectionalStream & 			_pollableStream;
-		IOutputStream &					_recvStream;
+		InputCallback					_inputCallback;
+		OutputCallback					_outputCallback;
+		ErrorCallback					_errorCallback;
 		ByteArray						_writeQueue;
-		ByteArray						_readBuffer;
 		bool							_failed;
 
 
 	public:
-		NonBlockingStream(Poll & poll, IPollable & pollable, IBidirectionalStream & pollableStream, IOutputStream & recvStream);
+		NonBlockingStream(Poll & poll, IPollable & pollable,
+			InputCallback inputCallback, OutputCallback outputCallback, ErrorCallback errorCallback);
 		~NonBlockingStream();
 
 		size_t Write(ConstBuffer data) override;
