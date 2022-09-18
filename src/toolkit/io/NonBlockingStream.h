@@ -17,14 +17,14 @@ namespace TOOLKIT_NS { namespace io
 	public:
 
 	private:
-		mutable std::mutex			_lock;
-		Poll & 						_poll;
-		IPollable & 				_pollable;
-		IBidirectionalStream & 		_pollableStream;
-		IOutputStream &				_recvStream;
-		ByteArray					_writeQueue;
-		ByteArray					_readBuffer;
-		bool						_failed;
+		mutable std::recursive_mutex	_lock;
+		Poll & 							_poll;
+		IPollable & 					_pollable;
+		IBidirectionalStream & 			_pollableStream;
+		IOutputStream &					_recvStream;
+		ByteArray						_writeQueue;
+		ByteArray						_readBuffer;
+		bool							_failed;
 
 
 	public:
