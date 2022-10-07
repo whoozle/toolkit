@@ -16,21 +16,22 @@ namespace TOOLKIT_NS { namespace io
 		{
 			_failed = true;
 			_poll.Remove(_pollable);
-			_errorCallback();
+			if (event & io::Poll::EventHangup)
+				_handler.OnError(PollError::Hangup);
+			else
+				_handler.OnError(PollError::Error);
 			return;
 		}
 
 		if (event & io::Poll::EventInput)
-		{
-			_inputCallback();
-		}
+		{ _handler.CanRead(); }
 
 		if (event & io::Poll::EventOutput)
 		{
 			auto toWrite = std::min<size_t>(_writeQueue.size(), PIPE_BUF);
 			if (toWrite != 0)
 			{
-				auto written = _outputCallback(ConstBuffer(_writeQueue, 0, toWrite));
+				auto written = _handler.CanWrite(ConstBuffer(_writeQueue, 0, toWrite));
 				_writeQueue.Pop(written);
 			}
 			if (_writeQueue.empty())
@@ -38,11 +39,9 @@ namespace TOOLKIT_NS { namespace io
 		}
 	}
 
-	NonBlockingStream::NonBlockingStream(Poll & poll, IPollable & pollable, InputCallback inputCallback, OutputCallback outputCallback, ErrorCallback errorCallback):
+	NonBlockingStream::NonBlockingStream(Poll & poll, IPollable & pollable, INonBlockingStreamEventHandler & handler):
 		_poll(poll), _pollable(pollable),
-		_inputCallback(std::move(inputCallback)),
-		_outputCallback(std::move(outputCallback)),
-		_errorCallback(std::move(errorCallback)),
+		_handler(handler),
 		_failed(false)
 	{ _poll.Add(_pollable, *this, DefaultEvent); }
 

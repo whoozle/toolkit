@@ -13,27 +13,36 @@ namespace TOOLKIT_NS { namespace io
 	class Poll;
 	struct IPollable;
 
+	enum struct PollError
+	{
+		Error,
+		Hangup
+	};
+
+	struct INonBlockingStreamEventHandler
+	{
+		virtual ~INonBlockingStreamEventHandler() = default;
+
+		virtual void CanRead() = 0;
+		virtual size_t CanWrite(ConstBuffer data) = 0;
+		virtual void OnError(PollError error) = 0;
+	};
+
 	class NonBlockingStream : public io::IOutputStream, private IPollEventHandler
 	{
 	public:
-		using InputCallback = std::function<void()>;
-		using OutputCallback = std::function<size_t (ConstBuffer)>;
-		using ErrorCallback = std::function<void()>;
 
 	private:
 		mutable std::recursive_mutex	_lock;
 		Poll & 							_poll;
 		IPollable & 					_pollable;
-		InputCallback					_inputCallback;
-		OutputCallback					_outputCallback;
-		ErrorCallback					_errorCallback;
+		INonBlockingStreamEventHandler &_handler;
 		ByteArray						_writeQueue;
 		bool							_failed;
 
 
 	public:
-		NonBlockingStream(Poll & poll, IPollable & pollable,
-			InputCallback inputCallback, OutputCallback outputCallback, ErrorCallback errorCallback);
+		NonBlockingStream(Poll & poll, IPollable & pollable, INonBlockingStreamEventHandler & handler);
 		~NonBlockingStream();
 
 		size_t Write(ConstBuffer data) override;
