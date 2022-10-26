@@ -17,7 +17,6 @@ namespace TOOLKIT_NS { namespace io
 		if (event & (io::Poll::EventError | io::Poll::EventHangup))
 		{
 			_failed = true;
-			_poll.Remove(_pollable);
 			if (event & io::Poll::EventHangup)
 				_handler.OnError(PollError::Hangup);
 			else
