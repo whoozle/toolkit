@@ -7,6 +7,7 @@
 #include <toolkit/io/IStream.h>
 #include <functional>
 #include <mutex>
+#include <queue>
 
 namespace TOOLKIT_NS { namespace io
 {
@@ -37,7 +38,7 @@ namespace TOOLKIT_NS { namespace io
 		Poll & 							_poll;
 		IPollable & 					_pollable;
 		INonBlockingStreamEventHandler &_handler;
-		ByteArray						_writeQueue;
+		std::queue<ByteArray>			_writeQueue;
 		bool							_failed;
 
 

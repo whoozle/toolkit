@@ -25,13 +25,18 @@ namespace TOOLKIT_NS { namespace io
 		if (event & io::Poll::EventInput)
 		{ _handler.CanRead(); }
 
-		if (event & io::Poll::EventOutput)
+		if (event & io::Poll::EventOutput && !_writeQueue.empty())
 		{
-			auto toWrite = std::min<size_t>(_writeQueue.size(), PIPE_BUF);
+			auto & top = _writeQueue.front();
+			auto toWrite = std::min<size_t>(top.size(), PIPE_BUF);
 			if (toWrite != 0)
 			{
-				auto written = _handler.CanWrite(ConstBuffer(_writeQueue, 0, toWrite));
-				_writeQueue.Pop(written);
+				auto written = _handler.CanWrite(ConstBuffer(top, 0, toWrite));
+				ASSERT(written <= toWrite, Exception, "returned more data written than was requested");
+				if (written == toWrite)
+					_writeQueue.pop();
+				else
+					top.Pop(written);
 			}
 			if (_writeQueue.empty())
 				_poll.Modify(_pollable, *this, DefaultEvent);
@@ -51,7 +56,7 @@ namespace TOOLKIT_NS { namespace io
 	{
 		std::lock_guard<decltype(_lock)> l(_lock);
 		bool wasEmpty = _writeQueue.empty();
-		_writeQueue.Append(data);
+		_writeQueue.push(data);
 		if (wasEmpty)
 			_poll.Modify(_pollable, *this, DefaultEvent | io::Poll::EventOutput);
 		return data.size();
