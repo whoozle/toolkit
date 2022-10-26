@@ -1,6 +1,5 @@
 #include <toolkit/io/NonBlockingStream.h>
 #include <toolkit/io/Poll.h>
-#include <toolkit/log/Logger.h>
 #include <limits.h>
 
 namespace TOOLKIT_NS { namespace io
@@ -8,7 +7,6 @@ namespace TOOLKIT_NS { namespace io
 	namespace
 	{
 		static constexpr auto DefaultEvent = io::Poll::EventInput | io::Poll::EventError | io::Poll::EventHangup;
-		log::Logger Log("non-blocking-stream");
 	}
 
 	void NonBlockingStream::HandleSocketEvent(int event)
@@ -47,11 +45,7 @@ namespace TOOLKIT_NS { namespace io
 	{ _poll.Add(_pollable, *this, DefaultEvent); }
 
 	NonBlockingStream::~NonBlockingStream()
-	{
-		try { _poll.Remove(_pollable); }
-		catch(const std::exception & ex)
-		{ Log.Error() << "removing pollable failed: " << ex; }
-	}
+	{ _poll.Remove(_pollable); }
 
 	size_t NonBlockingStream::Write(ConstBuffer data)
 	{
