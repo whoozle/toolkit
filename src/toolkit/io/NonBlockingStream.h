@@ -48,9 +48,11 @@ namespace TOOLKIT_NS { namespace io
 
 		size_t Write(ConstBuffer data) override;
 		bool Failed() const;
+		void Sync();
 
 	private:
 		void HandleSocketEvent(int event) override;
+		bool WriteNext();
 	};
 
 }}
