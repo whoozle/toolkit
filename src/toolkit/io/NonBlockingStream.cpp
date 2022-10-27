@@ -1,6 +1,5 @@
 #include <toolkit/io/NonBlockingStream.h>
 #include <toolkit/io/Poll.h>
-#include <limits.h>
 
 namespace TOOLKIT_NS { namespace io
 {
@@ -15,16 +14,12 @@ namespace TOOLKIT_NS { namespace io
 			return false;
 
 		auto & top = _writeQueue.front();
-		auto toWrite = std::min<size_t>(top.size(), PIPE_BUF);
-		if (toWrite != 0)
-		{
-			auto written = _handler.CanWrite(ConstBuffer(top, 0, toWrite));
-			ASSERT(written <= toWrite, Exception, "returned more data written than was requested");
-			if (written == top.size())
-				_writeQueue.pop();
-			else
-				top.Pop(written);
-		}
+		auto written = _handler.CanWrite(top);
+		ASSERT(written <= top.size(), Exception, "returned more data written than was requested");
+		if (written == top.size())
+			_writeQueue.pop();
+		else
+			top.Pop(written);
 
 		return !_writeQueue.empty();
 	}
