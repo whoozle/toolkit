@@ -20,7 +20,7 @@ namespace TOOLKIT_NS { namespace io
 		{
 			auto written = _handler.CanWrite(ConstBuffer(top, 0, toWrite));
 			ASSERT(written <= toWrite, Exception, "returned more data written than was requested");
-			if (written == toWrite)
+			if (written == top.size())
 				_writeQueue.pop();
 			else
 				top.Pop(written);
