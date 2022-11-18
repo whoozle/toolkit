@@ -33,6 +33,7 @@ set(TOOLKIT_SRC
 	src/toolkit/log/ConsoleLoggingSink.cpp
 	src/toolkit/log/FileLoggingSink.cpp
 
+	src/toolkit/io/Directory.cpp
 	src/toolkit/io/DirectoryReader.cpp
 	src/toolkit/io/Event.cpp
 	src/toolkit/io/File.cpp
