@@ -1,6 +1,7 @@
 #include <toolkit/io/Directory.h>
 #include <toolkit/io/File.h>
 #include <toolkit/io/SystemException.h>
+#include <toolkit/text/StringOutputStream.h>
 #include <linux/limits.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -51,8 +52,12 @@ namespace TOOLKIT_NS { namespace io
 	std::string Directory::GetRuntimeDirectory()
 	{
 		const char * path = getenv("XDG_RUNTIME_DIR");
-		ASSERT(path, Exception, "XDG_RUNTIME_DIR should be specified in the environment.");
-		return path;
+		if (path)
+			return path;
+
+		text::StringOutputStream ss;
+		ss << "/run/user/" << getuid();
+		return ss.Get();
 	}
 
 }}
