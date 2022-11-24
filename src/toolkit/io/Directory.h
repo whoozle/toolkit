@@ -22,6 +22,8 @@ namespace TOOLKIT_NS { namespace io
 		static std::string GetStateHome();
 		static std::string GetRuntimeDirectory();
 
+		static void MakePath(const std::string & path, mode_t mode = 0700);
+
 	private:
 		static std::string GetXdgDirectory(const std::string &env, const std::string &homePath);
 	};

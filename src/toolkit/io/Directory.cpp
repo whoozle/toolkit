@@ -60,4 +60,23 @@ namespace TOOLKIT_NS { namespace io
 		return ss.Get();
 	}
 
+	void Directory::MakePath(const std::string & path, mode_t mode)
+	{
+		size_t pos = 0;
+		while(pos < path.size())
+		{
+			auto next = path.find('/', pos);
+			if (next == path.npos)
+				next = path.size();
+
+			if (next != pos)
+			{
+				auto sub = path.substr(0, next);
+				mkdir(sub.c_str(), mode);
+			}
+			pos = next + 1;
+		}
+	}
+
+
 }}
