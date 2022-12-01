@@ -22,7 +22,10 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 	Address Address::FromString(const std::string &addr)
 	{
 		struct in_addr inp;
-		ASSERT(inet_aton(addr.c_str(), &inp) == 1, io::SystemException, "Address::FromString");
+		int r = inet_aton(addr.c_str(), &inp);
+		ASSERT(r >= 0, io::SystemException, "Address::FromString");
+		if (r == 0)
+			THROW(Exception, "inet_aton: parse error: " + addr);
 		return Address(inp.s_addr);
 	}
 
