@@ -6,15 +6,13 @@
 
 namespace TOOLKIT_NS { namespace net { namespace unix
 {
-	class LocalSocket : public BaseSocket
+	template<int SocketType>
+	class BaseLocalSocket : public BaseSocket
 	{
 	public:
 		using BaseSocket::BaseSocket;
 
-		LocalSocket(): BaseSocket(AF_UNIX, SOCK_STREAM, 0)
-		{ }
-
-		LocalSocket(LocalSocket && o): BaseSocket(std::move(o))
+		BaseLocalSocket(): BaseSocket(AF_UNIX, SocketType, 0)
 		{ }
 
 		struct ucred GetPeerCredentials() const
@@ -24,6 +22,18 @@ namespace TOOLKIT_NS { namespace net { namespace unix
 			GetOption(SOL_SOCKET, SO_PEERCRED, &creds, &size);
 			return creds;
 		}
+	};
+
+	class LocalSocket : public BaseLocalSocket<SOCK_STREAM>
+	{
+	public:
+		using BaseLocalSocket::BaseLocalSocket;
+	};
+
+	class LocalDatagramSocket : public BaseLocalSocket<SOCK_DGRAM>
+	{
+	public:
+		using BaseLocalSocket::BaseLocalSocket;
 	};
 }}}
 
