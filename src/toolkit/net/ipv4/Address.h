@@ -15,8 +15,8 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 		Address(u32 addr): _addr(addr)
 		{ }
 
-		Address(int a, int b, int c, int d)
-		{ _addr = (a << 24) | (b << 16) | (c << 8) | d; }
+		Address(unsigned a, unsigned b, unsigned c, unsigned d)
+		{ _addr = (d << 24) | (c << 16) | (b << 8) | a; }
 
 		u32 GetNetworkAddress() const
 		{ return _addr; }
