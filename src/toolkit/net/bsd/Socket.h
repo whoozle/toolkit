@@ -42,6 +42,7 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 		bool GetNonBlocking() const;
 		void SetNonBlocking(bool enabled);
 
+		void GetName(struct sockaddr *addr, socklen_t *addrlen);
 		void Connect(const struct sockaddr *addr, socklen_t addrlen);
 		void Bind(const struct sockaddr *addr, socklen_t addrlen);
 		void Listen(int backlog);
@@ -61,6 +62,7 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 
 		void Shutdown(int how);
 	};
+	TOOLKIT_DECLARE_PTR(Socket);
 
 }}}
 

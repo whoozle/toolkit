@@ -20,6 +20,9 @@ namespace TOOLKIT_NS { namespace net { namespace bsd
 			close(_socket);
 	}
 
+	void Socket::GetName(struct sockaddr *addr, socklen_t *addrlen)
+	{ SYSTEM_CALL(getsockname(_socket, addr, addrlen)); }
+
 	void Socket::GetOption(int level, int optname, void *optval, socklen_t *optlen) const
 	{ SYSTEM_CALL(getsockopt(_socket, level, optname, optval, optlen)); }
 
