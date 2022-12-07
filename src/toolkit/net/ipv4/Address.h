@@ -12,7 +12,7 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 		u32		_addr;
 
 	public:
-		Address(u32 addr): _addr(addr)
+		explicit Address(u32 addr = 0): _addr(addr)
 		{ }
 
 		Address(unsigned a, unsigned b, unsigned c, unsigned d)
