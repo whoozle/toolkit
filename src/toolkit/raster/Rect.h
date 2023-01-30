@@ -128,6 +128,14 @@ namespace TOOLKIT_NS { namespace raster
 		int Area() const
 		{ return Width() * Height(); }
 
+		void Reduce(Size dims)
+		{
+			Left /= dims.Width;
+			Top /= dims.Height;
+			Right = (Right + dims.Width - 1) / dims.Width;
+			Bottom = (Bottom + dims.Height - 1) / dims.Height;
+		}
+
 		Rect operator - (Rect other) const
 		{ return Rect(Point(Left - other.Left, Top - other.Top), Point(Right - other.Right, Bottom - other.Bottom)); }
 
