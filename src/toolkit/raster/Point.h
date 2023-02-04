@@ -24,11 +24,32 @@ namespace TOOLKIT_NS { namespace raster
 		PointBase operator - (PointBase p) const
 		{ return PointBase(X - p.X, Y - p.Y); }
 
+		PointBase operator - (Type scalar) const
+		{ return *this - PointBase(scalar, scalar); }
+
 		PointBase operator - () const
 		{ return PointBase(-X, -Y); }
 
 		PointBase operator + (PointBase p) const
 		{ return PointBase(X + p.X, Y + p.Y); }
+
+		PointBase operator + (Type scalar) const
+		{ return *this + PointBase(scalar, scalar); }
+
+		PointBase operator + () const
+		{ return *this; }
+
+		PointBase operator * (PointBase p) const
+		{ return PointBase(X * p.X, Y * p.Y); }
+
+		PointBase operator * (Type scalar) const
+		{ return *this * PointBase(scalar, scalar); }
+
+		PointBase operator / (PointBase p) const
+		{ return PointBase(X / p.X, Y / p.Y); }
+
+		PointBase operator / (Type scalar) const
+		{ return *this / PointBase(scalar, scalar); }
 
 		PointBase & operator -= (const PointBase & o)
 		{
