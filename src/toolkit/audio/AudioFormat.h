@@ -5,12 +5,15 @@
 #include <toolkit/core/type_traits.h>
 #include <toolkit/core/Buffer.h>
 #include <toolkit/core/Exception.h>
-#include <algorithm>
 #include <limits>
 #include <assert.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
+	template<class T>
+	constexpr const T & Clamp( const T & v, const T & lo, const T & hi)
+	{ return v < lo ? lo : hi < v ? hi : v; }
+
 	enum struct SampleFormat
 	{
 		S8, U8,
@@ -118,7 +121,7 @@ namespace TOOLKIT_NS { namespace audio
 		while(dstSize--)
 		{
 			float sample = (*src++ - SourceFormat::Zero()) / float(SourceFormat::Max());
-			std::clamp(sample, -1.0f, 1.0f);
+			sample = Clamp(sample, -1.0f, 1.0f);
 			*dst++ = (sample * DestinationFormat::Max()) + DestinationFormat::Zero();
 		}
 	}
