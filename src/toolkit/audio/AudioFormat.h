@@ -41,7 +41,7 @@ namespace TOOLKIT_NS { namespace audio
 			case SampleFormat::Float32:
 				return 4;
 			default:
-				throw Exception("SampleSize: Invalid audio format type");
+				THROW(Exception, "SampleSize: Invalid audio format type");
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace TOOLKIT_NS { namespace audio
 			case SampleFormat::S16:	return std::numeric_limits<s16>::min();
 			case SampleFormat::U16:	return std::numeric_limits<u16>::min();
 			case SampleFormat::Float32:	return -1;
-			default: throw Exception("Min: Invalid audio format type");
+			default: THROW(Exception, "Min: Invalid audio format type");
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace TOOLKIT_NS { namespace audio
 			case SampleFormat::S16:	return std::numeric_limits<s16>::max();
 			case SampleFormat::U16:	return std::numeric_limits<u16>::max();
 			case SampleFormat::Float32:	return 1;
-			default: throw Exception("Min: Invalid audio format type");
+			default: THROW(Exception, "Min: Invalid audio format type");
 			}
 		}
 	};
