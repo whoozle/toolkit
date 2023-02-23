@@ -6,8 +6,8 @@ namespace TOOLKIT_NS { namespace net
 
 	BaseSocket::~BaseSocket()
 	{
-		try { bsd::Socket::Shutdown(SHUT_RDWR); }
-		catch(const std::exception &) { }
+		TRY { bsd::Socket::Shutdown(SHUT_RDWR); }
+		CATCH(const std::exception &, { })
 	}
 
 }}

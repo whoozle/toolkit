@@ -20,12 +20,12 @@ namespace TOOLKIT_NS { namespace audio
 	{
 		io::LittleEndianDataInputStream is(stream);
 		if (is.ReadU32() != RIFF)
-			throw Exception("Invalid RIFF file signature");
+			THROW(Exception, "Invalid RIFF file signature");
 
 		auto size = is.ReadU32();
 		auto container = is.ReadU32();
 		if (container != WAVE)
-			throw Exception("Expected WAVE format");
+			THROW(Exception, "Expected WAVE format");
 		size_t offset = 4;
 
 		audio::Specification spec;
