@@ -188,5 +188,8 @@ namespace TOOLKIT_NS { namespace io
 		return std::string(tempName.data());
 	}
 
+	void File::Rename(const std::string &oldName, const std::string &newName)
+	{ SYSTEM_CALL(rename(oldName.c_str(), newName.c_str())); }
+
 }}
 

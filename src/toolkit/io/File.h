@@ -89,6 +89,7 @@ namespace TOOLKIT_NS { namespace io
 		static void CreatePipe(int & readFd, int & writeFd, int flags = 0);
 
 		static std::string MakeTempDirectory(const std::string &pattern);
+		static void Rename(const std::string &oldName, const std::string &newName);
 
 	private:
 		void Close();
