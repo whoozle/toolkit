@@ -37,6 +37,7 @@ set(TOOLKIT_SRC
 	src/toolkit/io/DirectoryReader.cpp
 	src/toolkit/io/Event.cpp
 	src/toolkit/io/File.cpp
+	src/toolkit/io/KeyValueFileStorage.cpp
 	src/toolkit/io/MemoryMapping.cpp
 	src/toolkit/io/NonBlockingStream.cpp
 	src/toolkit/io/Poll.cpp
