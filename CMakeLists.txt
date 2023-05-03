@@ -9,7 +9,6 @@ find_package( Threads )
 
 check_cxx_compiler_flag(-Wall HAS_WALL)
 
-include_directories(src)
 
 if (NOT DEFINED TOOLKIT_NS)
 	set(TOOLKIT_NS toolkit)
@@ -20,7 +19,6 @@ message(STATUS "toolkit namespace: ${TOOLKIT_NS}")
 set(TOOLKIT_CONFIG_DIR ${CMAKE_CURRENT_BINARY_DIR}/toolkit/core)
 file(MAKE_DIRECTORY ${TOOLKIT_CONFIG_DIR})
 configure_file(src/toolkit/core/config.h.in ${TOOLKIT_CONFIG_DIR}/config.h)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 set(TOOLKIT_SRC
 	src/toolkit/core/ThreadPool.cpp
