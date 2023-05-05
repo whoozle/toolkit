@@ -52,7 +52,7 @@ namespace TOOLKIT_NS { namespace serialization { namespace bson
 
 		void Write(typename MapToSerializationType<ValueType>::Type value) override
 		{
-			Value = value;
+			Value = static_cast<ValueType>(value);
 			_finished = true;
 		}
 	};
