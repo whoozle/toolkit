@@ -71,6 +71,10 @@ namespace TOOLKIT_NS { namespace raster
 		void ToString(text::StringOutputStream & ss) const
 		{ ss << X << ", " << Y; }
 
+		template<typename DstType>
+		PointBase<DstType> As() const
+		{ return {X, Y}; }
+
 		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
 
