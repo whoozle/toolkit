@@ -70,7 +70,7 @@ namespace TOOLKIT_NS { namespace io
 		static void Truncate(const std::string & path, off_t size);
 		void Truncate(size_t size) override;
 
-		static struct stat GetStatus(const std::string & path);
+		static struct stat GetStatus(const std::string & path, bool followSymlinks = true);
 		struct stat GetStatus();
 		struct statvfs GetVFSStatus();
 

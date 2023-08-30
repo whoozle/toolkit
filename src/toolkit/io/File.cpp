@@ -139,10 +139,13 @@ namespace TOOLKIT_NS { namespace io
 		return buf;
 	}
 
-	struct stat File::GetStatus(const std::string & path)
+	struct stat File::GetStatus(const std::string & path, bool followSymlinks)
 	{
 		struct stat buf;
-		SYSTEM_CALL(stat(path.c_str(), &buf));
+		if (followSymlinks)
+			SYSTEM_CALL(stat(path.c_str(), &buf));
+		else
+			SYSTEM_CALL(lstat(path.c_str(), &buf));
 		return buf;
 	}
 
