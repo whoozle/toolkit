@@ -149,13 +149,15 @@ namespace TOOLKIT_NS { namespace io
 		return buf;
 	}
 
+	void File::Symlink(const std::string & target, const std::string & linkPath)
+	{ SYSTEM_CALL(symlink(target.c_str(), linkPath.c_str())); }
+
 	struct statvfs File::GetVFSStatus()
 	{
 		struct statvfs buf;
 		SYSTEM_CALL(fstatvfs(_fd, &buf));
 		return buf;
 	}
-
 
 	void File::Allocate(int mode, off_t offset, off_t len)
 	{ SYSTEM_CALL(fallocate(_fd, mode, offset, len)); }
