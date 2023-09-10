@@ -12,7 +12,12 @@
 #	define THROW_ON_FAILURE(EXPR, EXCEPTION, ...) ASSERT(EXPR, EXCEPTION, __VA_ARGS__)
 #else
 #	include <stdlib.h>
-#	define THROW(EXCEPTION, ...) { fprintf(stderr, "%s\n", #__VA_ARGS__); abort(); }
+#	ifdef TOOLKIT_LOGGER_DISABLE
+#		define THROW(EXCEPTION, ...) { abort(); }
+#	else
+#		include <stdio.h>
+#		define THROW(EXCEPTION, ...) { fprintf(stderr, "%s\n", #__VA_ARGS__); abort(); }
+#	endif
 #	define TRY /**/
 #	define CATCH(SPEC, ...) /**/
 #	define THROW_ON_FAILURE(EXPR, EXCEPTION, ...) (void)(EXPR)
