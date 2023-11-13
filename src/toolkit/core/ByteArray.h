@@ -49,6 +49,9 @@ namespace TOOLKIT_NS
 		void clear()
 		{ _data.clear(); }
 
+		void Assign(ConstBuffer data)
+		{ _data.assign(data.begin(), data.end()); }
+
 		void Append(ConstBuffer data)
 		{
 			_data.reserve(_data.size() + data.size());
