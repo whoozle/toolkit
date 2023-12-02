@@ -82,6 +82,11 @@ namespace TOOLKIT_NS { namespace text
 			os << text.substr(pos, nextPos - pos);
 			os << dst;
 			pos = nextPos + src.size();
+			if (limit && --limit == 0)
+			{
+				os << text.substr(pos);
+				break;
+			}
 		}
 		return os.Get();
 	}
