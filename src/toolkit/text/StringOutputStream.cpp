@@ -36,10 +36,15 @@ namespace TOOLKIT_NS { namespace text
 	{ return _stream.Write(ConstBuffer(static_cast<const u8 *>(static_cast<const void *>(value)), size)); }
 
 	size_t StringOutputStream::Write(const char * value)
-	{ return Write(value, strlen(value)); }
+	{
+		if (value)
+			return Write(value, strlen(value));
+		else
+			return Write("null");
+	}
 
 	size_t StringOutputStream::Write(char * value)
-	{ return Write(value, strlen(value)); }
+	{ return Write(static_cast<const char *>(value)); }
 
 	size_t StringOutputStream::Write(const std::string & value)
 	{ return Write(value.data(), value.size()); }
