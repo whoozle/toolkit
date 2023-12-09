@@ -82,6 +82,7 @@ add_library(${TOOLKIT_LIB} STATIC ${TOOLKIT_SRC})
 target_compile_definitions(${TOOLKIT_LIB} PUBLIC -DTOOLKIT_NS=${TOOLKIT_NS})
 if (TOOLKIT_GL_VARIANT)
 	target_compile_definitions(${TOOLKIT_LIB} PUBLIC -DGL_GLEXT_PROTOTYPES -DTOOLKIT_GL_VARIANT=${TOOLKIT_GL_VARIANT})
+	target_link_libraries(${TOOLKIT_LIB} PUBLIC GL)
 endif()
 
 target_include_directories(${TOOLKIT_LIB} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src ${CMAKE_CURRENT_BINARY_DIR})
