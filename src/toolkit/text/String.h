@@ -3,6 +3,7 @@
 
 #include <toolkit/core/core.h>
 #include <toolkit/text/StringOutputStream.h>
+#include <algorithm>
 #include <functional>
 #include <string>
 
@@ -89,6 +90,35 @@ namespace TOOLKIT_NS { namespace text
 			}
 		}
 		return os.Get();
+	}
+
+	inline std::string Trim(const std::string &str)
+	{
+	static const char *ws = " \t\f\n\r";
+	size_t begin = str.find_first_not_of(ws);
+	if (begin == str.npos)
+		return {};
+
+	size_t end = str.find_last_not_of(ws);
+	if (end == str.npos)
+		end = str.size();
+	else
+		++end;
+	return str.substr(begin, end - begin);
+	}
+
+	inline std::string ToLower(const std::string &str)
+	{
+	std::string r(str);
+	std::transform(r.begin(), r.end(), r.begin(), ::tolower);
+	return r;
+	}
+
+	inline std::string ToUpper(const std::string &str)
+	{
+	std::string r(str);
+	std::transform(r.begin(), r.end(), r.begin(), ::toupper);
+	return r;
 	}
 
 }}
