@@ -11,7 +11,7 @@
 namespace TOOLKIT_NS { namespace audio
 {
 	template<class T>
-	constexpr const T & Clamp( const T & v, const T & lo, const T & hi)
+	constexpr T Clamp( const T & v, const T & lo, const T & hi)
 	{ return v < lo ? lo : hi < v ? hi : v; }
 
 	enum struct SampleFormat
@@ -83,6 +83,10 @@ namespace TOOLKIT_NS { namespace audio
 			static auto Min() { return std::numeric_limits<T>::min(); }
 			static auto Zero() { return ZeroValue; }
 			static auto Range() { return Max() - Zero(); }
+
+			template<typename S>
+			static Type Clamp(S value)
+			{ return value >= Min()? value < Max()? value: Max(): Min(); }
 		};
 
 		template<typename T, typename D>
@@ -94,6 +98,9 @@ namespace TOOLKIT_NS { namespace audio
 			static Type Min() { return -1; }
 			static Type Zero() { return 0; }
 			static Type Range() { return Max() - Zero(); }
+			template<typename S>
+			static Type Clamp(S value)
+			{ return value >= Min()? value < Max()? value: Max(): Min(); }
 		};
 	}
 
