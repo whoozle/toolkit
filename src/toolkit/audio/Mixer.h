@@ -4,7 +4,6 @@
 #include <toolkit/audio/ISource.h>
 #include <memory>
 #include <vector>
-#include <math.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
