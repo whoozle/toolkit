@@ -14,6 +14,7 @@ namespace TOOLKIT_NS { namespace log
 		switch(level)
 		{
 		case LogLevel::Trace:
+			return "\033[34;2m";
 		case LogLevel::Debug:
 			return "\033[30;1m";
 		case LogLevel::Warning:
