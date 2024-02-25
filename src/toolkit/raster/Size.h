@@ -39,6 +39,10 @@ namespace TOOLKIT_NS { namespace raster
 		bool Valid() const
 		{ return Width > 0 && Height > 0; }
 
+		template<typename DstType>
+		SizeBase<DstType> As() const
+		{ return {static_cast<DstType>(Width), static_cast<DstType>(Height)}; }
+
 		void ToString(text::StringOutputStream & ss) const
 		{ ss << Width << 'x' << Height; }
 

@@ -73,7 +73,7 @@ namespace TOOLKIT_NS { namespace raster
 
 		template<typename DstType>
 		PointBase<DstType> As() const
-		{ return {X, Y}; }
+		{ return {static_cast<DstType>(X), static_cast<DstType>(Y)}; }
 
 		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
