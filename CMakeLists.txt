@@ -38,6 +38,7 @@ set(TOOLKIT_SRC
 	src/toolkit/io/KeyValueFileStorage.cpp
 	src/toolkit/io/MemoryMapping.cpp
 	src/toolkit/io/NonBlockingStream.cpp
+	src/toolkit/io/Notify.cpp
 	src/toolkit/io/Poll.cpp
 	src/toolkit/io/Process.cpp
 	src/toolkit/io/SerialPort.cpp
