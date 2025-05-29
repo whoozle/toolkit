@@ -4,6 +4,7 @@
 #include <toolkit/io/SystemException.h>
 #include <toolkit/log/Logger.h>
 #include <sys/inotify.h>
+#include <limits.h>
 
 namespace TOOLKIT_NS { namespace io
 {
