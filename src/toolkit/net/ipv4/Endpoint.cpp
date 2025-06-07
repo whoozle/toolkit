@@ -5,10 +5,11 @@
 
 namespace TOOLKIT_NS { namespace net { namespace ipv4
 {
-	Endpoint::Endpoint(const sockaddr & sockaddr)
+	Endpoint::Endpoint(const sockaddr & sockaddr): Endpoint(reinterpret_cast<const sockaddr_in &>(sockaddr))
+	{ ASSERT (sockaddr.sa_family == AF_INET, Exception, "Invalid sockaddr family, expected AF_INET"); }
+
+	Endpoint::Endpoint(const sockaddr_in & in)
 	{
-		ASSERT (sockaddr.sa_family == AF_INET, Exception, "Invalid sockaddr family, expected AF_INET");
-		auto & in = reinterpret_cast<const sockaddr_in &>(sockaddr);
 		Address = ipv4::Address(in.sin_addr.s_addr);
 		Port = ntohs(in.sin_port);
 	}

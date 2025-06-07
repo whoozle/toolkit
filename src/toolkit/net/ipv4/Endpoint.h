@@ -21,6 +21,7 @@ namespace net { namespace ipv4
 		int 			Port;
 
 		Endpoint(const sockaddr & sockaddr);
+		Endpoint(const sockaddr_in & sockaddr);
 		Endpoint(ipv4::Address address, int port): Address(address), Port(port)
 		{ }
 
