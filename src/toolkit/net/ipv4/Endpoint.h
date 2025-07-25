@@ -1,6 +1,7 @@
 #ifndef TOOLKIT_NET_IPV4_ENDPOINT_H
 #define TOOLKIT_NET_IPV4_ENDPOINT_H
 
+#include <toolkit/text/StringOutputStream.h>
 #include <toolkit/net/ipv4/Address.h>
 #include <toolkit/core/Hash.h>
 #include <netinet/in.h>
@@ -48,6 +49,9 @@ namespace net { namespace ipv4
 			size_t operator()(const Endpoint & ep) const
 			{ return CombineHash(ep.Address, ep.Port); }
 		};
+
+		void ToString(text::StringOutputStream & ss) const;
+		TOOLKIT_DECLARE_SIMPLE_TOSTRING();
 	};
 
 }}}

@@ -1,7 +1,9 @@
 #include <toolkit/net/ipv4/Endpoint.h>
 #include <toolkit/net/ipv4/TCPServerSocket.h>
+#include <toolkit/io/SystemException.h>
 #include <sys/socket.h>
 #include <netinet/tcp.h>
+#include <arpa/inet.h>
 
 namespace TOOLKIT_NS { namespace net { namespace ipv4
 {
@@ -36,6 +38,14 @@ namespace TOOLKIT_NS { namespace net { namespace ipv4
 		address.sin_addr.s_addr = Address.GetNetworkAddress();
 		address.sin_port = htons(Port);
 		socket.Bind(reinterpret_cast<struct sockaddr *>(&address), sizeof(address));
+	}
+
+	void Endpoint::ToString(text::StringOutputStream & ss) const
+	{
+		auto address = Address.GetNetworkAddress();
+		char buf[64];
+		ASSERT(inet_ntop(AF_INET, &address, buf, sizeof(buf)), io::SystemException, "inet_ntop");
+		ss << buf << ':' << Port;
 	}
 
 }}}
