@@ -3,6 +3,7 @@
 
 #include <toolkit/core/types.h>
 #include <toolkit/core/Noncopyable.h>
+#include <memory>
 
 namespace TOOLKIT_NS { namespace io
 {
@@ -35,6 +36,7 @@ namespace TOOLKIT_NS { namespace io
 		int Wait() //infinite wait
 		{ return Wait(-1); }
 	};
+	TOOLKIT_DECLARE_PTR(Poll);
 
 }}
 
