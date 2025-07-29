@@ -23,7 +23,6 @@ configure_file(src/toolkit/core/config.h.in ${TOOLKIT_CONFIG_DIR}/config.h)
 set(TOOLKIT_SRC
 	src/toolkit/core/ThreadPool.cpp
 	src/toolkit/core/TaskQueue.cpp
-	src/toolkit/core/StringRef.cpp
 
 	src/toolkit/audio/WaveFile.cpp
 
