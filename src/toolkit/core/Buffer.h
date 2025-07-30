@@ -113,8 +113,10 @@ namespace TOOLKIT_NS
 		}
 	};
 
-	using Buffer		= BasicBuffer<u8>;
-	using ConstBuffer	= BasicBuffer<const u8>;
+	using Buffer			= BasicBuffer<u8>;
+	using ConstBuffer		= BasicBuffer<const u8>;
+	using CharBuffer		= BasicBuffer<char>;
+	using ConstCharBuffer	= BasicBuffer<const char>;
 
 }
 
