@@ -2,7 +2,7 @@
 #define TOOLKIT_AUDIO_ETTUNING_H
 
 #include <toolkit/audio/ITuning.h>
-#include <math.h>
+#include <cmath>
 
 namespace TOOLKIT_NS { namespace audio
 {
@@ -17,8 +17,8 @@ namespace TOOLKIT_NS { namespace audio
 			_standardPitch(standardPitch), _parts(parts)
 		{ }
 
-		float GetFrequency(Note note) const override
-		{ return _standardPitch * pow(2, note.Octave + (note.Tone / _parts)); }
+		float GetFrequency(Key key) const override
+		{ return _standardPitch * std::pow(2, key.Octave + (key.Tone / _parts)); }
 	};
 
 }}

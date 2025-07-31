@@ -2,13 +2,13 @@
 #define TOOLKIT_AUDIO_ADSR_ENVELOPE_H
 
 #include <toolkit/audio/IFilter.h>
-#include <math.h>
+#include <toolkit/audio/ISink.h>
 #include <assert.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
 
-	class ADSREnvelope final : public IFilter
+	class ADSREnvelope final : public IFilter, public ISink
 	{
 		float		_attack;
 		float		_decay;
@@ -70,6 +70,15 @@ namespace TOOLKIT_NS { namespace audio
 			while(n--)
 				*dst++ = Next(dt) * *src++;
 		}
+
+		void HandleBeat(int beat) override
+		{ }
+
+		void HandlePress(const KeyEvent &key) override
+		{ start(); }
+
+		void HandleRelease(const KeyEvent &key) override
+		{ }
 	};
 
 }}

@@ -1,7 +1,7 @@
 #ifndef TOOLKIT_AUDIO_ITUNING_H
 #define TOOLKIT_AUDIO_ITUNING_H
 
-#include <toolkit/audio/Note.h>
+#include <toolkit/audio/Key.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
@@ -10,7 +10,7 @@ namespace TOOLKIT_NS { namespace audio
 	{
 		virtual ~ITuning() = default;
 
-		virtual float GetFrequency(Note note) const = 0;
+		virtual float GetFrequency(Key note) const = 0;
 	};
 
 }}

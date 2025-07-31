@@ -5,6 +5,7 @@
 #include <toolkit/audio/ISource.h>
 #include <toolkit/audio/Mixer.h>
 #include <vector>
+#include <cmath>
 
 namespace TOOLKIT_NS { namespace audio
 {
@@ -61,7 +62,7 @@ namespace TOOLKIT_NS { namespace audio
 			size_t offset = 0;
 			while(offset < buffer.size())
 			{
-				size_t nextBytes = std::min<size_t>(ceil((_timeToClick - _time) / dt), buffer.size() - offset);
+				size_t nextBytes = std::min<size_t>(std::ceil((_timeToClick - _time) / dt), buffer.size() - offset);
 				_mixer.Get(dt, FloatBuffer(buffer, offset, nextBytes));
 				_time += nextBytes * dt;
 				offset += nextBytes;
