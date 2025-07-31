@@ -1,16 +1,15 @@
 #ifndef TOOLKIT_AUDIO_BUS_H
 #define TOOLKIT_AUDIO_BUS_H
 
-#include <toolkit/audio/ISink.h>
+#include <toolkit/audio/BroadcastSink.h>
 #include <toolkit/audio/ISource.h>
 #include <toolkit/audio/Mixer.h>
-#include <vector>
 #include <cmath>
 
 namespace TOOLKIT_NS { namespace audio
 {
 
-	class Bus : public ISource
+	class Bus : public ISource, public BroadcastSink
 	{
 	private:
 		float		_tempo;
@@ -21,7 +20,6 @@ namespace TOOLKIT_NS { namespace audio
 		float		_timeToClick;
 
 		Mixer		_mixer;
-		std::vector<ISinkPtr> _sinks;
 
 	private:
 		void Update()
@@ -40,10 +38,10 @@ namespace TOOLKIT_NS { namespace audio
 			_beat(0), _time(0), _timeToClick(1)
 		{ Update(); }
 
+		using BroadcastSink::Add;
+
 		void Add(const ISourcePtr & source)
 		{ _mixer.Add(source); }
-		void Add(const ISinkPtr & sink)
-		{ _sinks.push_back(sink); }
 
 		void SetTempo(float bpm)
 		{ _tempo = bpm; Update(); }
@@ -69,8 +67,7 @@ namespace TOOLKIT_NS { namespace audio
 				while (_time >= _timeToClick)
 				{
 					_time -= _timeToClick;
-					for(auto & sink : _sinks)
-						sink->HandleBeat(_beat);
+					HandleBeat(_beat);
 					_beat = (_beat + 1) % _beats;
 				}
 			}
