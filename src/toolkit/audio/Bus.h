@@ -4,13 +4,15 @@
 #include <toolkit/audio/BroadcastSink.h>
 #include <toolkit/audio/ISource.h>
 #include <toolkit/audio/Mixer.h>
-#include <cmath>
+#include <toolkit/log/Logger.h>
 
 namespace TOOLKIT_NS { namespace audio
 {
 
 	class Bus : public ISource, public BroadcastSink
 	{
+		static log::Logger Log;
+
 	private:
 		float		_tempo;
 		unsigned	_bar;
@@ -23,58 +25,22 @@ namespace TOOLKIT_NS { namespace audio
 		Mixer		_mixer;
 
 	private:
-		void Update()
-		{
-			if (_tempo <= 0)
-				throw Exception("tempo must be positive, your music not necessarily");
-
-			auto phase = _time / _timeToClick;
-			_timeToClick = 60.0f / _tempo / _units;
-			_time = phase * _timeToClick;
-		}
+		void Update();
 
 	public:
-		Bus(float tempo, int beats, int units):
-			_tempo(tempo), _bar(0), _beats(beats), _units(units),
-			_beat(0), _time(0), _timeToClick(1)
-		{ Update(); }
+		Bus(float tempo, int beats, int units);
 
 		using BroadcastSink::Add;
+		void Add(const ISourcePtr & source);
 
-		void Add(const ISourcePtr & source)
-		{ _mixer.Add(source); }
+		void SetTempo(float bpm);
+		float GetTempo() const;
 
-		void SetTempo(float bpm)
-		{ _tempo = bpm; Update(); }
-		float GetTempo() const
-		{ return _tempo; }
+		void SetSignature(unsigned beats, unsigned units);
+		int GetBeats() const;
+		int GetBarUnits() const;
 
-		void SetSignature(unsigned beats, unsigned units)
-		{ _beats = beats; _units = units; Update(); }
-		int GetBeats() const
-		{ return _beats; }
-		int GetBarUnits() const
-		{ return _units; }
-
-		void Get(float dt, FloatBuffer buffer) override
-		{
-			size_t offset = 0;
-			while(offset < buffer.size())
-			{
-				size_t nextBytes = std::min<size_t>(std::ceil((_timeToClick - _time) / dt), buffer.size() - offset);
-				_mixer.Get(dt, FloatBuffer(buffer, offset, nextBytes));
-				_time += nextBytes * dt;
-				offset += nextBytes;
-				while (_time >= _timeToClick)
-				{
-					_time -= _timeToClick;
-					HandleBeat(BeatEvent{_bar, _beat, _beats});
-					_beat = (_beat + 1) % _beats;
-					if (_beat == 0)
-						++_bar;
-				}
-			}
-		}
+		void Get(float dt, FloatBuffer buffer) override;
 	};
 
 }}
