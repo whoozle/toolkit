@@ -71,7 +71,7 @@ namespace TOOLKIT_NS { namespace audio
 				*dst++ = Next(dt) * *src++;
 		}
 
-		void HandleBeat(int beat) override
+		void HandleBeat(const BeatEvent &beat) override
 		{ }
 
 		void HandlePress(const KeyEvent &key) override

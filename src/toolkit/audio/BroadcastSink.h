@@ -15,7 +15,7 @@ namespace TOOLKIT_NS { namespace audio
 		void Add(ISinkPtr sink)
 		{ _sinks.push_back(std::move(sink)); }
 
-		void HandleBeat(int beat) override
+		void HandleBeat(const BeatEvent &beat) override
 		{
 			for(auto &sink : _sinks)
 				sink->HandleBeat(beat);

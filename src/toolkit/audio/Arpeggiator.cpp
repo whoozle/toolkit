@@ -92,11 +92,12 @@ namespace TOOLKIT_NS { namespace audio
 	void Arpeggiator::SetMode(IArpeggiatorModePtr mode)
 	{ _mode = mode; }
 
-	void Arpeggiator::HandleBeat(int beat)
+	void Arpeggiator::HandleBeat(const BeatEvent &beat)
 	{
+		Log.Debug() << "beat " << beat;
 		if (_active)
 		{
-			if (beat == 0)
+			if (beat.Unit == 0)
 			{
 				KeyEvent event = {_mode->GetStep(_base.Key, _step++), _base.Pressure};
 				Log.Debug() << event;

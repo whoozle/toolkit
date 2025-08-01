@@ -8,6 +8,16 @@
 
 namespace TOOLKIT_NS { namespace audio
 {
+	struct BeatEvent
+	{
+		unsigned Bar;
+		unsigned Unit;
+		unsigned Units;
+
+		void ToString(text::StringOutputStream &sos) const
+		{ sos << "BeatEvent { bar: " << Bar << ", " << Unit << "/" << Units << "}"; }
+		TOOLKIT_DECLARE_SIMPLE_TOSTRING();
+	};
 	struct KeyEvent
 	{
 		audio::Key 	Key;
@@ -21,7 +31,7 @@ namespace TOOLKIT_NS { namespace audio
 	{
 		virtual ~ISink() = default;
 
-		virtual void HandleBeat(int beat) = 0;
+		virtual void HandleBeat(const BeatEvent &beat) = 0;
 		virtual void HandlePress(const KeyEvent &key) = 0;
 		virtual void HandleRelease(const KeyEvent &key) = 0;
 	};

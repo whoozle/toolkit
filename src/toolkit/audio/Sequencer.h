@@ -11,12 +11,12 @@ namespace TOOLKIT_NS { namespace audio
 	class Sequencer : public ISink
 	{
 	public:
-		using Callback = std::function<void (int)>;
+		using Callback = std::function<void (const BeatEvent &)>;
 
 		Sequencer(Callback && callback) : _callback(std::move(callback))
 		{ }
 
-		void HandleBeat(int beat) override
+		void HandleBeat(const BeatEvent &beat) override
 		{ _callback(beat); }
 
 	private:

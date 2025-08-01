@@ -20,7 +20,7 @@ namespace TOOLKIT_NS { namespace audio
 			_oscillator(std::dynamic_pointer_cast<IOscillator>(source)), _source(std::move(source)), _tuning(std::move(tuning))
 		{ }
 
-		void HandleBeat(int beat) override
+		void HandleBeat(const BeatEvent &beat) override
 		{ }
 
 		void HandlePress(const KeyEvent &key) override

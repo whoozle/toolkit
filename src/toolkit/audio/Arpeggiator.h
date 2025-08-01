@@ -65,7 +65,7 @@ namespace TOOLKIT_NS { namespace audio
 		void SetMode(IArpeggiatorModePtr mode);
 		void SetSink(ISinkPtr sink);
 
-		void HandleBeat(int beat) override;
+		void HandleBeat(const BeatEvent &beat) override;
 		void HandlePress(const KeyEvent &key) override;
 		void HandleRelease(const KeyEvent &key) override;
 	};

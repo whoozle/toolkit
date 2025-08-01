@@ -13,9 +13,10 @@ namespace TOOLKIT_NS { namespace audio
 	{
 	private:
 		float		_tempo;
-		int			_beats;
-		int			_unit;
-		int			_beat;
+		unsigned	_bar;
+		unsigned	_beats;
+		unsigned	_units;
+		unsigned	_beat;
 		float 		_time;
 		float		_timeToClick;
 
@@ -28,13 +29,13 @@ namespace TOOLKIT_NS { namespace audio
 				throw Exception("tempo must be positive, your music not necessarily");
 
 			auto phase = _time / _timeToClick;
-			_timeToClick = 60.0f / _tempo / _unit;
+			_timeToClick = 60.0f / _tempo / _units;
 			_time = phase * _timeToClick;
 		}
 
 	public:
-		Bus(float tempo, int beats, int unit):
-			_tempo(tempo), _beats(beats), _unit(unit),
+		Bus(float tempo, int beats, int units):
+			_tempo(tempo), _bar(0), _beats(beats), _units(units),
 			_beat(0), _time(0), _timeToClick(1)
 		{ Update(); }
 
@@ -48,12 +49,12 @@ namespace TOOLKIT_NS { namespace audio
 		float GetTempo() const
 		{ return _tempo; }
 
-		void SetSignature(int beats, int unit)
-		{ _beats = beats; _unit = unit; Update(); }
+		void SetSignature(unsigned beats, unsigned units)
+		{ _beats = beats; _units = units; Update(); }
 		int GetBeats() const
 		{ return _beats; }
-		int GetBarUnit() const
-		{ return _unit; }
+		int GetBarUnits() const
+		{ return _units; }
 
 		void Get(float dt, FloatBuffer buffer) override
 		{
@@ -67,8 +68,10 @@ namespace TOOLKIT_NS { namespace audio
 				while (_time >= _timeToClick)
 				{
 					_time -= _timeToClick;
-					HandleBeat(_beat);
+					HandleBeat(BeatEvent{_bar, _beat, _beats});
 					_beat = (_beat + 1) % _beats;
+					if (_beat == 0)
+						++_bar;
 				}
 			}
 		}
