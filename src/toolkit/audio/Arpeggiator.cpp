@@ -78,9 +78,10 @@ namespace TOOLKIT_NS { namespace audio
 
 	log::Logger Arpeggiator::Log("arpeggiator");
 
-	Arpeggiator::Arpeggiator(ISinkPtr sink, IArpeggiatorModePtr mode):
+	Arpeggiator::Arpeggiator(ISinkPtr sink, IArpeggiatorModePtr mode, IArpeggiatorSequenceGeneratorPtr seqGen):
 		_sink(std::move(sink)),
-		_mode(std::move(mode))
+		_mode(std::move(mode)),
+		_generator(std::move(seqGen))
 	{ }
 
 	Arpeggiator::~Arpeggiator()
@@ -97,11 +98,22 @@ namespace TOOLKIT_NS { namespace audio
 		Log.Debug() << "beat " << beat;
 		if (_active)
 		{
-			if (beat.Unit == 0)
+			float pressure = 1.0f;
+			auto cmd = _generator->GenerateEvent(beat, pressure);
+			switch(cmd)
 			{
-				KeyEvent event = {_mode->GetStep(_base.Key, _step++), _base.Pressure};
+			case audio::ArpeggiatorSequenceCommand::Play:
+			case audio::ArpeggiatorSequenceCommand::PlayNoNext:
+			{
+				KeyEvent event = {_mode->GetStep(_base.Key, _step), _base.Pressure * pressure};
 				Log.Debug() << event;
 				_sink->HandlePress(std::move(event));
+				if (cmd == audio::ArpeggiatorSequenceCommand::Play)
+					++_step;
+				break;
+			}
+			default:
+				break;
 			}
 		}
 	}

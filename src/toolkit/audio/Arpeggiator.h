@@ -5,6 +5,7 @@
 #include <toolkit/audio/ITuning.h>
 #include <toolkit/audio/ISink.h>
 #include <toolkit/log/Logger.h>
+#include <memory>
 
 namespace TOOLKIT_NS { namespace audio
 {
@@ -16,6 +17,20 @@ namespace TOOLKIT_NS { namespace audio
 		virtual Key GetStep(Key base, int idx) const = 0;
 	};
 	TOOLKIT_DECLARE_PTR(IArpeggiatorMode);
+
+	enum ArpeggiatorSequenceCommand
+	{
+		Ignore,
+		Play,
+		PlayNoNext
+	};
+
+	struct IArpeggiatorSequenceGenerator
+	{
+		virtual ~IArpeggiatorSequenceGenerator() = default;
+		virtual ArpeggiatorSequenceCommand GenerateEvent(const BeatEvent & beat, float &pressure) = 0;
+	};
+	TOOLKIT_DECLARE_PTR(IArpeggiatorSequenceGenerator);
 
 	class BaseArpeggiatorMode : public IArpeggiatorMode
 	{
@@ -54,12 +69,13 @@ namespace TOOLKIT_NS { namespace audio
 		static log::Logger	Log;
 		ISinkPtr			_sink;
 		IArpeggiatorModePtr _mode;
+		IArpeggiatorSequenceGeneratorPtr _generator;
 		KeyEvent			_base;
 		bool				_active = false;
 		unsigned			_step = 0;
 
 	public:
-		Arpeggiator(ISinkPtr sink, IArpeggiatorModePtr mode);
+		Arpeggiator(ISinkPtr sink, IArpeggiatorModePtr mode, IArpeggiatorSequenceGeneratorPtr seqGen);
 		~Arpeggiator();
 
 		void SetMode(IArpeggiatorModePtr mode);
