@@ -9,16 +9,25 @@ namespace TOOLKIT_NS { namespace audio
 
 	class ETTuning final : public ITuning
 	{
-		float _standardPitch;
-		float _parts;
+		int		_parts;
+		float 	_standardPitch;
+		Key		_standardPitchNote;
 
 	public:
-		ETTuning(float standardPitch = 440.0f, float parts = 12.0f):
-			_standardPitch(standardPitch), _parts(parts)
+		ETTuning(int parts = 12, float standardPitch = 440.0f, Key standardPitchNote = { 4, 9 }):
+			_parts(parts), _standardPitch(standardPitch), _standardPitchNote(standardPitchNote)
 		{ }
 
+		int GetIndex(Key key) const
+		{
+			return (key.Octave - _standardPitchNote.Octave) * _parts + key.Tone - _standardPitchNote.Tone;
+		}
+
 		float GetFrequency(Key key) const override
-		{ return _standardPitch * std::pow(2, key.Octave + (key.Tone / _parts)); }
+		{
+			float index = GetIndex(key);
+			return _standardPitch * std::pow(2, index / _parts);
+		}
 	};
 
 }}
