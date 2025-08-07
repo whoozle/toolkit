@@ -28,6 +28,13 @@ namespace TOOLKIT_NS { namespace audio
 			float index = GetIndex(key);
 			return _standardPitch * std::pow(2, index / _parts);
 		}
+
+		Key FindClosestKey(float freq)
+		{
+			int index = static_cast<int>(std::round(std::log2(freq / _standardPitch) * _parts));
+			index += _standardPitchNote.Octave * _parts + _standardPitchNote.Tone;
+			return { index / _parts, index % _parts };
+		}
 	};
 
 }}
