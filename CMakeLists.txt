@@ -27,6 +27,7 @@ set(TOOLKIT_SRC
 	src/toolkit/audio/WaveFile.cpp
 	src/toolkit/audio/Arpeggiator.cpp
 	src/toolkit/audio/Bus.cpp
+	src/toolkit/audio/PCMSource.cpp
 
 	src/toolkit/log/Logger.cpp
 	src/toolkit/log/ConsoleLoggingSink.cpp
