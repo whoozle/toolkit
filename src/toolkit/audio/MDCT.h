@@ -10,6 +10,8 @@
 namespace TOOLKIT_NS { namespace audio
 {
 
+#define TOOLKIT_MDCT_USE_REF_IMPL 0
+
 	namespace window
 	{
 		template<typename Type>
@@ -40,6 +42,13 @@ namespace TOOLKIT_NS { namespace audio
 		std::array<Type, N> 			_windowFuncCache;
 		std::array<ComplexType, N4> 	_angle;
 		Type 							_sqrtN;
+#if TOOLKIT_MDCT_USE_REF_IMPL
+		static Type Cos(unsigned n, unsigned k)
+		{
+			Type a = M_PI * (n + 0.5 + N4) * (k + 0.5) / N2;
+			return std::cos(a);
+		}
+#endif
 
 	public:
 		MDCT(std::function<Type(unsigned, unsigned)> windowFunc):
@@ -53,6 +62,17 @@ namespace TOOLKIT_NS { namespace audio
 
 		void Forward(Type *data) const
 		{
+#if	TOOLKIT_MDCT_USE_REF_IMPL
+			Type result[N2];
+			for(unsigned k = 0; k < N2; ++k) {
+				Type v = 0;
+				for(unsigned n = 0; n < N; ++n) {
+					v += data[n] * Cos(n, k);
+				}
+				result[k] = v;
+			}
+			std::copy(result, result + N2, data);
+#else
 			std::array<ComplexType, N4> fftData;
 
 			std::array<Type, N> rotate; //FIXME : remove me
@@ -85,10 +105,22 @@ namespace TOOLKIT_NS { namespace audio
 				data[2 * t] = fftData[t].real();
 				data[N2 - 2 * t - 1] = -fftData[t].imag();
 			}
+#endif
 		}
 
 		void Inverse(Type *data) const
 		{
+#if TOOLKIT_MDCT_USE_REF_IMPL
+			Type result[N];
+			for(unsigned n = 0; n < N; ++n) {
+				Type v = 0;
+				for(unsigned k = 0; k < N2; ++k) {
+					v += data[k] * Cos(n, k);
+				}
+				result[n] = v / N4;
+			}
+			std::copy(result, result + N, data);
+#else
 			std::array<ComplexType, N4> fftData;
 
 			for(unsigned t = 0; t < N4; ++t) {
@@ -125,6 +157,7 @@ namespace TOOLKIT_NS { namespace audio
 			for(unsigned t = 3 * N4; t < N; ++t) {
 				data[t] = -rotate[t - 3 * N4];
 			}
+#endif
 		}
 
 		void ApplyWindow(Type *data) const
