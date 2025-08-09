@@ -116,7 +116,7 @@ namespace TOOLKIT_NS { namespace audio
 	template<> struct Format<SampleFormat::Float32>	: impl::FloatFormat<float, double> {};
 
 	template<typename DestinationFormat, typename SourceFormat>
-	void Convert(BasicBuffer<typename DestinationFormat::Type> dstBuffer, BasicBuffer<const typename SourceFormat::Type> srcBuffer, int dummy = 0)
+	void Convert(BasicBuffer<typename DestinationFormat::Type> dstBuffer, BasicBuffer<const typename SourceFormat::Type> srcBuffer)
 	{
 		using DstSampleType = typename DestinationFormat::Type;
 		using SrcSampleType = typename SourceFormat::Type;
