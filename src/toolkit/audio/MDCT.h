@@ -23,16 +23,20 @@ namespace TOOLKIT_NS { namespace audio
 		};
 	}
 
-	template<typename Type, unsigned N>
+	template<typename Type, unsigned N_>
 	class MDCT
 	{
-		static_assert(N > 4, "N must be a power of two and greater than 4");
+	public:
+		static_assert(N_ > 4, "N must be a power of two and greater than 4");
+
+		static constexpr unsigned N = N_;
 		static constexpr unsigned N2 = N / 2;
 		static constexpr unsigned N4 = N / 4;
 
 		using ComplexType = std::complex<Type>;
 		using FFTType = FFT<Type, N4>;
 
+	private:
 		std::array<Type, N> 			_windowFuncCache;
 		std::array<ComplexType, N4> 	_angle;
 		Type 							_sqrtN;
