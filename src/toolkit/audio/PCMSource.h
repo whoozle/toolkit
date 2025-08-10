@@ -14,16 +14,16 @@ namespace TOOLKIT_NS { namespace audio
 		float				_freq;
 		size_t				_pos = 0;
 
+		std::vector<float> 	_pitchedSamples;
+
 	public:
 		PCMSource(std::vector<float> samples, unsigned sampleRate, float baseFreq = 440.0f);
 
-		void SetFrequency(float freq) override
-		{ _freq = freq; }
+		void SetFrequency(float freq) override;
 		float GetFrequency() const override
 		{ return _freq; }
 
-		void SetBaseFrequency(float baseFreq)
-		{ _baseFreq = baseFreq; }
+		void SetBaseFrequency(float baseFreq);
 		float GetBaseFrequency() const
 		{ return _baseFreq; }
 
@@ -38,6 +38,7 @@ namespace TOOLKIT_NS { namespace audio
 		static PCMSource Read(const std::string &path, unsigned sampleRate, float baseFreq = 440.0f);
 
 	private:
+		void Regenerate();
 		static std::vector<float> Downsample(ConstFloatBuffer buf, unsigned srcRate, unsigned dstRate);
 		static std::vector<float> Upsample(ConstFloatBuffer buf, unsigned srcRate, unsigned dstRate);
 	};

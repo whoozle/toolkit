@@ -1,7 +1,9 @@
 #include <toolkit/audio/PCMSource.h>
+#include <toolkit/audio/MDCT.h>
 #include <toolkit/audio/WaveFile.h>
 #include <toolkit/io/File.h>
 #include <toolkit/log/Logger.h>
+#include <array>
 #include <cmath>
 
 namespace TOOLKIT_NS { namespace audio
@@ -12,11 +14,70 @@ namespace TOOLKIT_NS { namespace audio
 		_samples(std::move(samples)), _sampleRate(sampleRate), _baseFreq(baseFreq), _freq(baseFreq)
 	{ }
 
+	void PCMSource::Regenerate()
+	{
+		auto pitch = _freq / _baseFreq;
+		if (pitch == 1)
+		{
+			_pitchedSamples.clear();
+			return;
+		}
+
+		Log.Debug() << "scale sample, " << _freq << "/" << _baseFreq << ", rel pitch: " << pitch;
+
+		using MDCTType = MDCT<float, 512>;
+		// static MDCTType mdct = { window::Vorbis<float>{} };
+		static MDCTType mdct = { window::Sine<float>{} };
+
+		size_t nSamples = _samples.size();
+		_pitchedSamples.resize(nSamples);
+
+		std::array<float, MDCTType::N> input = {};
+		std::array<float, MDCTType::N2> overlap = {};
+
+		for(size_t offset = 0; offset < nSamples; offset += MDCTType::N2)
+		{
+			for(unsigned i = 0; i < MDCTType::N; ++i)
+			{
+				size_t idx = offset + i;
+				float v = idx < nSamples? _samples[idx]: 0;
+				input[i] = v;
+			}
+			mdct.ApplyWindow(input.data());
+			mdct.Forward(input.data());
+			// SCALE HERE
+			mdct.Inverse(input.data());
+			mdct.ApplyWindow(input.data());
+			for(unsigned i = 0; i < MDCTType::N2; ++i)
+			{
+				auto &dst = input[i];
+				dst += overlap[i];
+				size_t idx = offset + i;
+				if (idx < nSamples)
+					_pitchedSamples[idx] = dst;
+				overlap[i] = input[i + MDCTType::N2];
+			}
+		}
+	}
+
+	void PCMSource::SetFrequency(float freq)
+	{
+		_freq = freq;
+		Regenerate();
+	}
+
+	void PCMSource::SetBaseFrequency(float baseFreq)
+	{
+		_baseFreq = baseFreq;
+		Regenerate();
+	}
+
 	void PCMSource::Get(float dt, FloatBuffer buffer)
 	{
-		auto size = _samples.size() - _pos;
+		auto &src = !_pitchedSamples.empty()? _pitchedSamples: _samples;
+		auto size = src.size() - _pos;
 		auto toCopy = std::min(buffer.size(), size);
-		std::copy(_samples.begin() + _pos, _samples.begin() + _pos + toCopy, buffer.begin());
+		std::copy(src.begin() + _pos, src.begin() + _pos + toCopy, buffer.begin());
 		std::fill(buffer.begin() + toCopy, buffer.end(), 0);
 		_pos += toCopy;
 	}
