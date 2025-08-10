@@ -23,6 +23,13 @@ namespace TOOLKIT_NS { namespace audio
 				return std::sin(Type(M_PI_2) * s * s);
 			}
 		};
+
+		template<typename Type>
+		struct Sine
+		{
+			Type operator()(unsigned x, unsigned n) const
+			{ return std::sin(M_PI * x / n); }
+		};
 	}
 
 	template<typename Type, unsigned N_>
