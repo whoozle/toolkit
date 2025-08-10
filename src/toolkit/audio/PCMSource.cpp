@@ -25,8 +25,7 @@ namespace TOOLKIT_NS { namespace audio
 
 		Log.Debug() << "scale sample, " << _freq << "/" << _baseFreq << ", rel pitch: " << pitch;
 
-		using MDCTType = MDCT<float, 512>;
-		// static MDCTType mdct = { window::Vorbis<float>{} };
+		using MDCTType = MDCT<float, 4096>;
 		static MDCTType mdct = { window::Sine<float>{} };
 
 		size_t nSamples = _samples.size();
@@ -45,7 +44,52 @@ namespace TOOLKIT_NS { namespace audio
 			}
 			mdct.ApplyWindow(input.data());
 			mdct.Forward(input.data());
-			// SCALE HERE
+			std::array<float, MDCTType::N2> shifted = {};
+			if (pitch < 1)
+			{
+				for(unsigned i = 0; i != MDCTType::N2; ++i)
+				{
+					float b = pitch * i;
+					float e = b + pitch;
+					size_t bIdx = b;
+					size_t eIdx = e;
+					if (bIdx >= MDCTType::N2)
+						break;
+					auto v = input[i];
+					if (bIdx != eIdx)
+					{
+						auto bPart = (eIdx - b) / pitch;
+						auto v1 = bPart * v;
+						shifted[bIdx] += v1;
+						if (eIdx < MDCTType::N2)
+							shifted[eIdx] += v - v1;
+					}
+					else
+						shifted[bIdx] += v;
+				}
+			}
+			else
+			{
+				auto ipitch = _baseFreq / _freq;
+				for(unsigned i = 0; i != MDCTType::N2; ++i)
+				{
+					float b = i * ipitch;
+					float e = b + ipitch;
+					size_t bIdx = b;
+					size_t eIdx = e;
+					if (bIdx != eIdx)
+					{
+						size_t nextIdx = bIdx + 1;
+						float bPart = (nextIdx - b) / ipitch;
+						float v0 = input[bIdx];
+						float v1 = eIdx < MDCTType::N2? input[eIdx]: v0;
+						shifted[i] = v0 + bPart * (v1 - v0);
+					}
+					else
+						shifted[i] = input[bIdx];
+				}
+			}
+			std::copy(shifted.begin(), shifted.end(), input.begin());
 			mdct.Inverse(input.data());
 			mdct.ApplyWindow(input.data());
 			for(unsigned i = 0; i < MDCTType::N2; ++i)
@@ -142,9 +186,9 @@ namespace TOOLKIT_NS { namespace audio
 				out = src[bIdx];
 				float mid = std::floor(e);
 				float bPart = (mid - b) / dstDt;
-				out = src[bIdx] * bPart;
-				if (eIdx < srcSize)
-					out += src[eIdx] * (1 - bPart);
+				auto v0 = src[bIdx];
+				auto v1 = eIdx < srcSize? src[eIdx]: v0;
+				out = v0 + bPart * (v1 - v0);
 			}
 			else
 			{
