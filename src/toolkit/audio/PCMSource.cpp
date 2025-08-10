@@ -70,23 +70,20 @@ namespace TOOLKIT_NS { namespace audio
 			}
 			else
 			{
-				auto ipitch = _baseFreq / _freq;
 				for(unsigned i = 0; i != MDCTType::N2; ++i)
 				{
-					float b = i * ipitch;
-					float e = b + ipitch;
-					size_t bIdx = b;
-					size_t eIdx = e;
-					if (bIdx != eIdx)
-					{
-						size_t nextIdx = bIdx + 1;
-						float bPart = (nextIdx - b) / ipitch;
-						float v0 = input[bIdx];
-						float v1 = eIdx < MDCTType::N2? input[eIdx]: v0;
-						shifted[i] = v0 + bPart * (v1 - v0);
-					}
-					else
-						shifted[i] = input[bIdx];
+					auto dstT = i * pitch;
+					size_t dstIdx = dstT;
+					if (dstIdx >= MDCTType::N2)
+						break;
+
+					auto v = input[i];
+					auto nextIdx = dstIdx + 1;
+					auto bPart = nextIdx - dstT;
+
+					shifted[dstIdx++] = v * bPart;
+					if (dstIdx < MDCTType::N2)
+						shifted[dstIdx] = v * (1 - bPart);
 				}
 			}
 			std::copy(shifted.begin(), shifted.end(), input.begin());
