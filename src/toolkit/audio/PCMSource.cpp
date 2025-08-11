@@ -81,9 +81,9 @@ namespace TOOLKIT_NS { namespace audio
 					auto nextIdx = dstIdx + 1;
 					auto bPart = nextIdx - dstT;
 
-					shifted[dstIdx++] = v * bPart;
+					shifted[dstIdx++] += v * bPart;
 					if (dstIdx < MDCTType::N2)
-						shifted[dstIdx] = v * (1 - bPart);
+						shifted[dstIdx] += v * (1 - bPart);
 				}
 			}
 			std::copy(shifted.begin(), shifted.end(), input.begin());
