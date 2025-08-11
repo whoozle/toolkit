@@ -222,5 +222,40 @@ namespace TOOLKIT_NS { namespace audio
 		return Read(file, sampleRate, baseFreq);
 	}
 
+	void PCMSource::LogFrequencyBins(const std::string &name, const float *input, size_t size, size_t width) const
+	{
+		if (size == 0)
+			return;
+
+		auto max = std::abs(input[0]);
+		for(size_t idx = 1; idx != size; ++idx)
+		{
+			if (std::abs(input[idx]) > max)
+				max = std::abs(input[idx]);
+		}
+		const auto width2 = width / 2;
+
+		for(size_t idx = 0; idx != size; ++idx)
+		{
+			auto v = input[idx] / max;
+			char headerBuf[256];
+			float freq = _sampleRate / 2.0f * idx / size;
+			snprintf(headerBuf, sizeof(headerBuf), "%zu: %f: %f: ", idx, freq, input[idx]);
+			std::string header(headerBuf);
+			if (header.size() < 32)
+				header += std::string(32 - header.size(), ' ');
+			header += ":";
+			if (v >= 0)
+			{
+				Log.Info() << name << ": " << header << std::string(width2, ' ') << '|' << std::string(width2 * v, '#');
+			}
+			else
+			{
+				size_t w = width2 * -v;
+				Log.Info() << name << ": " << header << std::string(width2 - w, ' ') << std::string(w, '#') << '|';
+			}
+		}
+	}
+
 }}
 

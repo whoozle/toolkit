@@ -37,6 +37,8 @@ namespace TOOLKIT_NS { namespace audio
 		static PCMSource Read(io::ISkippableInputStream & stream, unsigned sampleRate, float baseFreq = 440.0f);
 		static PCMSource Read(const std::string &path, unsigned sampleRate, float baseFreq = 440.0f);
 
+		void LogFrequencyBins(const std::string &name, const float *input, size_t size, size_t width = 60) const;
+
 	private:
 		void Regenerate();
 		static std::vector<float> Downsample(ConstFloatBuffer buf, unsigned srcRate, unsigned dstRate);
