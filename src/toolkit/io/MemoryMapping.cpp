@@ -33,6 +33,9 @@ namespace TOOLKIT_NS { namespace io
 		_data = Buffer(static_cast<u8*>(addr), new_size);
 	}
 
+	void MemoryMapping::Protect(void *addr, size_t size, int prot)
+	{ SYSTEM_CALL(mprotect(_data.data(), _data.size(), prot)); }
+
 	size_t MemoryMapping::GetPageSize()
 	{ return sysconf(_SC_PAGESIZE); }
 }}

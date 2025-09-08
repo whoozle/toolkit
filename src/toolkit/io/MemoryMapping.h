@@ -31,6 +31,10 @@ namespace TOOLKIT_NS { namespace io
 
 		void Remap(size_t new_size, int flags, void *new_address = nullptr);
 
+		void Protect(void *addr, size_t size, int prot);
+		void Protect(int prot)
+		{ Protect(_data.data(), _data.size(), prot); }
+
 		static void Sync(void *addr, size_t size, int flags);
 		static void Sync(Buffer data, int flags)
 		{ Sync(data.data(), data.size(), flags); }
