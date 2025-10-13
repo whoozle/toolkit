@@ -29,6 +29,22 @@ namespace TOOLKIT_NS { namespace raster
 		void ToString(text::StringOutputStream & ss) const
 		{ ss << "(r: " << R << ", g: " << G << ", b: " << B << ", a: " << A << ')'; }
 
+		static u8 Blend(u8 a, u8 b, u8 n)
+		{
+			u8 d = b - a;
+			return a + ((d * n + 255) >> 8);
+		}
+
+		static Color Blend(const Color &a, const Color &b, u8 n)
+		{
+			return {
+				Blend(a.R, b.R, n),
+				Blend(a.G, b.G, n),
+				Blend(a.B, b.B, n),
+				Blend(a.A, b.A, n),
+			};
+		}
+
 		TOOLKIT_DECLARE_SIMPLE_TOSTRING()
 	};
 
