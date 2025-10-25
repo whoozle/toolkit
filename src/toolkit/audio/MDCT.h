@@ -4,7 +4,7 @@
 #include <toolkit/audio/FFT.h>
 #include <array>
 #include <cmath>
-#include <ccomplex>
+#include <complex>
 #include <functional>
 
 namespace TOOLKIT_NS { namespace audio
@@ -169,7 +169,7 @@ namespace TOOLKIT_NS { namespace audio
 
 		void ApplyWindow(Type *data) const
 		{
-			for(int i = 0; i < N; ++i) {
+			for(unsigned i = 0; i < N; ++i) {
 				data[i] *= _windowFuncCache[i];
 			}
 		}
