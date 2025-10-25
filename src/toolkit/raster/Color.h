@@ -31,7 +31,7 @@ namespace TOOLKIT_NS { namespace raster
 
 		static u8 Blend(u8 a, u8 b, u8 n)
 		{
-			u8 d = b - a;
+			auto d = static_cast<u16>(b - a);
 			return a + ((d * n + 255) >> 8);
 		}
 
